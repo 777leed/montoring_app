@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBXEfAegNBkKlFVv5rHa-Xj9dj5VqKgfjg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>657003199112</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.montoringApp</string>
+	<key>PROJECT_ID</key>
+	<string>rcapp-6980a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>rcapp-6980a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:657003199112:ios:72f6648a09f8a99ea33d3d</string>
+</dict>
+</plist>
