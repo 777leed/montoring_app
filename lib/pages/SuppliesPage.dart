@@ -111,6 +111,7 @@ class _SuppliesPageState extends State<SuppliesPage> {
               onPressed: () async {
                 final String supplyName = supplyNameController.text;
                 final String quantityText = quantityController.text;
+                final String typeText = typeController.text;
 
                 if (supplyName.isNotEmpty && quantityText.isNotEmpty) {
                   final int quantity = int.parse(quantityText);
@@ -118,7 +119,7 @@ class _SuppliesPageState extends State<SuppliesPage> {
                   final Supplies newSupply = Supplies(
                     supplyName: supplyName,
                     quantity: quantity,
-                    supplyType: '',
+                    supplyType: typeText,
                     date: DateTime.now(), // Set the date to the current date
                   );
 

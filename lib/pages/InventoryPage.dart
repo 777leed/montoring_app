@@ -247,7 +247,7 @@ class _InventoryPageState extends State<InventoryPage> {
                 SizedBox(height: 16),
                 _image != null
                     ? Image.file(_image!, height: 150)
-                    : Text('Choose an Image'),
+                    : Text('If you have a Receipt'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
