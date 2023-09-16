@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:montoring_app/components/MyWorkshops.dart';
 import 'package:montoring_app/components/myProject.dart';
 import 'package:montoring_app/components/myTitle.dart';
 
@@ -19,15 +20,12 @@ class onlyWorkshops extends StatelessWidget {
           height: 10,
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
-          myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
-          myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
+          MyWorkshops(
+              img: 'Assets/images/earth.png', title: "Sustainability Wokrshop"),
+          MyWorkshops(
+              img: 'Assets/images/teamwork.png', title: "Group Management"),
+          MyWorkshops(
+              img: 'Assets/images/business.png', title: "Business Model"),
         ]),
       ],
     );

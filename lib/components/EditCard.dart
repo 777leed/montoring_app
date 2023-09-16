@@ -11,7 +11,7 @@ class EditCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(12),
-      width: 150,
+      width: double.infinity,
       height: 150,
       decoration: BoxDecoration(
           color: CustomColors.secondaryColor,

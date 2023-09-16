@@ -1,7 +1,7 @@
 class Population {
-  final int populationDisplaced;
-  final int populationDeath;
-  final int populationInjured;
+  int populationDisplaced;
+  int populationDeath;
+  int populationInjured;
 
   Population({
     required this.populationDisplaced,

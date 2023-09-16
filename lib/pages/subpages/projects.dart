@@ -29,14 +29,12 @@ class _onlyProjectsState extends State<onlyProjects> {
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           myProject(
-              img: 'Assets/images/earthquake.png',
+              img: 'Assets/images/tassdert.png',
               title: "Tassdert Solar Panels"),
           myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
+              img: 'Assets/images/zwinup1.png', title: "Zwin Up Acitivity I"),
           myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
+              img: 'Assets/images/zwinup2.png', title: "Zwin Up Activity II"),
         ]),
       ],
     );

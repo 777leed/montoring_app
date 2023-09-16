@@ -21,13 +21,13 @@ class categorieButton extends StatefulWidget {
 class _categorieButtonState extends State<categorieButton> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        widget.onTap();
-      },
-      child: Column(
-        children: [
-          Container(
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            widget.onTap();
+          },
+          child: Container(
             alignment: Alignment.center,
             padding: EdgeInsets.all(8),
             width: 150,
@@ -49,8 +49,8 @@ class _categorieButtonState extends State<categorieButton> {
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

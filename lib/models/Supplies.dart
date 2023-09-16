@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Supplies {
   final String supplyName;
   final int quantity;
   final String supplyType;
+  final DateTime date; // New field for the date
 
   Supplies({
     required this.supplyName,
     required this.quantity,
     required this.supplyType,
+    required this.date, // Include the date in the constructor
   });
 
   // Deserialize data from Firestore to a Supplies object
@@ -15,6 +19,9 @@ class Supplies {
       supplyName: data['supplyName'],
       quantity: data['quantity'],
       supplyType: data['supplyType'],
+      date: data['date'] != null
+          ? (data['date'] as Timestamp).toDate()
+          : DateTime.now(), // Deserialize date from Firestore
     );
   }
 
@@ -24,6 +31,7 @@ class Supplies {
       'supplyName': supplyName,
       'quantity': quantity,
       'supplyType': supplyType,
+      'date': date, // Serialize date to Firestore
     };
   }
 }

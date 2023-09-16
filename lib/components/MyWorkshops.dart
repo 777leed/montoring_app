@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/styles.dart';
 
-class myProject extends StatelessWidget {
+class MyWorkshops extends StatelessWidget {
   final String title;
   final String img;
-  const myProject({
+  const MyWorkshops({
     super.key,
     required this.img,
     required this.title,
@@ -20,15 +20,15 @@ class myProject extends StatelessWidget {
           width: 95,
           height: 95,
           decoration: BoxDecoration(
-              color: CustomColors.secondaryColor,
-              borderRadius: BorderRadius.circular(10)),
+              color: CustomColors.secondaryColor, shape: BoxShape.circle),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
                 img,
-                width: 95,
-                height: 95,
-                fit: BoxFit.cover,
+                width: 80,
+                height: 80,
+                fit: BoxFit.scaleDown,
               ),
             ],
           ),

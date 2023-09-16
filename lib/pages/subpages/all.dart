@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:montoring_app/components/MyWorkshops.dart';
 import 'package:montoring_app/components/myCard.dart';
 import 'package:montoring_app/components/myProject.dart';
 import 'package:montoring_app/components/myTitle.dart';
 import 'package:montoring_app/pages/DisasterPage.dart';
+import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 
 class allCategories extends StatelessWidget {
@@ -26,7 +28,7 @@ class allCategories extends StatelessWidget {
               // Navigate to the desired page when the card is clicked
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DisasterPage(),
+                  builder: (context) => wherePage(),
                 ),
               );
             },
@@ -48,14 +50,12 @@ class allCategories extends StatelessWidget {
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           myProject(
-              img: 'Assets/images/earthquake.png',
+              img: 'Assets/images/tassdert.png',
               title: "Tassdert Solar Panels"),
           myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
+              img: 'Assets/images/zwinup1.png', title: "Zwin Up Acitivity I"),
           myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
+              img: 'Assets/images/zwinup2.png', title: "Zwin Up Activity II"),
         ]),
         SizedBox(
           height: 20,
@@ -65,15 +65,12 @@ class allCategories extends StatelessWidget {
           height: 10,
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
-          myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
-          myProject(
-              img: 'Assets/images/earthquake.png',
-              title: "Tassdert Solar Panels"),
+          MyWorkshops(
+              img: 'Assets/images/earth.png', title: "Sustainability Wokrshop"),
+          MyWorkshops(
+              img: 'Assets/images/teamwork.png', title: "Group Management"),
+          MyWorkshops(
+              img: 'Assets/images/business.png', title: "Business Model"),
         ]),
       ],
     );

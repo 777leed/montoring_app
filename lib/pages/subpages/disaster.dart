@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:montoring_app/components/myCard.dart';
 import 'package:montoring_app/components/myTitle.dart';
 import 'package:montoring_app/pages/DisasterPage.dart';
+import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 
 class onlyDisaster extends StatelessWidget {
@@ -25,7 +26,7 @@ class onlyDisaster extends StatelessWidget {
               // Navigate to the desired page when the card is clicked
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DisasterPage(),
+                  builder: (context) => wherePage(),
                 ),
               );
             },
