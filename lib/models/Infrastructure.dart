@@ -7,7 +7,6 @@ class Infrastructure {
     required this.condition,
   });
 
-  // Deserialize data from Firestore to an Infrastructure object
   factory Infrastructure.fromMap(Map<String, dynamic> data) {
     return Infrastructure(
       type: data['type'],
@@ -15,7 +14,6 @@ class Infrastructure {
     );
   }
 
-  // Serialize an Infrastructure object to a Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'type': type,

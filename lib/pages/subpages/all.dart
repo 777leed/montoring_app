@@ -1,11 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, camel_case_types
-
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/MyWorkshops.dart';
 import 'package:montoring_app/components/myCard.dart';
 import 'package:montoring_app/components/myProject.dart';
 import 'package:montoring_app/components/myTitle.dart';
-import 'package:montoring_app/pages/DisasterPage.dart';
 import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 
@@ -25,7 +22,6 @@ class allCategories extends StatelessWidget {
         ),
         myCard(
             onTap: () {
-              // Navigate to the desired page when the card is clicked
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => wherePage(),

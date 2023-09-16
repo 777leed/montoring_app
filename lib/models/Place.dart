@@ -1,7 +1,7 @@
 import 'package:montoring_app/models/Infrastructure.dart';
 import 'package:montoring_app/models/Population.dart';
 import 'package:montoring_app/models/Supplies.dart';
-import 'package:montoring_app/models/Contacts.dart'; // Import the Contacts model
+import 'package:montoring_app/models/Contacts.dart';
 
 class Place {
   String name;
@@ -12,7 +12,7 @@ class Place {
   List<Supplies>? supplies;
   Population? population;
   List<Infrastructure>? infrastructure;
-  List<Contacts>? contacts; // Add a List<Contacts> field
+  List<Contacts>? contacts;
 
   Place({
     required this.name,
@@ -23,7 +23,7 @@ class Place {
     this.supplies,
     this.population,
     this.infrastructure,
-    this.contacts, // Initialize the contacts field
+    this.contacts,
   });
 
   factory Place.fromFirestore(Map<String, dynamic> data) {
@@ -44,7 +44,7 @@ class Place {
           .toList(),
       contacts: (data['contacts'] as List<dynamic>?)
           ?.map((contact) => Contacts.fromMap(contact))
-          .toList(), // Deserialize contacts data
+          .toList(),
     );
   }
 
@@ -58,9 +58,7 @@ class Place {
       'supplies': supplies?.map((supply) => supply.toMap()).toList(),
       'population': population != null ? population!.toMap() : null,
       'infrastructure': infrastructure?.map((infra) => infra.toMap()).toList(),
-      'contacts': contacts
-          ?.map((contact) => contact.toMap())
-          .toList(), // Serialize contacts data
+      'contacts': contacts?.map((contact) => contact.toMap()).toList(),
     };
   }
 }

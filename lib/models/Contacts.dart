@@ -1,8 +1,8 @@
 class Contacts {
-  final String? id; // Unique identifier for the contact
-  final String name; // Contact's name
-  final String phoneNumber; // Contact's phone number
-  final String email; // Contact's email address
+  final String? id;
+  final String name;
+  final String phoneNumber;
+  final String email;
 
   Contacts({
     this.id,
@@ -11,7 +11,6 @@ class Contacts {
     required this.email,
   });
 
-  // Create a factory constructor to deserialize from a map
   factory Contacts.fromMap(Map<String, dynamic> map) {
     return Contacts(
       id: map['id'],
@@ -21,7 +20,6 @@ class Contacts {
     );
   }
 
-  // Create a method to serialize to a map
   Map<String, dynamic> toMap() {
     return {
       'id': id,

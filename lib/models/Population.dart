@@ -9,7 +9,6 @@ class Population {
     required this.populationInjured,
   });
 
-  // Deserialize data from Firestore to a Population object
   factory Population.fromMap(Map<String, dynamic> data) {
     return Population(
       populationDisplaced: data['populationDisplaced'],
@@ -18,7 +17,6 @@ class Population {
     );
   }
 
-  // Serialize a Population object to a Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'populationDisplaced': populationDisplaced,
