@@ -4,7 +4,6 @@ import 'package:montoring_app/pages/AuthPage.dart';
 import 'package:montoring_app/pages/EditPlacePage.dart';
 import 'package:montoring_app/pages/ExportPage.dart';
 import 'package:montoring_app/pages/InventoryPage.dart';
-import 'package:montoring_app/pages/disasterPage.dart';
 
 import 'package:montoring_app/styles.dart';
 

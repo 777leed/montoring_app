@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/EditCard.dart';
 import 'package:montoring_app/components/goback.dart';
-import 'package:montoring_app/models/Infrastructure.dart';
 import 'package:montoring_app/models/Place.dart';
 import 'package:montoring_app/pages/ContactsPage.dart';
 import 'package:montoring_app/pages/EditPlacePage.dart';
@@ -10,7 +9,6 @@ import 'package:montoring_app/pages/InfraPage.dart';
 import 'package:montoring_app/pages/LocationPage.dart';
 import 'package:montoring_app/pages/NeedsPage.dart';
 import 'package:montoring_app/pages/PopulationPage.dart';
-import 'package:montoring_app/pages/disasterPage.dart';
 import 'package:montoring_app/pages/suppliesPage.dart';
 
 class PlaceDetails extends StatefulWidget {
