@@ -6,6 +6,7 @@ import 'package:montoring_app/pages/subpages/projects.dart';
 import 'package:montoring_app/pages/subpages/workshops.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class dashboard extends StatefulWidget {
   dashboard({super.key});
@@ -15,6 +16,22 @@ class dashboard extends StatefulWidget {
 }
 
 class _dashboardState extends State<dashboard> {
+  @override
+  void initState() {
+    getPermission();
+    super.initState();
+  }
+
+  void getPermission() async {
+    final status = await Permission.location.status;
+    if (!status.isGranted) {
+      final result = await Permission.location.request();
+      if (result.isGranted) {
+        setState(() {});
+      }
+    }
+  }
+
   final user = FirebaseAuth.instance.currentUser!;
   List<String> items = [
     "All",

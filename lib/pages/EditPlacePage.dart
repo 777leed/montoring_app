@@ -5,12 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/AuthPage.dart';
 import 'package:montoring_app/pages/PlaceDetails.dart';
 import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class EditPlacePage extends StatefulWidget {
@@ -39,7 +36,6 @@ class _EditPlacePageState extends State<EditPlacePage> {
   ];
   List<dynamic> availablePlaces = [];
   final userId = FirebaseAuth.instance.currentUser!.uid;
-
   @override
   void initState() {
     selectedMarker = [];

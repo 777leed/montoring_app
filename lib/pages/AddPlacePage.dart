@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/AuthPage.dart';
 import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:geolocator/geolocator.dart';
