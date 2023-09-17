@@ -8,22 +8,24 @@ class Place {
   double latitude;
   double longitude;
   String status;
-  final List<String> needs;
+  List<String>? needs;
   List<Supplies>? supplies;
   Population? population;
-  List<Infrastructure>? infrastructure;
+  Infrastructure? infrastructure;
   List<Contacts>? contacts;
+  String addedBy; // AddedBy attribute
 
   Place({
     required this.name,
     required this.latitude,
     required this.longitude,
     required this.status,
-    required this.needs,
+    this.needs,
     this.supplies,
     this.population,
     this.infrastructure,
     this.contacts,
+    required this.addedBy, // AddedBy attribute
   });
 
   factory Place.fromFirestore(Map<String, dynamic> data) {
@@ -39,12 +41,12 @@ class Place {
       population: data['population'] != null
           ? Population.fromMap(data['population'])
           : null,
-      infrastructure: (data['infrastructure'] as List<dynamic>?)
-          ?.map((infra) => Infrastructure.fromMap(infra))
-          .toList(),
+      infrastructure: Infrastructure.fromMap(data['infrastructure'] ??
+          {}), // Assuming infrastructure is represented as a map
       contacts: (data['contacts'] as List<dynamic>?)
           ?.map((contact) => Contacts.fromMap(contact))
           .toList(),
+      addedBy: data['AddedBy'], // AddedBy attribute
     );
   }
 
@@ -57,8 +59,10 @@ class Place {
       'needs': needs,
       'supplies': supplies?.map((supply) => supply.toMap()).toList(),
       'population': population != null ? population!.toMap() : null,
-      'infrastructure': infrastructure?.map((infra) => infra.toMap()).toList(),
+      'infrastructure': infrastructure!
+          .toMap(), // Assuming infrastructure can be converted to a map
       'contacts': contacts?.map((contact) => contact.toMap()).toList(),
+      'addedBy': addedBy, // AddedBy attribute
     };
   }
 }

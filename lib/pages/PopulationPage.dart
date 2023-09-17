@@ -15,16 +15,17 @@ class PopulationPage extends StatefulWidget {
 }
 
 class _PopulationPageState extends State<PopulationPage> {
-  Population? population; // Change to a nullable Population object
+  Population? population;
 
   TextEditingController displacedController = TextEditingController();
   TextEditingController deathController = TextEditingController();
   TextEditingController injuredController = TextEditingController();
+  TextEditingController beforeController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Initialize population values from Firestore
+
     fetchPopulationFromFirestore();
   }
 
@@ -37,23 +38,23 @@ class _PopulationPageState extends State<PopulationPage> {
       final populationData = placeDocument.data()?['population'];
 
       if (populationData != null && populationData is Map<String, dynamic>) {
-        // Deserialize the population data from Firestore
         final population = Population.fromMap(populationData);
         setState(() {
           this.population = population;
-          // Set the initial values for the controllers
+
           displacedController.text = population.populationDisplaced.toString();
           deathController.text = population.populationDeath.toString();
           injuredController.text = population.populationInjured.toString();
+          beforeController.text =
+              population.populationBeforeDisaster.toString();
         });
       } else {
-        // If population data is null or not in the correct format, initialize with default values
         setState(() {
           this.population = Population(
-            populationDisplaced: 0,
-            populationDeath: 0,
-            populationInjured: 0,
-          );
+              populationDisplaced: 0,
+              populationDeath: 0,
+              populationInjured: 0,
+              populationBeforeDisaster: 0);
         });
       }
     }
@@ -65,12 +66,24 @@ class _PopulationPageState extends State<PopulationPage> {
       appBar: AppBar(
         title: Text("Population"),
       ),
-      body: population != null // Check if population is not null
+      body: population != null
           ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  TextField(
+                    keyboardType: TextInputType.number,
+                    decoration:
+                        InputDecoration(labelText: 'Total Before Earthquake'),
+                    onChanged: (value) {
+                      setState(() {
+                        population!.populationBeforeDisaster =
+                            int.tryParse(value) ?? 0;
+                      });
+                    },
+                    controller: beforeController,
+                  ),
                   TextField(
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(labelText: 'Displaced'),
@@ -114,8 +127,7 @@ class _PopulationPageState extends State<PopulationPage> {
               ),
             )
           : Center(
-              child:
-                  CircularProgressIndicator(), // Show a loading indicator while fetching data
+              child: CircularProgressIndicator(),
             ),
     );
   }
@@ -124,10 +136,8 @@ class _PopulationPageState extends State<PopulationPage> {
     try {
       final firestore = FirebaseFirestore.instance;
 
-      // Serialize the updated Population object
       final Map<String, dynamic> updatedPopulationData = population!.toMap();
 
-      // Update the place in Firestore
       await firestore.collection('places').doc(widget.id).update({
         'population': updatedPopulationData,
       });

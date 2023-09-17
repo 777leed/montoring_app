@@ -17,7 +17,7 @@ class SuppliesPage extends StatefulWidget {
 
 class _SuppliesPageState extends State<SuppliesPage> {
   List<Supplies> suppliesList = [];
-  bool isLoading = true; // Track loading state
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _SuppliesPageState extends State<SuppliesPage> {
       ),
       body: isLoading
           ? Center(
-              child: CircularProgressIndicator(), // Show loading circle
+              child: CircularProgressIndicator(),
             )
           : suppliesList.isEmpty
               ? Center(
@@ -62,7 +62,7 @@ class _SuppliesPageState extends State<SuppliesPage> {
                           children: [
                             Text("Quantity: ${supply.quantity}"),
                             Text(
-                                "Date: ${DateFormat('yyyy-MM-dd').format(supply.date)}"), // Display the date
+                                "Date: ${DateFormat('yyyy-MM-dd').format(supply.date)}"),
                           ],
                         ),
                       ),
@@ -120,14 +120,13 @@ class _SuppliesPageState extends State<SuppliesPage> {
                     supplyName: supplyName,
                     quantity: quantity,
                     supplyType: typeText,
-                    date: DateTime.now(), // Set the date to the current date
+                    date: DateTime.now(),
                   );
 
                   suppliesList.add(newSupply);
 
                   await saveUpdatedPlace();
 
-                  // Show snackbar when supply is added
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Supply added'),
@@ -137,7 +136,6 @@ class _SuppliesPageState extends State<SuppliesPage> {
                   Navigator.of(context).pop();
                   setState(() {});
                 } else {
-                  // Show snackbar for incorrect fields
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Please verify the input fields.'),
@@ -174,11 +172,9 @@ class _SuppliesPageState extends State<SuppliesPage> {
 
       suppliesList.remove(supply);
 
-      // Serialize the updated supplies list
       final List<Map<String, dynamic>> updatedSuppliesData =
           suppliesList.map((supply) => supply.toMap()).toList();
 
-      // Update the place in Firestore
       await firestore.collection('places').doc(widget.id).update({
         'supplies': updatedSuppliesData,
       });
@@ -203,7 +199,7 @@ class _SuppliesPageState extends State<SuppliesPage> {
             .toList();
         setState(() {
           suppliesList = supplies;
-          isLoading = false; // Set loading state to false after fetching data
+          isLoading = false;
         });
       }
     }

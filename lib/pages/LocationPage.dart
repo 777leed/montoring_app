@@ -21,7 +21,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize the text controllers with existing data
+
     nameController.text = widget.place!.name;
     latitudeController.text = widget.place!.latitude.toString();
     longitudeController.text = widget.place!.longitude.toString();
@@ -85,16 +85,13 @@ class _LocationPageState extends State<LocationPage> {
         'longitude': newLongitude,
       });
 
-      // Update the local place object
       widget.place!.name = newName;
       widget.place!.latitude = newLatitude;
       widget.place!.longitude = newLongitude;
 
-      // Navigate back to the previous page
       Navigator.of(context).pop();
     } catch (e) {
       print('Error updating place in Firestore: $e');
-      // Handle error here
     }
   }
 }

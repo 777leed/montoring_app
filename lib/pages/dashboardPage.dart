@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, camel_case_types
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/pages/subpages/all.dart';
@@ -40,10 +38,7 @@ class _dashboardState extends State<dashboard> {
   ];
 
   Widget renderTabBar() {
-    return
-
-        /// CUSTOM TABBAR
-        SizedBox(
+    return SizedBox(
       width: double.infinity,
       height: 60,
       child: ListView.builder(
@@ -107,12 +102,17 @@ class _dashboardState extends State<dashboard> {
               "Dashboard",
               style: TextStyle(color: CustomColors.secondaryTextColor),
             ),
-            Text(
-              user.email!,
-              style: TextStyle(
+            Container(
+              width: 200,
+              child: Text(
+                user.email!,
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: CustomColors.mainTextColor),
+                  color: CustomColors.mainTextColor,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
             )
           ],
         ),

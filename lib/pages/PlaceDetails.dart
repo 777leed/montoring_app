@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/EditCard.dart';
 import 'package:montoring_app/components/goback.dart';
+import 'package:montoring_app/models/Infrastructure.dart';
 import 'package:montoring_app/models/Place.dart';
 import 'package:montoring_app/pages/ContactsPage.dart';
+import 'package:montoring_app/pages/EditPlacePage.dart';
 import 'package:montoring_app/pages/InfraPage.dart';
 import 'package:montoring_app/pages/LocationPage.dart';
 import 'package:montoring_app/pages/NeedsPage.dart';
 import 'package:montoring_app/pages/PopulationPage.dart';
 import 'package:montoring_app/pages/disasterPage.dart';
 import 'package:montoring_app/pages/suppliesPage.dart';
-import 'package:montoring_app/styles.dart';
 
 class PlaceDetails extends StatefulWidget {
   final Place? place;
@@ -24,21 +25,19 @@ class PlaceDetails extends StatefulWidget {
 }
 
 class _PlaceDetailsState extends State<PlaceDetails> {
-  bool isLoading = true; // Add a loading indicator state
+  bool isLoading = true;
   List<String> typeList = ['Home', 'School', 'Road', 'Mosque', 'Other'];
-  List<String> statusList = ['Done', 'Severe', 'Moderate', 'Minor'];
+  List<String> statusList = ['Unknown', 'Safe', 'Severe', 'Moderate', 'Minor'];
 
   @override
   void initState() {
     super.initState();
-    // Fetching data asynchronously, set loading to true initially
+
     fetchData();
   }
 
-  // Function to show the status change dialog
   Future<void> _showStatusChangeDialog(BuildContext context) async {
-    String selectedStatus =
-        widget.place!.status; // Initialize with the current status
+    String selectedStatus = widget.place!.status;
 
     await showDialog(
       context: context,
@@ -72,7 +71,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                 await firestore.collection('places').doc(widget.id).update({
                   'status': selectedStatus,
                 });
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text('Save'),
             ),
@@ -82,12 +81,10 @@ class _PlaceDetailsState extends State<PlaceDetails> {
     );
   }
 
-  // Function to fetch data (e.g., from Firestore)
   void fetchData() async {
-    // Simulate a delay to show the loading indicator
     await Future.delayed(Duration(seconds: 2));
     setState(() {
-      isLoading = false; // Set loading to false when data is fetched
+      isLoading = false;
     });
   }
 
@@ -97,7 +94,6 @@ class _PlaceDetailsState extends State<PlaceDetails> {
       body: SafeArea(
         child: isLoading
             ? Center(
-                // Display a loading indicator while data is being fetched
                 child: CircularProgressIndicator(),
               )
             : SingleChildScrollView(
@@ -113,8 +109,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    DisasterPage()), // Replace AuthPage with your home page class
+                                builder: (context) => EditPlacePage()),
                           );
                         },
                       ),
@@ -126,7 +121,6 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           Flexible(
                             child: GestureDetector(
                               onTap: () {
-                                // Navigate to the SuppliesPage when Supplies container is tapped
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => SuppliesPage(
@@ -146,7 +140,6 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           Flexible(
                             child: GestureDetector(
                               onTap: () {
-                                // Navigate to the PopulationPage when Population container is tapped
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => PopulationPage(
@@ -170,10 +163,9 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           Flexible(
                             child: GestureDetector(
                               onTap: () {
-                                // Navigate to the InfrastructuresPage when Infrastructures container is tapped
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => InfrastructuresPage(
+                                    builder: (context) => InfrastructurePage(
                                       place: widget.place,
                                       id: widget.id,
                                     ),
@@ -242,12 +234,10 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           Flexible(
                             child: GestureDetector(
                               onTap: () {
-                                // Navigate to the ContactsPage when Contacts container is tapped
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => ContactsPage(
-                                      place: widget
-                                          .place, // Pass the current place to ContactsPage
+                                      place: widget.place,
                                       id: widget.id,
                                     ),
                                   ),
@@ -255,8 +245,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                               },
                               child: EditCard(
                                 title: "Edit\nContacts",
-                                img:
-                                    "Assets/images/contacts.png", // Use image1 for contacts
+                                img: "Assets/images/contacts.png",
                               ),
                             ),
                           ),
@@ -264,12 +253,10 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           Flexible(
                             child: GestureDetector(
                               onTap: () {
-                                // Navigate to the LocationPage when Location container is tapped
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => LocationPage(
-                                      place: widget
-                                          .place, // Pass the current place to LocationPage
+                                      place: widget.place,
                                       id: widget.id,
                                     ),
                                   ),
@@ -277,8 +264,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                               },
                               child: EditCard(
                                 title: "Edit\nLocation",
-                                img:
-                                    "Assets/images/map.png", // Use image2 for location
+                                img: "Assets/images/map.png",
                               ),
                             ),
                           ),

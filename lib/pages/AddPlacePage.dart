@@ -6,30 +6,36 @@ import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
 import 'package:montoring_app/pages/AuthPage.dart';
-import 'package:montoring_app/pages/PlaceDetails.dart';
+import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class DisasterPage extends StatefulWidget {
-  const DisasterPage({Key? key});
+class AddPlacePage extends StatefulWidget {
+  const AddPlacePage({Key? key});
 
   @override
-  State<DisasterPage> createState() => _DisasterPageState();
+  State<AddPlacePage> createState() => _AddPlacePageState();
 }
 
-class _DisasterPageState extends State<DisasterPage> {
+class _AddPlacePageState extends State<AddPlacePage> {
+  bool isLoading = false;
   List<dynamic>? selectedMarker;
   Place? selectedPlace;
   String? id;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final nameController = TextEditingController();
-  final latitudeController = TextEditingController();
-  final longitudeController = TextEditingController();
-  var dropdownValue = "Done";
+  GoogleMapController? _googleMapController;
+
+  var dropdownValue = "Unknown";
   Set<Marker> myMarkers = {};
-  List<String> list = <String>['Safe', 'Severe', 'Moderate', 'Minor'];
+  List<String> list = <String>[
+    'Unknown',
+    'Safe',
+    'Severe',
+    'Moderate',
+    'Minor'
+  ];
   List<dynamic> availablePlaces = [];
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -37,7 +43,6 @@ class _DisasterPageState extends State<DisasterPage> {
   void initState() {
     selectedMarker = [];
     loadMarkers();
-    fetchAvailablePlaces();
     super.initState();
   }
 
@@ -47,6 +52,23 @@ class _DisasterPageState extends State<DisasterPage> {
       PermissionStatus status = await Permission.location.request();
 
       if (status.isGranted) {
+        // Show loading indicator
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Row(
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(width: 20),
+                  Text("Loading..."),
+                ],
+              ),
+            );
+          },
+        );
+
         // Get the current location
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
@@ -58,37 +80,107 @@ class _DisasterPageState extends State<DisasterPage> {
           position.longitude,
         );
 
-        String placeName =
-            "Unknown Place"; // Default value if no valid address components found
+        String placeName = "Unknown Place";
 
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks[0];
-
-          // Build the place name using address components
           String street = place.street ?? "";
           String subLocality = place.subLocality ?? "";
           String subAdministrativeArea = place.subAdministrativeArea ?? "";
           String postalCode = place.postalCode ?? "";
 
-          placeName =
-              "$street, $subLocality, $subAdministrativeArea $postalCode";
+          placeName = "$street $subLocality $subAdministrativeArea $postalCode";
         }
+        final nameController = TextEditingController();
+        final latitudeController =
+            TextEditingController(text: position.latitude.toString());
+        final longitudeController =
+            TextEditingController(text: position.longitude.toString());
 
-        // Add the current location as a marker
-        addPlaceToFirestore(
-          placeName,
-          position.latitude,
-          position.longitude,
-          dropdownValue,
-        );
+        Navigator.of(context).pop(); // Close loading indicator
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Current location added as a marker: $placeName'),
-          ),
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Add Current Location'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Title(color: Colors.black, child: Text(placeName)),
+                    TextFormField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: "Custom Name",
+                      ),
+                    ),
+                    TextFormField(
+                      controller: latitudeController,
+                      decoration: InputDecoration(
+                        labelText: 'Latitude',
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    TextFormField(
+                      controller: longitudeController,
+                      decoration: InputDecoration(
+                        labelText: 'Longitude',
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Save'),
+                  onPressed: () {
+                    if (nameController.text.isNotEmpty &&
+                        nameController.text != "" &&
+                        nameController.text.length < 20) {
+                      String customName = nameController.text.isNotEmpty
+                          ? nameController.text
+                          : "unknown";
+                      final double newlatitude =
+                          double.parse(latitudeController.text);
+                      final double newlongitude =
+                          double.parse(longitudeController.text);
+
+                      addPlaceToFirestore(
+                        customName,
+                        newlatitude,
+                        newlongitude,
+                        dropdownValue,
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                              'Current location added as a marker: $customName'),
+                        ),
+                      );
+
+                      Navigator.of(context).pop();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Name Is Empty or Is too long'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
         );
       } else {
-        // Handle the case where the user denied location permissions
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Location permissions denied'),
@@ -97,45 +189,6 @@ class _DisasterPageState extends State<DisasterPage> {
       }
     } catch (e) {
       print('Error adding current location to Firestore: $e');
-    }
-  }
-
-  Future<void> fetchPlaceByName(String placeName) async {
-    try {
-      final querySnapshot = await firestore
-          .collection('places')
-          .where('name', isEqualTo: placeName)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        final placeId = querySnapshot.docs[0].id;
-        final placeDoc =
-            await firestore.collection('places').doc(placeId).get();
-        if (placeDoc.exists) {
-          final place = placeDoc.data();
-          final name = place!['name'];
-          final latitude = place['latitude'];
-          final longitude = place['longitude'];
-          final status = place['status'];
-          final needs = List<String>.from(place['needs'] ?? []);
-          setState(() {
-            selectedPlace = Place(
-                name: name,
-                latitude: latitude,
-                longitude: longitude,
-                status: status,
-                needs: needs,
-                addedBy: userId);
-            id = placeId;
-          });
-
-          navigateToDetailPage();
-        }
-      } else {
-        print('Place not found for name: $placeName');
-      }
-    } catch (e) {
-      print('Error getting place from Firestore: $e');
     }
   }
 
@@ -197,43 +250,14 @@ class _DisasterPageState extends State<DisasterPage> {
         final placeId = querySnapshot.docs[0].id;
 
         await firestore.collection('places').doc(placeId).delete();
+        selectedMarker = [];
 
         loadMarkers();
-        fetchAvailablePlaces();
       } else {
         print('Place not found for latitude: $latitude, longitude: $longitude');
       }
     } catch (e) {
       print('Error deleting place from Firestore: $e');
-    }
-  }
-
-  Future<void> selectPlace(
-    String name,
-    double latitude,
-    double longitude,
-    String status,
-    String placeId,
-  ) async {
-    try {
-      final placeDoc = await firestore.collection('places').doc(placeId).get();
-      if (placeDoc.exists) {
-        final place = placeDoc.data();
-        final needs = List<String>.from(place!['needs'] ?? []);
-
-        setState(() {
-          selectedPlace = Place(
-              name: name,
-              latitude: latitude,
-              longitude: longitude,
-              status: status,
-              needs: needs,
-              addedBy: userId);
-          id = placeId;
-        });
-      }
-    } catch (e) {
-      print('Error selecting place: $e');
     }
   }
 
@@ -251,17 +275,13 @@ class _DisasterPageState extends State<DisasterPage> {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        final place = querySnapshot.docs[0].data();
-        final existingStatus = place['status'];
-        final placeId = querySnapshot.docs[0].id;
-        selectPlace(name, latitude, longitude, existingStatus, placeId);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Location already added'),
           ),
         );
       } else {
-        final newDocRef = await firestore.collection('places').add({
+        await firestore.collection('places').add({
           'name': name,
           'latitude': latitude,
           'longitude': longitude,
@@ -271,10 +291,8 @@ class _DisasterPageState extends State<DisasterPage> {
           'population': [],
           'supplies': [],
           'contacts': [],
+          'AddedBy': userId
         });
-
-        selectPlace(name, latitude, longitude, status, newDocRef.id);
-        fetchAvailablePlaces();
       }
 
       loadMarkers();
@@ -351,66 +369,96 @@ class _DisasterPageState extends State<DisasterPage> {
     }
   }
 
-  void navigateToDetailPage() async {
-    await updatePlace(() {});
-    if (selectedPlace != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => PlaceDetails(
-            place: selectedPlace,
-            id: id,
-          ),
-        ),
+  Widget _buildLoadingIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Future<void> showPlaceList() async {
+    // Show loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return _buildLoadingIndicator();
+      },
+    );
+
+    try {
+      final placesSnapshot = await firestore.collection('places').get();
+      final places = placesSnapshot.docs;
+
+      final placeList = places.map((place) {
+        final name = place.get('name');
+        final latitude = place.get('latitude');
+        final longitude = place.get('longitude');
+        final status = place.get('status');
+        final addedby = place.get('AddedBy');
+
+        return Place(
+            name: name,
+            latitude: latitude,
+            longitude: longitude,
+            status: status,
+            addedBy: addedby);
+      }).toList();
+
+      // Close loading indicator
+      Navigator.of(context).pop();
+
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return ListView.builder(
+            itemCount: placeList.length,
+            itemBuilder: (context, index) {
+              final place = placeList[index];
+              return ListTile(
+                title: Text(place.name),
+                subtitle: Text("Status: ${place.status}"),
+                onTap: () {
+                  // Close the modal and navigate to the selected place
+                  Navigator.pop(context);
+                  _goToPlaceOnMap(place);
+                },
+              );
+            },
+          );
+        },
       );
+    } catch (e) {
+      print('Error loading places from Firestore: $e');
+      // Close loading indicator in case of an error
+      Navigator.of(context).pop();
     }
+  }
+
+  void _goToPlaceOnMap(Place place) {
+    final cameraPosition = CameraPosition(
+      target: LatLng(place.latitude, place.longitude),
+      zoom: 15.0,
+    );
+
+    _googleMapController!
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+    // Update the selectedMarker when you navigate to the selected place
+    setState(() {
+      selectedMarker = [
+        Marker(
+          markerId: MarkerId(place.name), // Use a unique markerId
+          position: LatLng(place.latitude, place.longitude),
+        ),
+        place.status,
+      ];
+    });
   }
 
   void navigateToHomePage() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => AuthPage()),
-    );
-  }
-
-  Future<void> fetchAvailablePlaces() async {
-    try {
-      final placesSnapshot = await firestore.collection('places').get();
-      final places = placesSnapshot.docs;
-
-      final placesList = places.map((place) => place.get('name')).toList();
-
-      setState(() {
-        availablePlaces = placesList;
-      });
-    } catch (e) {
-      print('Error fetching available places: $e');
-    }
-  }
-
-  Future<void> showPlaceSelectionDialog() async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Select a Place'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: availablePlaces.map((placeName) {
-                return ListTile(
-                  title: Text(placeName),
-                  onTap: () async {
-                    setState(() {
-                      selectedMarker = null;
-                      selectedPlace = null;
-                    });
-                    await fetchPlaceByName(placeName);
-                  },
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
+      MaterialPageRoute(builder: (context) => wherePage()),
     );
   }
 
@@ -436,6 +484,11 @@ class _DisasterPageState extends State<DisasterPage> {
               ),
               Expanded(
                 child: GoogleMap(
+                  onMapCreated: (GoogleMapController controller) {
+                    _googleMapController = controller;
+                  },
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
                     target: LatLng(31.794525, -7.0849336),
                     zoom: 7,
@@ -487,53 +540,7 @@ class _DisasterPageState extends State<DisasterPage> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text('Add Current Location'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[
-                                            Container(
-                                              margin: EdgeInsets.only(top: 20),
-                                              alignment: Alignment.center,
-                                              height: 60,
-                                              width: double.infinity,
-                                              child: DropdownMenu<String>(
-                                                initialSelection: list.first,
-                                                onSelected: (String? value) {
-                                                  setState(() {
-                                                    dropdownValue = value!;
-                                                  });
-                                                },
-                                                dropdownMenuEntries: list.map<
-                                                    DropdownMenuEntry<String>>(
-                                                  (String value) {
-                                                    return DropdownMenuEntry<
-                                                        String>(
-                                                      value: value,
-                                                      label: value,
-                                                    );
-                                                  },
-                                                ).toList(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: Text('Add Current Location'),
-                                          onPressed: () {
-                                            addCurrentLocationToFirestore();
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                addCurrentLocationToFirestore();
                               },
                               child: Container(
                                 padding: EdgeInsets.all(10),
@@ -556,25 +563,26 @@ class _DisasterPageState extends State<DisasterPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         categorieButton(
-                          text: "Select Place",
+                          text: "All Areas",
                           icon: Icon(
-                            Icons.place,
+                            Icons.local_attraction,
                             color: Colors.white,
                           ),
                           color: CustomColors.mainColor,
                           onTap: () {
-                            showPlaceSelectionDialog();
+                            showPlaceList();
                           },
                         ),
                         categorieButton(
-                          text: "Edit Area",
+                          text: "Remove Area",
                           icon: Icon(
-                            Icons.edit_location_alt_sharp,
+                            Icons.remove_circle_outline_rounded,
                             color: Colors.white,
                           ),
-                          color: CustomColors.mainColor,
+                          color: const Color.fromARGB(255, 119, 14, 14),
                           onTap: () {
-                            navigateToDetailPage();
+                            deleteMarker(selectedMarker![0].position.latitude,
+                                selectedMarker![0].position.longitude);
                           },
                         ),
                       ],

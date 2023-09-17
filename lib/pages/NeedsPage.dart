@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
 
 class NeedsPage extends StatefulWidget {
@@ -17,7 +16,7 @@ class NeedsPage extends StatefulWidget {
 class _NeedsPageState extends State<NeedsPage> {
   TextEditingController _needsController = TextEditingController();
   List<String> needsList = [];
-  bool isLoading = true; // Add a loading indicator state
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -25,7 +24,6 @@ class _NeedsPageState extends State<NeedsPage> {
     _fetchNeeds();
   }
 
-  // Function to fetch needs data from Firestore
   void _fetchNeeds() {
     FirebaseFirestore.instance
         .collection('places')
@@ -37,14 +35,13 @@ class _NeedsPageState extends State<NeedsPage> {
         if (data.containsKey('needs') && data['needs'] is List) {
           setState(() {
             needsList = List<String>.from(data['needs']);
-            isLoading = false; // Set loading to false when data is fetched
+            isLoading = false;
           });
         }
       }
     });
   }
 
-  // Function to add a new need
   void _addNeed(String need) {
     if (need.isNotEmpty) {
       setState(() {
@@ -52,7 +49,6 @@ class _NeedsPageState extends State<NeedsPage> {
       });
       _updateNeedsInFirestore();
 
-      // Show a SnackBar when an item is added
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Need added: $need'),
@@ -62,7 +58,6 @@ class _NeedsPageState extends State<NeedsPage> {
     _needsController.clear();
   }
 
-  // Function to remove a need
   void _removeNeed(String need) {
     setState(() {
       needsList.remove(need);
@@ -70,7 +65,6 @@ class _NeedsPageState extends State<NeedsPage> {
     _updateNeedsInFirestore();
   }
 
-  // Function to update needs data in Firestore
   void _updateNeedsInFirestore() {
     FirebaseFirestore.instance.collection('places').doc(widget.id).update({
       'needs': needsList,
@@ -91,7 +85,6 @@ class _NeedsPageState extends State<NeedsPage> {
       ),
       body: isLoading
           ? Center(
-              // Display a loading indicator while data is being fetched
               child: CircularProgressIndicator(),
             )
           : Padding(

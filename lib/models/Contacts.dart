@@ -28,4 +28,9 @@ class Contacts {
       'email': email,
     };
   }
+
+  @override
+  String toString() {
+    return 'Name: $name, Phone number: $phoneNumber, Email: $email';
+  }
 }

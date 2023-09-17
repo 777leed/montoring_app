@@ -1,8 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, camel_case_types
-
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/MyWorkshops.dart';
-import 'package:montoring_app/components/myProject.dart';
 import 'package:montoring_app/components/myTitle.dart';
 
 class onlyWorkshops extends StatelessWidget {

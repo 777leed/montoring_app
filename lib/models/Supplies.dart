@@ -32,4 +32,9 @@ class Supplies {
       'date': date,
     };
   }
+
+  @override
+  String toString() {
+    return 'Supply Name: $supplyName, Quantity: $quantity, Supply Type: $supplyType, Date: $date';
+  }
 }

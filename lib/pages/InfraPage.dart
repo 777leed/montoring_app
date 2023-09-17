@@ -1,171 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/models/Infrastructure.dart';
+import 'package:montoring_app/models/Infrastructure.dart'; // Import the Infrastructure model
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class InfrastructuresPage extends StatefulWidget {
+class InfrastructurePage extends StatefulWidget {
   final Place? place;
   final String? id;
 
-  const InfrastructuresPage({Key? key, this.place, required this.id})
+  const InfrastructurePage({Key? key, this.place, required this.id})
       : super(key: key);
 
   @override
-  State<InfrastructuresPage> createState() => _InfrastructuresPageState();
+  State<InfrastructurePage> createState() => _InfrastructurePageState();
 }
 
-class _InfrastructuresPageState extends State<InfrastructuresPage> {
-  List<Infrastructure> infrastructuresList = [];
-  String? selectedType;
-  String? selectedCondition;
-  List<String> typeList = ['Home', 'School', 'Road', 'Mosque', 'Other'];
-  List<String> conditionList = [
-    'No Damage',
-    'Minor Damage',
-    'Moderate Damage',
-    'Severe Damage',
-    'Irreparable Damage',
-  ];
-  bool isLoading = true;
+class _InfrastructurePageState extends State<InfrastructurePage> {
+  Infrastructure? infrastructure;
 
   @override
   void initState() {
     super.initState();
-    fetchInfrastructures();
+
+    fetchInfrastructureFromFirestore();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  Future<void> fetchInfrastructureFromFirestore() async {
+    final firestore = FirebaseFirestore.instance;
+    final placeDocument =
+        await firestore.collection('places').doc(widget.id).get();
+
+    if (placeDocument.exists) {
+      final infrastructureData = placeDocument.data()?['infrastructure'];
+
+      if (infrastructureData != null &&
+          infrastructureData is Map<String, dynamic>) {
+        final infrastructure = Infrastructure.fromMap(infrastructureData);
+        setState(() {
+          this.infrastructure = infrastructure;
+        });
+      } else {
+        setState(() {
+          this.infrastructure = Infrastructure(
+            homeStatistics: [0, 0, 0, 0],
+            schoolStatistics: [0, 0, 0, 0],
+            mosqueStatistics: [0, 0, 0, 0],
+            roadStatistics: [0, 0, 0, 0],
+            storeStatistics: [0, 0, 0, 0],
+          );
+        });
+      }
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Infrastructures",
-        ),
-      ),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(), // Show loading circle
-            )
-          : infrastructuresList.isEmpty
-              ? Center(
-                  child: Text("No infrastructures added yet"),
-                )
-              : ListView.builder(
-                  itemCount: infrastructuresList.length,
-                  itemBuilder: (context, index) {
-                    final infrastructure = infrastructuresList[index];
-                    final itemKey = UniqueKey();
-
-                    return Dismissible(
-                      key: itemKey,
-                      onDismissed: (direction) {
-                        infrastructuresList.removeAt(index);
-                        deleteInfrastructure(infrastructure);
-                      },
-                      background: Container(
-                        color: Colors.red,
-                        child: Icon(Icons.delete),
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.only(right: 16.0),
-                      ),
-                      child: ListTile(
-                        title: Text(infrastructure.type),
-                        subtitle:
-                            Text("Condition: ${infrastructure.condition}"),
-                      ),
-                    );
-                  },
-                ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddInfrastructureDialog(context);
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  Future<void> _showAddInfrastructureDialog(BuildContext context) async {
-    await showDialog(
+  void _showInfrastructureDialog(String infrastructureType) {
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Infrastructure'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              DropdownButtonFormField<String>(
-                value: selectedType,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedType = newValue;
-                  });
-                },
-                items: typeList.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Type'),
-              ),
-              DropdownButtonFormField<String>(
-                value: selectedCondition,
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedCondition = newValue;
-                  });
-                },
-                items:
-                    conditionList.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Condition'),
-              ),
-            ],
+          title: Text('$infrastructureType Statistics'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (int index = 0; index < 4; index++)
+                  _buildTextField(
+                    _getLabelText(index),
+                    infrastructureType,
+                    index,
+                  ),
+              ],
+            ),
           ),
-          actions: <Widget>[
+          actions: [
             ElevatedButton(
-              onPressed: () async {
-                if (selectedType != null && selectedCondition != null) {
-                  final Infrastructure newInfrastructure = Infrastructure(
-                    type: selectedType!,
-                    condition: selectedCondition!,
-                  );
-
-                  // Show loading circle when adding a new item
-                  setState(() {
-                    isLoading = true;
-                  });
-
-                  infrastructuresList.add(newInfrastructure);
-                  await saveUpdatedPlace();
-
-                  // Show snackbar when item is added
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Infrastructure added'),
-                    ),
-                  );
-
-                  // Hide loading circle after adding item
-                  setState(() {
-                    isLoading = false;
-                  });
-
-                  Navigator.of(context).pop();
-                  setState(() {});
-                }
+              onPressed: () {
+                _updateInfrastructure();
+                Navigator.of(context).pop();
               },
-              child: Text('Add'),
+              child: Text('Update'),
             ),
           ],
         );
@@ -173,64 +85,140 @@ class _InfrastructuresPageState extends State<InfrastructuresPage> {
     );
   }
 
-  Future<void> saveUpdatedPlace() async {
-    try {
-      final firestore = FirebaseFirestore.instance;
-
-      final List<Map<String, dynamic>> updatedInfrastructuresData =
-          infrastructuresList
-              .map((infrastructure) => infrastructure.toMap())
-              .toList();
-
-      await firestore.collection('places').doc(widget.id).update({
-        'infrastructure': updatedInfrastructuresData,
-      });
-    } catch (e) {
-      print('Error updating place in Firestore: $e');
+  String _getLabelText(int index) {
+    switch (index) {
+      case 0:
+        return 'Total Before Earthquake';
+      case 1:
+        return 'Lost';
+      case 2:
+        return 'Unstable & Need Rehab';
+      case 3:
+        return 'Stable';
+      default:
+        return '';
     }
   }
 
-  Future<void> deleteInfrastructure(Infrastructure infrastructure) async {
-    try {
-      final firestore = FirebaseFirestore.instance;
-
-      // Remove the infrastructure from the local list
-      infrastructuresList.remove(infrastructure);
-
-      // Serialize the updated infrastructures list
-      final List<Map<String, dynamic>> updatedInfrastructuresData =
-          infrastructuresList
-              .map((infrastructure) => infrastructure.toMap())
-              .toList();
-
-      // Update the place in Firestore
-      await firestore.collection('places').doc(widget.id).update({
-        'infrastructure': updatedInfrastructuresData,
-      });
-
-      setState(() {});
-    } catch (e) {
-      print('Error deleting infrastructure in Firestore: $e');
-    }
-  }
-
-  Future<void> fetchInfrastructures() async {
-    final firestore = FirebaseFirestore.instance;
-    final placeDocument =
-        await firestore.collection('places').doc(widget.id).get();
-
-    if (placeDocument.exists) {
-      final infrastructuresData = placeDocument.data()?['infrastructure'];
-
-      if (infrastructuresData != null && infrastructuresData is List<dynamic>) {
-        final infrastructures = infrastructuresData
-            .map((data) => Infrastructure.fromMap(data as Map<String, dynamic>))
-            .toList();
+  Widget _buildTextField(
+    String labelText,
+    String infrastructureType,
+    int index,
+  ) {
+    return TextField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: labelText),
+      onChanged: (value) {
         setState(() {
-          infrastructuresList = infrastructures;
-          isLoading = false;
+          if (infrastructure != null) {
+            switch (infrastructureType) {
+              case 'Home':
+                infrastructure!.homeStatistics[index] =
+                    int.tryParse(value) ?? 0;
+                break;
+              case 'School':
+                infrastructure!.schoolStatistics[index] =
+                    int.tryParse(value) ?? 0;
+                break;
+              case 'Mosque':
+                infrastructure!.mosqueStatistics[index] =
+                    int.tryParse(value) ?? 0;
+                break;
+              case 'Road':
+                infrastructure!.roadStatistics[index] =
+                    int.tryParse(value) ?? 0;
+                break;
+              case 'Store':
+                infrastructure!.storeStatistics[index] =
+                    int.tryParse(value) ?? 0;
+                break;
+              default:
+                break;
+            }
+          }
         });
+      },
+      controller: TextEditingController(
+        text: _getInfrastructureValue(infrastructureType, index),
+      ),
+    );
+  }
+
+  String _getInfrastructureValue(String type, int index) {
+    if (infrastructure != null) {
+      switch (type) {
+        case 'Home':
+          return infrastructure!.homeStatistics[index].toString();
+        case 'School':
+          return infrastructure!.schoolStatistics[index].toString();
+        case 'Mosque':
+          return infrastructure!.mosqueStatistics[index].toString();
+        case 'Road':
+          return infrastructure!.roadStatistics[index].toString();
+        case 'Store':
+          return infrastructure!.storeStatistics[index].toString();
+        default:
+          break;
       }
+    }
+    return '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Infrastructure"),
+      ),
+      body: infrastructure != null
+          ? Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  _buildInfrastructureTile('Home', Icons.home),
+                  _buildInfrastructureTile('School', Icons.school),
+                  _buildInfrastructureTile('Mosque', Icons.mosque),
+                  _buildInfrastructureTile('Road', Icons.directions),
+                  _buildInfrastructureTile('Store', Icons.store),
+                  // Add more tiles for other types
+                ],
+              ),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
+    );
+  }
+
+  Widget _buildInfrastructureTile(String infrastructureType, IconData icon) {
+    return ListTile(
+      title: Text(infrastructureType),
+      leading: Icon(icon),
+      onTap: () {
+        _showInfrastructureDialog(infrastructureType);
+      },
+    );
+  }
+
+  Future<void> _updateInfrastructure() async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+
+      final Map<String, dynamic> updatedInfrastructureData =
+          infrastructure!.toMap();
+
+      await firestore.collection('places').doc(widget.id).update({
+        'infrastructure': updatedInfrastructureData,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Infrastructure updated successfully'),
+        ),
+      );
+    } catch (e) {
+      print('Error updating infrastructure in Firestore: $e');
     }
   }
 }

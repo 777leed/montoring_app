@@ -1,55 +1,61 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/myTextField.dart';
-import 'package:montoring_app/pages/SignUpPage.dart';
+import 'package:montoring_app/pages/AuthPage.dart';
+import 'package:montoring_app/pages/SignInPage.dart';
 
-class SignInPage extends StatefulWidget {
-  SignInPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  SignUpPage({Key? key}) : super(key: key);
 
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final mainColor = const Color(0xff0E773F);
   final mainTextColor = const Color.fromARGB(255, 1, 1, 8);
   final secondaryTextColor = const Color(0xff404040);
 
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  final nameController = TextEditingController(); // Add name controller
 
   bool isLoading = false;
 
-  Future<void> signUserIn() async {
+  Future<void> signUpUser() async {
     setState(() {
       isLoading = true;
     });
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passController.text,
       );
     } catch (e) {
-      print('Error signing in: $e');
+      print('Error signing up: $e');
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error signing in: $e'),
+          content: Text('Error signing up: $e'),
         ),
       );
     } finally {
       setState(() {
         isLoading = false;
       });
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => AuthPage(), // Replace with your sign-in page
+        ),
+      );
     }
   }
 
-  // Function to navigate to the sign-up page
-  void goToSignUpPage() {
+  void goToSignInPage() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => SignUpPage(), // Replace with your sign-up page
+        builder: (context) => SignInPage(), // Replace with your sign-in page
       ),
     );
   }
@@ -78,12 +84,20 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                       Text(
-                        "Log In",
+                        "Sign Up",
                         textAlign: TextAlign.left,
                         style: TextStyle(color: mainTextColor, fontSize: 36),
                       ),
                       SizedBox(
                         height: 30,
+                      ),
+                      MyTextField(
+                        obs: false,
+                        controller: nameController, // Name field
+                        hint: "Name", // Name hint
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       MyTextField(
                         obs: false,
@@ -105,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
                           ? Center(child: CircularProgressIndicator())
                           : GestureDetector(
                               onTap: () {
-                                signUserIn();
+                                signUpUser();
                               },
                               child: Container(
                                 padding: EdgeInsets.all(14),
@@ -115,7 +129,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "Log In",
+                                    "Sign Up",
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: Colors.white,
@@ -131,23 +145,29 @@ class _SignInPageState extends State<SignInPage> {
                       Row(
                         children: [
                           Text(
-                            "If you don't have an account, ",
+                            "If you already have an account, please ",
                             style: TextStyle(
                               color: secondaryTextColor,
                               fontSize: 14,
                             ),
                           ),
-                          TextButton(
-                            onPressed:
-                                goToSignUpPage, // Navigate to sign-up page
+                          GestureDetector(
+                            onTap: goToSignInPage, // Navigate to sign-in page
                             child: Text(
-                              "Sign Up",
+                              "log in",
                               style: TextStyle(
                                 color:
                                     mainColor, // You can use your main color here
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
+                            ),
+                          ),
+                          Text(
+                            ".",
+                            style: TextStyle(
+                              color: secondaryTextColor,
+                              fontSize: 14,
                             ),
                           ),
                         ],

@@ -54,11 +54,10 @@ class _ContactsPageState extends State<ContactsPage> {
                   itemBuilder: (context, index) {
                     final contact = contactsList[index];
                     return Dismissible(
-                      key: UniqueKey(), // Unique key for each contact
+                      key: UniqueKey(),
                       onDismissed: (direction) {
-                        // Remove the contact from the local list
                         contactsList.removeAt(index);
-                        // Delete the contact from Firestore
+
                         deleteContact(contact);
                       },
                       background: Container(
@@ -130,20 +129,17 @@ class _ContactsPageState extends State<ContactsPage> {
                     email: email,
                   );
 
-                  // Add the new contact to the local list
                   contactsList.add(newContact);
 
-                  // Save the updated contacts list to Firestore within the place document
                   await saveUpdatedPlace();
 
-                  // Show a snackbar when a contact gets added
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Contact added successfully'),
                     ),
                   );
 
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                   setState(() {});
                 }
               },
@@ -159,11 +155,9 @@ class _ContactsPageState extends State<ContactsPage> {
     try {
       final firestore = FirebaseFirestore.instance;
 
-      // Serialize the updated contacts list
       final List<Map<String, dynamic>> updatedContactsData =
           contactsList.map((contact) => contact.toMap()).toList();
 
-      // Update the place in Firestore
       await firestore.collection('places').doc(widget.id).update({
         'contacts': updatedContactsData,
       });
@@ -176,14 +170,11 @@ class _ContactsPageState extends State<ContactsPage> {
     try {
       final firestore = FirebaseFirestore.instance;
 
-      // Remove the contact from the local list
       contactsList.remove(contactToDelete);
 
-      // Serialize the updated contacts list
       final List<Map<String, dynamic>> updatedContactsData =
           contactsList.map((contact) => contact.toMap()).toList();
 
-      // Update the place in Firestore
       await firestore.collection('places').doc(widget.id).update({
         'contacts': updatedContactsData,
       });
@@ -207,12 +198,12 @@ class _ContactsPageState extends State<ContactsPage> {
             .map((data) => Contacts.fromMap(data as Map<String, dynamic>))
             .toList();
         setState(() {
-          contactsList = contacts; // Update the local list
-          isLoading = false; // Data fetched, set isLoading to false
+          contactsList = contacts;
+          isLoading = false;
         });
       } else {
         setState(() {
-          isLoading = false; // Data not found, set isLoading to false
+          isLoading = false;
         });
       }
     }
