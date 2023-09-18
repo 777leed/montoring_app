@@ -9,7 +9,7 @@ import 'package:montoring_app/pages/location/InfraPage.dart';
 import 'package:montoring_app/pages/location/LocationPage.dart';
 import 'package:montoring_app/pages/location/NeedsPage.dart';
 import 'package:montoring_app/pages/location/PopulationPage.dart';
-import 'package:montoring_app/pages/suppliesPage.dart';
+import 'package:montoring_app/pages/location/SuppliesPage.dart';
 
 class PlaceDetails extends StatefulWidget {
   final Place? place;
