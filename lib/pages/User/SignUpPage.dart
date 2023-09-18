@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/myTextField.dart';
-import 'package:montoring_app/pages/AuthPage.dart';
-import 'package:montoring_app/pages/SignInPage.dart';
+import 'package:montoring_app/pages/User/AuthPage.dart';
+import 'package:montoring_app/pages/User/SignInPage.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key}) : super(key: key);

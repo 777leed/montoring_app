@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/myTextField.dart';
-import 'package:montoring_app/pages/SignUpPage.dart';
+import 'package:montoring_app/pages/User/SignUpPage.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);

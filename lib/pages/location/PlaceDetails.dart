@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:montoring_app/components/EditCard.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/ContactsPage.dart';
-import 'package:montoring_app/pages/EditPlacePage.dart';
-import 'package:montoring_app/pages/InfraPage.dart';
-import 'package:montoring_app/pages/LocationPage.dart';
-import 'package:montoring_app/pages/NeedsPage.dart';
-import 'package:montoring_app/pages/PopulationPage.dart';
+import 'package:montoring_app/pages/location/ContactsPage.dart';
+import 'package:montoring_app/pages/Maps/EditPlacePage.dart';
+import 'package:montoring_app/pages/location/InfraPage.dart';
+import 'package:montoring_app/pages/location/LocationPage.dart';
+import 'package:montoring_app/pages/location/NeedsPage.dart';
+import 'package:montoring_app/pages/location/PopulationPage.dart';
 import 'package:montoring_app/pages/suppliesPage.dart';
 
 class PlaceDetails extends StatefulWidget {

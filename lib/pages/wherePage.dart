@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:montoring_app/pages/AddPlacePage.dart';
-import 'package:montoring_app/pages/AuthPage.dart';
-import 'package:montoring_app/pages/EditPlacePage.dart';
-import 'package:montoring_app/pages/ExportPage.dart';
-import 'package:montoring_app/pages/InventoryPage.dart';
+import 'package:montoring_app/pages/Maps/AddPlacePage.dart';
+import 'package:montoring_app/pages/User/AuthPage.dart';
+import 'package:montoring_app/pages/Maps/EditPlacePage.dart';
+import 'package:montoring_app/pages/data/ExportPage.dart';
+import 'package:montoring_app/pages/data/InventoryPage.dart';
 
 import 'package:montoring_app/styles.dart';
 

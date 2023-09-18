@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:montoring_app/pages/AuthPage.dart';
+import 'package:montoring_app/pages/User/AuthPage.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {

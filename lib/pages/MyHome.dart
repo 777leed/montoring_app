@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:montoring_app/pages/addNew.dart';
-import 'package:montoring_app/pages/ProfilePage.dart';
+import 'package:montoring_app/pages/Unavailable/addNew.dart';
+import 'package:montoring_app/pages/User/ProfilePage.dart';
 import 'package:montoring_app/pages/syncPage.dart';
 import 'package:montoring_app/styles.dart';
 import 'dashboardPage.dart';

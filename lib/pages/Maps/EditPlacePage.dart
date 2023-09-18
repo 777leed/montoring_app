@@ -5,10 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/PlaceDetails.dart';
+import 'package:montoring_app/pages/location/PlaceDetails.dart';
 import 'package:montoring_app/pages/wherePage.dart';
 import 'package:montoring_app/styles.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class EditPlacePage extends StatefulWidget {
   const EditPlacePage({Key? key});
