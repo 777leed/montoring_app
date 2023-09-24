@@ -3,7 +3,7 @@ import 'package:montoring_app/components/MyWorkshops.dart';
 import 'package:montoring_app/components/myCard.dart';
 import 'package:montoring_app/components/myProject.dart';
 import 'package:montoring_app/components/myTitle.dart';
-import 'package:montoring_app/pages/wherePage.dart';
+import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 
 class allCategories extends StatelessWidget {
@@ -24,7 +24,7 @@ class allCategories extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => wherePage(),
+                  builder: (context) => WherePage(),
                 ),
               );
             },

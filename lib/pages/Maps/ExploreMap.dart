@@ -5,18 +5,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/location/PlaceDetails.dart';
+import 'package:montoring_app/pages/location/ExplorePage.dart';
 import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 
-class EditPlacePage extends StatefulWidget {
-  const EditPlacePage({Key? key});
+class ExploreMap extends StatefulWidget {
+  const ExploreMap({Key? key});
 
   @override
-  State<EditPlacePage> createState() => _EditPlacePageState();
+  State<ExploreMap> createState() => _ExploreMapState();
 }
 
-class _EditPlacePageState extends State<EditPlacePage> {
+class _ExploreMapState extends State<ExploreMap> {
   bool isLoading = false;
   List<dynamic>? selectedMarker;
   Place? selectedPlace;
@@ -294,7 +294,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
     if (selectedPlace != null) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => PlaceDetails(
+          builder: (context) => ExplorePage(
             place: selectedPlace,
             id: id,
           ),
@@ -395,9 +395,9 @@ class _EditPlacePageState extends State<EditPlacePage> {
                           },
                         ),
                         categorieButton(
-                          text: "Edit Area",
+                          text: "Explore Area",
                           icon: Icon(
-                            Icons.edit,
+                            Icons.explore,
                             color: Colors.white,
                           ),
                           color: const Color.fromARGB(255, 119, 14, 14),

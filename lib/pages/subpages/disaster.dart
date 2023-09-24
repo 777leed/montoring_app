@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/myCard.dart';
 import 'package:montoring_app/components/myTitle.dart';
-import 'package:montoring_app/pages/wherePage.dart';
+import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/styles.dart';
 
 class onlyDisaster extends StatelessWidget {
@@ -22,7 +22,7 @@ class onlyDisaster extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => wherePage(),
+                  builder: (context) => WherePage(),
                 ),
               );
             },

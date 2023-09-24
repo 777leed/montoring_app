@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:montoring_app/components/MyOptions.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/wherePage.dart';
+import 'package:montoring_app/pages/Navigation/wherePage.dart';
+import 'package:montoring_app/pages/Survey/FullSurvey.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -23,6 +25,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
   List<dynamic>? selectedMarker;
   Place? selectedPlace;
   String? id;
+  String? currentId;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleMapController? _googleMapController;
 
@@ -48,7 +51,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
   Future<void> addCurrentLocationToFirestore() async {
     try {
       // Request location permissions
-      PermissionStatus status = await Permission.location.request();
+      PermissionStatus status = await Permission.location.status;
 
       if (status.isGranted) {
         // Show loading indicator
@@ -159,7 +162,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                         ),
                       );
 
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop;
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -290,7 +293,18 @@ class _AddPlacePageState extends State<AddPlacePage> {
           'population': [],
           'supplies': [],
           'contacts': [],
-          'AddedBy': userId
+          'AddedBy': userId,
+          'currentSupplies': [],
+          'neededSupplies': [],
+          'images': []
+        }).then((documentSnapshot) {
+          currentId = documentSnapshot.id;
+          print(currentId);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FullSurvey(placeId: currentId),
+            ),
+          );
         });
       }
 
@@ -433,6 +447,54 @@ class _AddPlacePageState extends State<AddPlacePage> {
     }
   }
 
+  void _showOptions() {
+    showModalBottomSheet<dynamic>(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Wrap(children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MyOptions(
+                      icon: Icon(Icons.gps_fixed),
+                      title: "Current",
+                      onTap: () {
+                        Navigator.of(context).pop();
+
+                        addCurrentLocationToFirestore();
+                      },
+                    ),
+                    MyOptions(
+                        icon: Icon(Icons.search),
+                        title: "Search",
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          addCurrentLocationToFirestore();
+                        }),
+                    MyOptions(
+                        icon: Icon(Icons.handyman),
+                        title: "Manual",
+                        onTap: () {
+                          Navigator.of(context).pop();
+
+                          addmManualLocationToFirestore();
+                        })
+                  ],
+                )
+              ],
+            ),
+          ),
+        ]);
+      },
+    );
+  }
+
   void _goToPlaceOnMap(Place place) {
     final cameraPosition = CameraPosition(
       target: LatLng(place.latitude, place.longitude),
@@ -457,8 +519,120 @@ class _AddPlacePageState extends State<AddPlacePage> {
   void navigateToHomePage() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => wherePage()),
+      MaterialPageRoute(builder: (context) => WherePage()),
     );
+  }
+
+  Future<void> addmManualLocationToFirestore() async {
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Row(
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text("Loading..."),
+              ],
+            ),
+          );
+        },
+      );
+
+      final nameController = TextEditingController();
+      final latitudeController = TextEditingController();
+      final longitudeController = TextEditingController();
+
+      Navigator.of(context).pop();
+
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Add Current Location'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: "Custom Name",
+                    ),
+                  ),
+                  TextFormField(
+                    controller: latitudeController,
+                    decoration: InputDecoration(
+                      labelText: 'Latitude',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextFormField(
+                    controller: longitudeController,
+                    decoration: InputDecoration(
+                      labelText: 'Longitude',
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Save'),
+                onPressed: () {
+                  String name = nameController.text.trim();
+                  if (name.isNotEmpty && name.length != 0 && name.length < 20) {
+                    String customName = name.isNotEmpty ? name : "unknown";
+                    final double newlatitude =
+                        double.parse(latitudeController.text);
+                    final double newlongitude =
+                        double.parse(longitudeController.text);
+
+                    addPlaceToFirestore(
+                      customName,
+                      newlatitude,
+                      newlongitude,
+                      dropdownValue,
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Current location added as a marker: $customName'),
+                      ),
+                    );
+
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Verify All the fields'),
+                      ),
+                    );
+                  }
+                },
+              ),
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Location permissions denied'),
+        ),
+      );
+    } catch (e) {
+      print('Error adding current location to Firestore: $e');
+    }
   }
 
   @override
@@ -538,8 +712,8 @@ class _AddPlacePageState extends State<AddPlacePage> {
                         Row(
                           children: [
                             GestureDetector(
-                              onTap: () async {
-                                addCurrentLocationToFirestore();
+                              onTap: () {
+                                _showOptions();
                               },
                               child: Container(
                                 padding: EdgeInsets.all(10),

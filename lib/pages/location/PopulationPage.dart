@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/models/Population.dart';
+import 'package:montoring_app/models/Population.dart'; // Import the Population model
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PopulationPage extends StatefulWidget {
@@ -17,10 +17,27 @@ class PopulationPage extends StatefulWidget {
 class _PopulationPageState extends State<PopulationPage> {
   Population? population;
 
-  TextEditingController displacedController = TextEditingController();
-  TextEditingController deathController = TextEditingController();
-  TextEditingController injuredController = TextEditingController();
-  TextEditingController beforeController = TextEditingController();
+  TextEditingController menBeforeController = TextEditingController();
+  TextEditingController womenBeforeController = TextEditingController();
+  TextEditingController boysBeforeController = TextEditingController();
+  TextEditingController girlsBeforeController = TextEditingController();
+
+  TextEditingController menDeathsController = TextEditingController();
+  TextEditingController womenDeathsController = TextEditingController();
+  TextEditingController boysDeathsController = TextEditingController();
+  TextEditingController girlsDeathsController = TextEditingController();
+
+  TextEditingController menInjuredController = TextEditingController();
+  TextEditingController womenInjuredController = TextEditingController();
+  TextEditingController boysInjuredController = TextEditingController();
+  TextEditingController girlsInjuredController = TextEditingController();
+
+  TextEditingController menDisplacedController = TextEditingController();
+  TextEditingController womenDisplacedController = TextEditingController();
+  TextEditingController boysDisplacedController = TextEditingController();
+  TextEditingController girlsDisplacedController = TextEditingController();
+
+  TextEditingController livestockController = TextEditingController();
 
   @override
   void initState() {
@@ -42,19 +59,53 @@ class _PopulationPageState extends State<PopulationPage> {
         setState(() {
           this.population = population;
 
-          displacedController.text = population.populationDisplaced.toString();
-          deathController.text = population.populationDeath.toString();
-          injuredController.text = population.populationInjured.toString();
-          beforeController.text =
-              population.populationBeforeDisaster.toString();
+          menBeforeController.text = population.totalMenBefore.toString();
+          womenBeforeController.text = population.totalWomenBefore.toString();
+          boysBeforeController.text = population.totalBoysBefore.toString();
+          girlsBeforeController.text = population.totalGirlsBefore.toString();
+
+          menDeathsController.text = population.totalMenDeaths.toString();
+          womenDeathsController.text = population.totalWomenDeaths.toString();
+          boysDeathsController.text = population.totalBoysDeaths.toString();
+          girlsDeathsController.text = population.totalGirlsDeaths.toString();
+
+          menInjuredController.text = population.totalMenInjured.toString();
+          womenInjuredController.text = population.totalWomenInjured.toString();
+          boysInjuredController.text = population.totalBoysInjured.toString();
+          girlsInjuredController.text = population.totalGirlsInjured.toString();
+
+          menDisplacedController.text = population.totalMenDisplaced.toString();
+          womenDisplacedController.text =
+              population.totalWomenDisplaced.toString();
+          boysDisplacedController.text =
+              population.totalBoysDisplaced.toString();
+          girlsDisplacedController.text =
+              population.totalGirlsDisplaced.toString();
+
+          livestockController.text =
+              population.totalLivestockAnimals.toString();
         });
       } else {
         setState(() {
           this.population = Population(
-              populationDisplaced: 0,
-              populationDeath: 0,
-              populationInjured: 0,
-              populationBeforeDisaster: 0);
+            totalMenBefore: 0,
+            totalWomenBefore: 0,
+            totalBoysBefore: 0,
+            totalGirlsBefore: 0,
+            totalMenDeaths: 0,
+            totalWomenDeaths: 0,
+            totalBoysDeaths: 0,
+            totalGirlsDeaths: 0,
+            totalMenInjured: 0,
+            totalWomenInjured: 0,
+            totalBoysInjured: 0,
+            totalGirlsInjured: 0,
+            totalMenDisplaced: 0,
+            totalWomenDisplaced: 0,
+            totalBoysDisplaced: 0,
+            totalGirlsDisplaced: 0,
+            totalLivestockAnimals: 0,
+          );
         });
       }
     }
@@ -69,66 +120,66 @@ class _PopulationPageState extends State<PopulationPage> {
       body: population != null
           ? Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        InputDecoration(labelText: 'Total Before Earthquake'),
-                    onChanged: (value) {
-                      setState(() {
-                        population!.populationBeforeDisaster =
-                            int.tryParse(value) ?? 0;
-                      });
-                    },
-                    controller: beforeController,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Displaced'),
-                    onChanged: (value) {
-                      setState(() {
-                        population!.populationDisplaced =
-                            int.tryParse(value) ?? 0;
-                      });
-                    },
-                    controller: displacedController,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Death'),
-                    onChanged: (value) {
-                      setState(() {
-                        population!.populationDeath = int.tryParse(value) ?? 0;
-                      });
-                    },
-                    controller: deathController,
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Injured'),
-                    onChanged: (value) {
-                      setState(() {
-                        population!.populationInjured =
-                            int.tryParse(value) ?? 0;
-                      });
-                    },
-                    controller: injuredController,
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      _updatePopulation();
-                    },
-                    child: Text('Update'),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    _buildTextField('Total Men Before', menBeforeController),
+                    _buildTextField(
+                        'Total Women Before', womenBeforeController),
+                    _buildTextField('Total Boys Before', boysBeforeController),
+                    _buildTextField(
+                        'Total Girls Before', girlsBeforeController),
+                    _buildTextField('Total Men Deaths', menDeathsController),
+                    _buildTextField(
+                        'Total Women Deaths', womenDeathsController),
+                    _buildTextField('Total Boys Deaths', boysDeathsController),
+                    _buildTextField(
+                        'Total Girls Deaths', girlsDeathsController),
+                    _buildTextField('Total Men Injured', menInjuredController),
+                    _buildTextField(
+                        'Total Women Injured', womenInjuredController),
+                    _buildTextField(
+                        'Total Boys Injured', boysInjuredController),
+                    _buildTextField(
+                        'Total Girls Injured', girlsInjuredController),
+                    _buildTextField(
+                        'Total Men Displaced', menDisplacedController),
+                    _buildTextField(
+                        'Total Women Displaced', womenDisplacedController),
+                    _buildTextField(
+                        'Total Boys Displaced', boysDisplacedController),
+                    _buildTextField(
+                        'Total Girls Displaced', girlsDisplacedController),
+                    _buildTextField(
+                        'Total Livestock Animals', livestockController),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        _updatePopulation();
+                      },
+                      child: Text('Update'),
+                    ),
+                  ],
+                ),
               ),
             )
           : Center(
               child: CircularProgressIndicator(),
             ),
+    );
+  }
+
+  Widget _buildTextField(String labelText, TextEditingController controller) {
+    return TextField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: labelText),
+      onChanged: (value) {
+        setState(() {
+          controller.text = value;
+        });
+      },
+      controller: controller,
     );
   }
 

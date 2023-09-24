@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:montoring_app/pages/subpages/all.dart';
-import 'package:montoring_app/pages/subpages/disaster.dart';
-import 'package:montoring_app/pages/subpages/projects.dart';
-import 'package:montoring_app/pages/subpages/workshops.dart';
+import 'package:montoring_app/pages/Subpages/all.dart';
+import 'package:montoring_app/pages/Subpages/disaster.dart';
+import 'package:montoring_app/pages/Subpages/projects.dart';
+import 'package:montoring_app/pages/Subpages/workshops.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:permission_handler/permission_handler.dart';

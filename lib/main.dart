@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:montoring_app/pages/Maps/LocationSearch.dart';
+import 'package:montoring_app/pages/Navigation/wherePage.dart';
+import 'package:montoring_app/pages/Survey/FullSurvey.dart';
+import 'package:montoring_app/pages/Survey/ImageImport.dart';
+import 'package:montoring_app/pages/Survey/SurveyData.dart';
 import 'package:montoring_app/pages/User/AuthPage.dart';
+import 'package:montoring_app/pages/location/ExplorePage.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => SurveyDataProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
         useMaterial3: true,
       ),
-      home: AuthPage(),
+      home: WherePage(),
     );
   }
 }

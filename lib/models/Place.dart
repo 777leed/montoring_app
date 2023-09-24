@@ -13,7 +13,9 @@ class Place {
   Population? population;
   Infrastructure? infrastructure;
   List<Contacts>? contacts;
-  String addedBy; // AddedBy attribute
+  String addedBy;
+  Map<String, dynamic>? currentSupplies;
+  Map<String, dynamic>? neededSupplies;
 
   Place({
     required this.name,
@@ -25,6 +27,8 @@ class Place {
     this.population,
     this.infrastructure,
     this.contacts,
+    this.currentSupplies,
+    this.neededSupplies,
     required this.addedBy, // AddedBy attribute
   });
 
@@ -41,12 +45,13 @@ class Place {
       population: data['population'] != null
           ? Population.fromMap(data['population'])
           : null,
-      infrastructure: Infrastructure.fromMap(data['infrastructure'] ??
-          {}), // Assuming infrastructure is represented as a map
+      infrastructure: Infrastructure.fromMap(data['infrastructure'] ?? {}),
       contacts: (data['contacts'] as List<dynamic>?)
           ?.map((contact) => Contacts.fromMap(contact))
           .toList(),
-      addedBy: data['AddedBy'], // AddedBy attribute
+      addedBy: data['AddedBy'],
+      currentSupplies: (data['currentSupplies'] as Map<String, dynamic>?) ?? {},
+      neededSupplies: (data['neededSupplies'] as Map<String, dynamic>?) ?? {},
     );
   }
 
@@ -59,10 +64,11 @@ class Place {
       'needs': needs,
       'supplies': supplies?.map((supply) => supply.toMap()).toList(),
       'population': population != null ? population!.toMap() : null,
-      'infrastructure': infrastructure!
-          .toMap(), // Assuming infrastructure can be converted to a map
+      'infrastructure': infrastructure!.toMap(),
       'contacts': contacts?.map((contact) => contact.toMap()).toList(),
-      'addedBy': addedBy, // AddedBy attribute
+      'addedBy': addedBy,
+      'currentSupplies': currentSupplies,
+      'neededSupplies': neededSupplies,
     };
   }
 }

@@ -40,13 +40,8 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
         });
       } else {
         setState(() {
-          this.infrastructure = Infrastructure(
-            homeStatistics: [0, 0, 0, 0],
-            schoolStatistics: [0, 0, 0, 0],
-            mosqueStatistics: [0, 0, 0, 0],
-            roadStatistics: [0, 0, 0, 0],
-            storeStatistics: [0, 0, 0, 0],
-          );
+          this.infrastructure = Infrastructure
+              .initial(); // Use the constructor to initialize with default values
         });
       }
     }
@@ -62,12 +57,12 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                for (int index = 0; index < 4; index++)
-                  _buildTextField(
-                    _getLabelText(index),
-                    infrastructureType,
-                    index,
-                  ),
+                // for (int index = 0; index < 4; index++)
+                //   _buildTextField(
+                //     _getLabelText(index),
+                //     infrastructureType,
+                //     index,
+                //   ),
               ],
             ),
           ),
@@ -100,69 +95,69 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
     }
   }
 
-  Widget _buildTextField(
-    String labelText,
-    String infrastructureType,
-    int index,
-  ) {
-    return TextField(
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: labelText),
-      onChanged: (value) {
-        setState(() {
-          if (infrastructure != null) {
-            switch (infrastructureType) {
-              case 'Home':
-                infrastructure!.homeStatistics[index] =
-                    int.tryParse(value) ?? 0;
-                break;
-              case 'School':
-                infrastructure!.schoolStatistics[index] =
-                    int.tryParse(value) ?? 0;
-                break;
-              case 'Mosque':
-                infrastructure!.mosqueStatistics[index] =
-                    int.tryParse(value) ?? 0;
-                break;
-              case 'Road':
-                infrastructure!.roadStatistics[index] =
-                    int.tryParse(value) ?? 0;
-                break;
-              case 'Store':
-                infrastructure!.storeStatistics[index] =
-                    int.tryParse(value) ?? 0;
-                break;
-              default:
-                break;
-            }
-          }
-        });
-      },
-      controller: TextEditingController(
-        text: _getInfrastructureValue(infrastructureType, index),
-      ),
-    );
-  }
+  // Widget _buildTextField(
+  //   String labelText,
+  //   String infrastructureType,
+  //   int index,
+  // ) {
+  //   return TextField(
+  //     keyboardType: TextInputType.number,
+  //     decoration: InputDecoration(labelText: labelText),
+  //     onChanged: (value) {
+  //       setState(() {
+  //         if (infrastructure != null) {
+  //           switch (infrastructureType) {
+  //             case 'Home':
+  //               infrastructure!.homeStatistics[index] =
+  //                   int.tryParse(value) ?? 0;
+  //               break;
+  //             case 'School':
+  //               infrastructure!.schoolStatistics[index] =
+  //                   int.tryParse(value) ?? 0;
+  //               break;
+  //             case 'Mosque':
+  //               infrastructure!.mosqueStatistics[index] =
+  //                   int.tryParse(value) ?? 0;
+  //               break;
+  //             case 'Road':
+  //               infrastructure!.roadStatistics[index] =
+  //                   int.tryParse(value) ?? 0;
+  //               break;
+  //             case 'Store':
+  //               infrastructure!.storeStatistics[index] =
+  //                   int.tryParse(value) ?? 0;
+  //               break;
+  //             default:
+  //               break;
+  //           }
+  //         }
+  //       });
+  //     },
+  //     controller: TextEditingController(
+  //       text: _getInfrastructureValue(infrastructureType, index),
+  //     ),
+  //   );
+  // }
 
-  String _getInfrastructureValue(String type, int index) {
-    if (infrastructure != null) {
-      switch (type) {
-        case 'Home':
-          return infrastructure!.homeStatistics[index].toString();
-        case 'School':
-          return infrastructure!.schoolStatistics[index].toString();
-        case 'Mosque':
-          return infrastructure!.mosqueStatistics[index].toString();
-        case 'Road':
-          return infrastructure!.roadStatistics[index].toString();
-        case 'Store':
-          return infrastructure!.storeStatistics[index].toString();
-        default:
-          break;
-      }
-    }
-    return '';
-  }
+  // String _getInfrastructureValue(String type, int index) {
+  //   if (infrastructure != null) {
+  //     switch (type) {
+  //       case 'Home':
+  //         return infrastructure!.homeStatistics[index].toString();
+  //       case 'School':
+  //         return infrastructure!.schoolStatistics[index].toString();
+  //       case 'Mosque':
+  //         return infrastructure!.mosqueStatistics[index].toString();
+  //       case 'Road':
+  //         return infrastructure!.roadStatistics[index].toString();
+  //       case 'Store':
+  //         return infrastructure!.storeStatistics[index].toString();
+  //       default:
+  //         break;
+  //     }
+  //   }
+  //   return '';
+  // }
 
   @override
   Widget build(BuildContext context) {
