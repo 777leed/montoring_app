@@ -29,9 +29,11 @@ class _AddPlacePageState extends State<AddPlacePage> {
   String? currentId;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleMapController? _googleMapController;
-
+  TextEditingController searchController = TextEditingController();
   var dropdownValue = "Unknown";
   Set<Marker> myMarkers = {};
+  List<Place> placeListToShow = [];
+
   List<String> list = <String>[
     'Unknown',
     'Safe',
@@ -46,7 +48,49 @@ class _AddPlacePageState extends State<AddPlacePage> {
   void initState() {
     selectedMarker = [];
     loadMarkers();
+    fetchPlaces();
     super.initState();
+  }
+
+  Future<void> fetchPlaces() async {
+    try {
+      final placesSnapshot = await firestore.collection('places').get();
+      final places = placesSnapshot.docs;
+
+      final placeList = places.map((place) {
+        final name = place.get('name');
+        final latitude = place.get('latitude');
+        final longitude = place.get('longitude');
+        final status = place.get('status');
+        final addedby = place.get('AddedBy');
+
+        return Place(
+          name: name,
+          latitude: latitude,
+          longitude: longitude,
+          status: status,
+          addedBy: addedby,
+        );
+      }).toList();
+
+      setState(() {
+        availablePlaces = placeList;
+        placeListToShow = placeList;
+      });
+    } catch (e) {
+      print('Error loading places from Firestore: $e');
+    }
+  }
+
+  Future<void> _filterPlaces(String searchText) async {
+    FocusScope.of(context).unfocus(); // Dismiss keyboard
+    final filteredPlaces = (availablePlaces as List<Place>).where((place) {
+      return place.name.toLowerCase().contains(searchText.toLowerCase());
+    }).toList();
+
+    setState(() {
+      placeListToShow = filteredPlaces;
+    });
   }
 
   Future<void> addCurrentLocationToFirestore() async {
@@ -333,65 +377,53 @@ class _AddPlacePageState extends State<AddPlacePage> {
     }
   }
 
-  Widget _buildLoadingIndicator() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
   Future<void> showPlaceList() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return _buildLoadingIndicator();
-      },
-    );
-
     try {
-      final placesSnapshot = await firestore.collection('places').get();
-      final places = placesSnapshot.docs;
-
-      final placeList = places.map((place) {
-        final name = place.get('name');
-        final latitude = place.get('latitude');
-        final longitude = place.get('longitude');
-        final status = place.get('status');
-        final addedby = place.get('AddedBy');
-
-        return Place(
-            name: name,
-            latitude: latitude,
-            longitude: longitude,
-            status: status,
-            addedBy: addedby);
-      }).toList();
-
-      Navigator.of(context).pop();
-
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return ListView.builder(
-            itemCount: placeList.length,
-            itemBuilder: (context, index) {
-              final place = placeList[index];
-              return ListTile(
-                title: Text(place.name),
-                subtitle: Text("Status: ${place.status}"),
-                onTap: () {
-                  Navigator.pop(context);
-                  _goToPlaceOnMap(place);
-                },
-              );
-            },
+          return Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                child: TextField(
+                  onChanged: (value) {
+                    _filterPlaces(value);
+                  },
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.search),
+                    hintText: "Search For A Location",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: CustomColors.mainColor),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: placeListToShow.length,
+                  itemBuilder: (context, index) {
+                    final place = placeListToShow[index];
+                    return ListTile(
+                      title: Text(place.name),
+                      subtitle: Text("Status: ${place.status}"),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _goToPlaceOnMap(place);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       );
     } catch (e) {
       print('Error loading places from Firestore: $e');
-
-      Navigator.of(context).pop();
     }
   }
 
