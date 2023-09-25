@@ -69,30 +69,26 @@ class _SuppliesNeededPageState extends State<SuppliesNeededPage>
                 buildSupplyTextInput(
                   'Tents',
                   neededSupplies['Tents']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateNeededSupplies({
-                    'Tents': value,
-                  }),
+                  (value) =>
+                      surveyDataProvider.updateNeededSupplies('Tents', value),
                 ),
                 buildSupplyTextInput(
                   'Blankets',
                   neededSupplies['Blankets']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateNeededSupplies({
-                    'Blankets': value,
-                  }),
+                  (value) => surveyDataProvider.updateNeededSupplies(
+                      'Blankets', value),
                 ),
                 buildSupplyTextInput(
                   'Cushions',
                   neededSupplies['Cushions']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateNeededSupplies({
-                    'Cushions': value,
-                  }),
+                  (value) => surveyDataProvider.updateNeededSupplies(
+                      'Cushions', value),
                 ),
                 buildSupplyTextInput(
                   'Pallets',
                   neededSupplies['Pallets']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateNeededSupplies({
-                    'Pallets': value,
-                  }),
+                  (value) =>
+                      surveyDataProvider.updateNeededSupplies('Pallets', value),
                 ),
                 buildDropdownWithStatus(
                   'Food',
@@ -104,6 +100,7 @@ class _SuppliesNeededPageState extends State<SuppliesNeededPage>
                     setState(() {
                       selectedFood = value!;
                       neededSupplies['Food'] = value;
+                      surveyDataProvider.updateNeededSupplies('Food', value);
                     });
                   },
                 ),
@@ -118,6 +115,8 @@ class _SuppliesNeededPageState extends State<SuppliesNeededPage>
                       selectedConstructionMaterials = value!;
                       neededSupplies[
                           'Construction Materials for Building Rehab'] = value;
+                      surveyDataProvider.updateNeededSupplies(
+                          'Construction Materials for Building Rehab', value);
                     });
                   },
                 ),
@@ -131,6 +130,8 @@ class _SuppliesNeededPageState extends State<SuppliesNeededPage>
                     setState(() {
                       selectedHygieneProducts = value!;
                       neededSupplies['Hygiene Products'] = value;
+                      surveyDataProvider.updateNeededSupplies(
+                          'Hygiene Products', value);
                     });
                   },
                 ),
@@ -144,6 +145,8 @@ class _SuppliesNeededPageState extends State<SuppliesNeededPage>
                     setState(() {
                       selectedMedicineFirstAid = value!;
                       neededSupplies['Medicine/First Aid'] = value;
+                      surveyDataProvider.updateNeededSupplies(
+                          'Medicine/First Aid', value);
                     });
                   },
                 ),

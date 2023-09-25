@@ -14,7 +14,6 @@ import 'package:montoring_app/pages/Survey/SuppliesAvailable.dart';
 import 'package:montoring_app/pages/Survey/SuppliesNeeded.dart';
 import 'package:montoring_app/pages/Survey/SurveyData.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
 import 'package:provider/provider.dart';
 
 class FullSurvey extends StatefulWidget {
@@ -38,6 +37,8 @@ class _FullSurveyState extends State<FullSurvey> {
     ImageUploadPage()
   ];
 
+  bool _isUpdating = false;
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -46,6 +47,10 @@ class _FullSurveyState extends State<FullSurvey> {
 
   Future<void> updatePlaceWithSurveyData() async {
     try {
+      setState(() {
+        _isUpdating = true;
+      });
+
       final firestore = FirebaseFirestore.instance;
       print(widget.placeId);
       SurveyDataProvider surveyDataProvider =
@@ -102,6 +107,10 @@ class _FullSurveyState extends State<FullSurvey> {
       );
     } catch (e) {
       print('Error updating place in Firestore: $e');
+    } finally {
+      setState(() {
+        _isUpdating = false;
+      });
     }
   }
 
@@ -179,17 +188,16 @@ class _FullSurveyState extends State<FullSurvey> {
                     ),
                   if (_currentPage == _surveyPages.length - 1)
                     GestureDetector(
-                      onTap: () {
-                        SurveyDataProvider surveyDataProvider =
-                            Provider.of<SurveyDataProvider>(context,
-                                listen: false);
-                        print(surveyDataProvider.toString());
-                        updatePlaceWithSurveyData();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddPlacePage()),
-                        );
+                      onTap: () async {
+                        if (!_isUpdating) {
+                          SurveyDataProvider surveyDataProvider =
+                              Provider.of<SurveyDataProvider>(context,
+                                  listen: false);
+
+                          await updatePlaceWithSurveyData();
+                          surveyDataProvider.resetData();
+                          Navigator.of(context).pop();
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(12),
@@ -205,6 +213,11 @@ class _FullSurveyState extends State<FullSurvey> {
                           ],
                         ),
                       ),
+                    ),
+                  if (_isUpdating)
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: CircularProgressIndicator(),
                     ),
                 ],
               ),

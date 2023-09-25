@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:montoring_app/pages/Survey/SurveyData.dart';
-import 'package:montoring_app/pages/User/SignInPage.dart';
+import 'package:montoring_app/pages/User/AuthPage.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
         useMaterial3: true,
       ),
-      home: SignInPage(),
+      home: AuthPage(),
     );
   }
 }

@@ -228,10 +228,6 @@ class _InfrastructureSurveyState extends State<InfrastructureSurvey>
                     )
                     .toList(),
               ),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text('Update Survey Data'),
-              )
             ],
           ),
         ),

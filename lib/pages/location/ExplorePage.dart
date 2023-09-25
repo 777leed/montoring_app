@@ -16,6 +16,7 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   List _images = [];
+  late Future<void> _loadingData;
 
   Widget buildPopulationRow(String type, String stat) {
     return Container(
@@ -128,7 +129,7 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   void initState() {
     super.initState();
-    loadImagesFromFirestore();
+    _loadingData = loadImagesFromFirestore();
   }
 
   @override
@@ -143,6 +144,7 @@ class _ExplorePageState extends State<ExplorePage> {
         widget.place!.population!.totalBoysDeaths;
     int? girls_total = widget.place!.population!.totalGirlsBefore -
         widget.place!.population!.totalGirlsDeaths;
+    int? population_total = men_total + women_total + boys_total + girls_total;
     String roadName = widget.place!.infrastructure!.roadName;
     String roadStatus = widget.place!.infrastructure!.roadStatus;
     String vehicleType = widget.place!.infrastructure!.roadVehicleType;
@@ -184,157 +186,188 @@ class _ExplorePageState extends State<ExplorePage> {
     List<String>? needsList = widget.place!.needs;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(25),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  StringUtils.capitalize(widget.place!.name),
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  "432 People",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: CustomColors.secondaryTextColor,
-                  ),
-                ),
-                SizedBox(height: 20),
-                buildHeader("Live Pictures", Icon(Icons.view_array)),
-                SizedBox(
-                  width: double.infinity,
-                  height: 140,
-                  child: _images.isEmpty
-                      ? Center(
-                          child: Text('No pictures'),
-                        )
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _images.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                _showImageDialog(context, _images[index]);
-                              },
-                              child: Container(
-                                clipBehavior: Clip.antiAlias,
-                                margin: EdgeInsets.only(
-                                    right: 8.0, top: 8.0, bottom: 8.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Image.network(
-                                  _images[index],
-                                  width: 120,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                ),
-                SizedBox(height: 20),
-                buildHeader(
-                    "Live Population", Icon(Icons.people_outline_sharp)),
-                SizedBox(height: 10),
-                buildPopulationRow("Total Men", men_total.toString()),
-                buildPopulationRow("Total Women", women_total.toString()),
-                buildPopulationRow("Total Boys", boys_total.toString()),
-                buildPopulationRow("Total Girls", girls_total.toString()),
-                buildPopulationRow(
-                    "Total Livestock Animals", animals.toString()),
-                SizedBox(height: 20),
-                buildHeader("Infrastructure", Icon(Icons.house)),
-                buildPopulationRow("Road Name", roadName),
-                buildPopulationRow("Road Status", roadStatus),
-                buildPopulationRow("Vehicle Type", vehicleType),
-                buildPopulationRow("Electricity", elecStatus),
-                buildPopulationRow("Water", waterStatus),
-                buildPopulationRow(
-                    "Damaged Infrastructures", totalDamage.toString()),
-                buildPopulationRow(
-                    "Intact Infrastructures", totalNotDamaged.toString()),
-                SizedBox(height: 20),
-                buildHeader("Current Supplies", Icon(Icons.shopping_bag)),
-                buildPopulationRow("Tents", tents),
-                buildPopulationRow("Pallets", pallets),
-                buildPopulationRow("Blankets", blankets),
-                buildPopulationRow("Cushions", cushions),
-                buildPopulationRow("Food", food),
-                buildPopulationRow("Hygiene Products", hygiene),
-                buildPopulationRow("Medicine/First Aid", med),
-                buildPopulationRow("Construction Material", construction),
-                SizedBox(height: 20),
-                buildHeader("Needed Supplies", Icon(Icons.shopping_cart)),
-                buildPopulationRow("Tents", tentsn),
-                buildPopulationRow("Pallets", palletsn),
-                buildPopulationRow("Blankets", blanketsn),
-                buildPopulationRow("Cushions", cushionsn),
-                buildPopulationRow("Food", foodn),
-                buildPopulationRow("Hygiene Products", hygienen),
-                buildPopulationRow("Medicine/First Aid", medn),
-                buildPopulationRow("Construction Material", constructionn),
-                SizedBox(height: 20),
-                buildHeader("Needs", Icon(Icons.waving_hand_rounded)),
-                SizedBox(height: 10),
-                if (needsList!.isEmpty) Text('No needs available.'),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:
-                      needsList.map((need) => _buildNeedTile(need)).toList(),
-                ),
-                SizedBox(height: 20),
-                buildHeader("Contacts", Icon(Icons.contact_emergency)),
-                SizedBox(
-                  height: 10,
-                ),
-                contactsList == null || contactsList.isEmpty
-                    ? Center(
-                        child: Text('No contacts'),
-                      )
-                    : SizedBox(
-                        height: 200,
-                        child: ListView.builder(
-                          itemCount: contactsList.length,
-                          itemBuilder: (context, index) {
-                            final contact = contactsList[index];
-                            return Card(
-                              margin: EdgeInsets.symmetric(vertical: 4.0),
-                              child: ListTile(
-                                title: Text('Name: ${contact.name}'),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        'Phone Number: ${contact.phoneNumber}'),
-                                    Text('Email: ${contact.email}'),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-              ],
-            ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
         ),
-      ),
-    );
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(25),
+            child: SingleChildScrollView(
+              child: FutureBuilder<void>(
+                  future: _loadingData,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // While data is being loaded, show a loading indicator
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      // If an error occurs during data loading, show an error message
+                      return Center(
+                        child: Text('Error loading data'),
+                      );
+                    } else {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            StringUtils.capitalize(widget.place!.name),
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            population_total.toString() + " People",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: CustomColors.secondaryTextColor,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          buildHeader("Live Pictures", Icon(Icons.view_array)),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 140,
+                            child: _images.isEmpty
+                                ? Center(
+                                    child: Text('No pictures'),
+                                  )
+                                : ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: _images.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _showImageDialog(
+                                              context, _images[index]);
+                                        },
+                                        child: Container(
+                                          clipBehavior: Clip.antiAlias,
+                                          margin: EdgeInsets.only(
+                                              right: 8.0,
+                                              top: 8.0,
+                                              bottom: 8.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Image.network(
+                                            _images[index],
+                                            width: 120,
+                                            height: 120,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                          ),
+                          SizedBox(height: 20),
+                          buildHeader("Live Population",
+                              Icon(Icons.people_outline_sharp)),
+                          SizedBox(height: 10),
+                          buildPopulationRow("Total Men", men_total.toString()),
+                          buildPopulationRow(
+                              "Total Women", women_total.toString()),
+                          buildPopulationRow(
+                              "Total Boys", boys_total.toString()),
+                          buildPopulationRow(
+                              "Total Girls", girls_total.toString()),
+                          buildPopulationRow(
+                              "Total Livestock Animals", animals.toString()),
+                          SizedBox(height: 20),
+                          buildHeader("Infrastructure", Icon(Icons.house)),
+                          buildPopulationRow("Road Name", roadName),
+                          buildPopulationRow("Road Status", roadStatus),
+                          buildPopulationRow("Vehicle Type", vehicleType),
+                          buildPopulationRow("Electricity", elecStatus),
+                          buildPopulationRow("Water", waterStatus),
+                          buildPopulationRow("Damaged Infrastructures",
+                              totalDamage.toString()),
+                          buildPopulationRow("Intact Infrastructures",
+                              totalNotDamaged.toString()),
+                          SizedBox(height: 20),
+                          buildHeader(
+                              "Current Supplies", Icon(Icons.shopping_bag)),
+                          buildPopulationRow("Tents", tents),
+                          buildPopulationRow("Pallets", pallets),
+                          buildPopulationRow("Blankets", blankets),
+                          buildPopulationRow("Cushions", cushions),
+                          buildPopulationRow("Food", food),
+                          buildPopulationRow("Hygiene Products", hygiene),
+                          buildPopulationRow("Medicine/First Aid", med),
+                          buildPopulationRow(
+                              "Construction Material", construction),
+                          SizedBox(height: 20),
+                          buildHeader(
+                              "Needed Supplies", Icon(Icons.shopping_cart)),
+                          buildPopulationRow("Tents", tentsn),
+                          buildPopulationRow("Pallets", palletsn),
+                          buildPopulationRow("Blankets", blanketsn),
+                          buildPopulationRow("Cushions", cushionsn),
+                          buildPopulationRow("Food", foodn),
+                          buildPopulationRow("Hygiene Products", hygienen),
+                          buildPopulationRow("Medicine/First Aid", medn),
+                          buildPopulationRow(
+                              "Construction Material", constructionn),
+                          SizedBox(height: 20),
+                          buildHeader("Needs", Icon(Icons.waving_hand_rounded)),
+                          SizedBox(height: 10),
+                          if (needsList!.isEmpty) Text('No needs available.'),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: needsList
+                                .map((need) => _buildNeedTile(need))
+                                .toList(),
+                          ),
+                          SizedBox(height: 20),
+                          buildHeader(
+                              "Contacts", Icon(Icons.contact_emergency)),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          contactsList == null || contactsList.isEmpty
+                              ? Center(
+                                  child: Text('No contacts'),
+                                )
+                              : SizedBox(
+                                  height: 200,
+                                  child: ListView.builder(
+                                    itemCount: contactsList.length,
+                                    itemBuilder: (context, index) {
+                                      final contact = contactsList[index];
+                                      return Card(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 4.0),
+                                        child: ListTile(
+                                          title: Text('Name: ${contact.name}'),
+                                          subtitle: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  'Phone Number: ${contact.phoneNumber}'),
+                                              Text('Email: ${contact.email}'),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                        ],
+                      );
+                    }
+                  }),
+            ),
+          ),
+        ));
   }
 }

@@ -152,7 +152,8 @@ class _ExportPageState extends State<ExportPage> {
                 .toString();
 
             return ListTile(
-              title: Text('Exported on: $formattedDate'),
+              title: Center(child: Text('Exported on: $formattedDate')),
+              titleAlignment: ListTileTitleAlignment.center,
               subtitle: TextButton(
                 onPressed: () {
                   _launchUrl(downloadURL);

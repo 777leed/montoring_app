@@ -55,10 +55,10 @@ class SurveyDataProvider extends ChangeNotifier {
   String selectedStatus = "Unknown";
 
   Map<String, dynamic> currentSupplies = {
-    'Tents': '0',
-    'Blankets': '0',
-    'Cushions': '0',
-    'Pallets': '0',
+    'Tents': '',
+    'Blankets': '',
+    'Cushions': '',
+    'Pallets': '',
     'Food': 'Unknown',
     'Construction Materials for Building Rehab': 'Unknown',
     'Hygiene Products': 'Unknown',
@@ -66,10 +66,10 @@ class SurveyDataProvider extends ChangeNotifier {
   };
 
   Map<String, dynamic> neededSupplies = {
-    'Tents': '0',
-    'Blankets': '0',
-    'Cushions': '0',
-    'Pallets': '0',
+    'Tents': '',
+    'Blankets': '',
+    'Cushions': '',
+    'Pallets': '',
     'Food': 'Unknown',
     'Construction Materials for Building Rehab': 'Unknown',
     'Hygiene Products': 'Unknown',
@@ -305,13 +305,86 @@ class SurveyDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateCurrentSupplies(Map<String, dynamic> newValue) {
-    currentSupplies = newValue;
+  void updateCurrentSupplies(String key, dynamic value) {
+    currentSupplies[key] = value;
     notifyListeners();
   }
 
-  void updateNeededSupplies(Map<String, dynamic> newValue) {
-    neededSupplies = newValue;
+  void updateNeededSupplies(String key, dynamic value) {
+    neededSupplies[key] = value;
+    notifyListeners();
+  }
+
+  void resetData() {
+    // Reset population data
+    totalMenBefore = 0;
+    totalWomenBefore = 0;
+    totalBoysBefore = 0;
+    totalGirlsBefore = 0;
+    totalMenDeaths = 0;
+    totalWomenDeaths = 0;
+    totalBoysDeaths = 0;
+    totalGirlsDeaths = 0;
+    totalMenInjured = 0;
+    totalWomenInjured = 0;
+    totalBoysInjured = 0;
+    totalGirlsInjured = 0;
+    totalMenDisplaced = 0;
+    totalWomenDisplaced = 0;
+    totalBoysDisplaced = 0;
+    totalGirlsDisplaced = 0;
+    totalLivestockAnimals = 0;
+
+    // Reset contacts
+    contacts.clear();
+
+    // Reset infrastructure data
+    totalHomesDemolished = 0;
+    totalHomesUnstable = 0;
+    totalHomesIntact = 0;
+    totalMosquesDemolished = 0;
+    totalMosquesUnstable = 0;
+    totalMosquesIntact = 0;
+    totalSchoolsDemolished = 0;
+    totalSchoolsUnstable = 0;
+    totalSchoolsIntact = 0;
+    totalStoresDemolished = 0;
+    totalStoresUnstable = 0;
+    totalStoresIntact = 0;
+    roadStatus = "Stable";
+    roadName = "";
+    roadVehicleType = "N/A";
+    waterStatus = "Available";
+    electricityStatus = "Available";
+    selectedStatus = "Unknown";
+
+    // Reset supplies
+    currentSupplies = {
+      'Tents': '',
+      'Blankets': '',
+      'Cushions': '',
+      'Pallets': '',
+      'Food': 'Unknown',
+      'Construction Materials for Building Rehab': 'Unknown',
+      'Hygiene Products': 'Unknown',
+      'Medicine/First Aid': 'Unknown',
+    };
+
+    neededSupplies = {
+      'Tents': '',
+      'Blankets': '',
+      'Cushions': '',
+      'Pallets': '',
+      'Food': 'Unknown',
+      'Construction Materials for Building Rehab': 'Unknown',
+      'Hygiene Products': 'Unknown',
+      'Medicine/First Aid': 'Unknown',
+    };
+
+    // Reset image paths
+    imagePaths.clear();
+
+    // Notify listeners to update UI
     notifyListeners();
   }
 

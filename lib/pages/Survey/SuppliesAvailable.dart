@@ -66,32 +66,25 @@ class _SuppliesAvailablePageState extends State<SuppliesAvailablePage>
                 ),
                 SizedBox(height: 16.0),
                 buildSupplyTextInput(
-                  'Tents',
-                  currentSupplies['Tents']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateCurrentSupplies({
-                    'Tents': value,
-                  }),
-                ),
+                    'Tents',
+                    currentSupplies['Tents']?.toString() ?? '',
+                    (value) => surveyDataProvider.updateCurrentSupplies(
+                        'Tents', value)),
                 buildSupplyTextInput(
-                  'Blankets',
-                  currentSupplies['Blankets']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateCurrentSupplies({
-                    'Blankets': value,
-                  }),
-                ),
+                    'Blankets',
+                    currentSupplies['Blankets']?.toString() ?? '',
+                    (value) => surveyDataProvider.updateCurrentSupplies(
+                        'Blankets', value)),
                 buildSupplyTextInput(
-                  'Cushions',
-                  currentSupplies['Cushions']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateCurrentSupplies({
-                    'Cushions': value,
-                  }),
-                ),
+                    'Cushions',
+                    currentSupplies['Cushions']?.toString() ?? '',
+                    (value) => surveyDataProvider.updateCurrentSupplies(
+                        'Cushions', value)),
                 buildSupplyTextInput(
                   'Pallets',
                   currentSupplies['Pallets']?.toString() ?? '',
-                  (value) => surveyDataProvider.updateCurrentSupplies({
-                    'Pallets': value,
-                  }),
+                  (value) => surveyDataProvider.updateCurrentSupplies(
+                      'Pallets', value),
                 ),
                 buildDropdownWithStatus(
                   'Food',
@@ -103,6 +96,7 @@ class _SuppliesAvailablePageState extends State<SuppliesAvailablePage>
                     setState(() {
                       selectedFood = value!;
                       currentSupplies['Food'] = value;
+                      surveyDataProvider.updateCurrentSupplies('Food', value);
                     });
                   },
                 ),
@@ -117,6 +111,8 @@ class _SuppliesAvailablePageState extends State<SuppliesAvailablePage>
                       selectedConstructionMaterials = value!;
                       currentSupplies[
                           'Construction Materials for Building Rehab'] = value;
+                      surveyDataProvider.updateCurrentSupplies(
+                          'Construction Materials for Building Rehab', value);
                     });
                   },
                 ),
@@ -130,6 +126,8 @@ class _SuppliesAvailablePageState extends State<SuppliesAvailablePage>
                     setState(() {
                       selectedHygieneProducts = value!;
                       currentSupplies['Hygiene Products'] = value;
+                      surveyDataProvider.updateCurrentSupplies(
+                          'Hygiene Products', value);
                     });
                   },
                 ),
@@ -143,6 +141,8 @@ class _SuppliesAvailablePageState extends State<SuppliesAvailablePage>
                     setState(() {
                       selectedMedicineFirstAid = value!;
                       currentSupplies['Medicine/First Aid'] = value;
+                      surveyDataProvider.updateCurrentSupplies(
+                          'Medicine/First Aid', value);
                     });
                   },
                 ),

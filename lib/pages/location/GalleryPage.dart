@@ -22,7 +22,8 @@ class _GalleryPageState extends State<GalleryPage> {
   List<File> _images = [];
 
   Future getImageFromCamera() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 25);
 
     if (pickedFile != null) {
       setState(() {
@@ -33,7 +34,8 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   Future getImageFromGallery() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
 
     if (pickedFile != null) {
       setState(() {
