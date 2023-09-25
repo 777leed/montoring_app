@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/models/Infrastructure.dart';
 import 'package:montoring_app/models/Population.dart';
-import 'package:montoring_app/pages/Maps/AddPlacePage.dart';
 import 'package:montoring_app/pages/Survey/ContactsSurvey.dart';
 import 'package:montoring_app/pages/Survey/ImageImport.dart';
 import 'package:montoring_app/pages/Survey/InfrastructureSurvey.dart';

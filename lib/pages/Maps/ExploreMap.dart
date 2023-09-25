@@ -116,6 +116,7 @@ class _ExploreMapState extends State<ExploreMap> {
       }
 
       loadMarkers();
+      fetchPlaces();
     } catch (e) {
       print('Error adding place to Firestore: $e');
     }

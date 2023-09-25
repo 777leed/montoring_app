@@ -294,7 +294,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
           'images': []
         }).then((documentSnapshot) {
           currentId = documentSnapshot.id;
-          print(currentId);
+          Navigator.pop(context);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => FullSurvey(placeId: currentId),
@@ -304,6 +304,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
       }
 
       loadMarkers();
+      fetchPlaces();
     } catch (e) {
       print('Error adding place to Firestore: $e');
     }
@@ -730,8 +731,8 @@ class _AddPlacePageState extends State<AddPlacePage> {
                             color: Colors.white,
                           ),
                           color: CustomColors.mainColor,
-                          onTap: () {
-                            showPlaceList();
+                          onTap: () async {
+                            await showPlaceList();
                           },
                         ),
                         categorieButton(

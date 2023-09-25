@@ -146,6 +146,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
       }
 
       loadMarkers();
+      fetchPlaces();
     } catch (e) {
       print('Error adding place to Firestore: $e');
     }
