@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:montoring_app/models/Place.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,7 +38,6 @@ class _ExportPageState extends State<ExportPage> {
         jsonData.add(placeData);
       });
 
-      // Convert DateTime objects to ISO 8601 strings
       final String jsonString =
           jsonEncode(jsonData, toEncodable: (dynamic item) {
         if (item is DateTime) {
@@ -48,7 +46,6 @@ class _ExportPageState extends State<ExportPage> {
         return item;
       });
 
-      // Create a JSON file
       final String jsonFileName = 'places_data.json';
       final Directory? directory = await getExternalStorageDirectory();
       final String filePath = '${directory!.path}/$jsonFileName';
@@ -56,16 +53,13 @@ class _ExportPageState extends State<ExportPage> {
 
       await file.writeAsString(jsonString);
 
-      // Upload the JSON file to Firebase Storage
       final Reference storageReference =
           FirebaseStorage.instance.ref().child('exports/$jsonFileName');
       final UploadTask uploadTask = storageReference.putFile(file);
 
       await uploadTask.whenComplete(() async {
-        // Get the download URL of the uploaded file
         final String downloadURL = await storageReference.getDownloadURL();
 
-        // Add export record to Firestore
         await FirebaseFirestore.instance.collection('exports').add({
           'downloadURL': downloadURL,
           'exportDate': FieldValue.serverTimestamp(),

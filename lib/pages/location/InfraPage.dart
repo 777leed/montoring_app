@@ -350,7 +350,7 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
       String infrastructureType, Icon icon, String type) {
     return ListTile(
       title: Text(infrastructureType),
-      leading: icon, // Use an appropriate icon
+      leading: icon,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

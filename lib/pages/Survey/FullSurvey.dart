@@ -102,7 +102,6 @@ class _FullSurveyState extends State<FullSurvey> {
       );
     } catch (e) {
       print('Error updating place in Firestore: $e');
-      // Handle the error as needed, e.g., show an error message to the user.
     }
   }
 
@@ -189,8 +188,7 @@ class _FullSurveyState extends State<FullSurvey> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  AddPlacePage()), // Replace with your desired page
+                              builder: (context) => AddPlacePage()),
                         );
                       },
                       child: Container(

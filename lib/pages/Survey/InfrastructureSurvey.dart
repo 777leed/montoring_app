@@ -13,7 +13,6 @@ class _InfrastructureSurveyState extends State<InfrastructureSurvey>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // Access SurveyDataProvider
     SurveyDataProvider surveyDataProvider =
         Provider.of<SurveyDataProvider>(context);
 
@@ -230,9 +229,7 @@ class _InfrastructureSurveyState extends State<InfrastructureSurvey>
                     .toList(),
               ),
               ElevatedButton(
-                onPressed: () {
-                  // No need to manually update the provider here
-                },
+                onPressed: () {},
                 child: Text('Update Survey Data'),
               )
             ],

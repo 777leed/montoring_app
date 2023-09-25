@@ -199,7 +199,7 @@ class _PopulationSurveyState extends State<PopulationSurvey>
               ),
               SizedBox(height: 16.0),
               Text(
-                'Total Livestock Animals:', // Added field label
+                'Total Livestock Animals:',
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.0),
@@ -209,7 +209,7 @@ class _PopulationSurveyState extends State<PopulationSurvey>
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
                         .updateTotalLivestockAnimals(int.tryParse(value) ?? 0),
-              ), // Added input field for livestock animals
+              ),
             ],
           ),
         ),

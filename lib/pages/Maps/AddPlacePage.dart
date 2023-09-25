@@ -51,11 +51,9 @@ class _AddPlacePageState extends State<AddPlacePage> {
 
   Future<void> addCurrentLocationToFirestore() async {
     try {
-      // Request location permissions
       PermissionStatus status = await Permission.location.status;
 
       if (status.isGranted) {
-        // Show loading indicator
         showDialog(
           context: context,
           barrierDismissible: false,
@@ -72,12 +70,10 @@ class _AddPlacePageState extends State<AddPlacePage> {
           },
         );
 
-        // Get the current location
         Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high,
         );
 
-        // Get the address information based on the coordinates
         List<Placemark> placemarks = await placemarkFromCoordinates(
           position.latitude,
           position.longitude,
@@ -100,7 +96,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
         final longitudeController =
             TextEditingController(text: position.longitude.toString());
 
-        Navigator.of(context).pop(); // Close loading indicator
+        Navigator.of(context).pop();
 
         await showDialog(
           context: context,
@@ -344,7 +340,6 @@ class _AddPlacePageState extends State<AddPlacePage> {
   }
 
   Future<void> showPlaceList() async {
-    // Show loading indicator
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -372,7 +367,6 @@ class _AddPlacePageState extends State<AddPlacePage> {
             addedBy: addedby);
       }).toList();
 
-      // Close loading indicator
       Navigator.of(context).pop();
 
       showModalBottomSheet(
@@ -386,7 +380,6 @@ class _AddPlacePageState extends State<AddPlacePage> {
                 title: Text(place.name),
                 subtitle: Text("Status: ${place.status}"),
                 onTap: () {
-                  // Close the modal and navigate to the selected place
                   Navigator.pop(context);
                   _goToPlaceOnMap(place);
                 },
@@ -397,7 +390,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
       );
     } catch (e) {
       print('Error loading places from Firestore: $e');
-      // Close loading indicator in case of an error
+
       Navigator.of(context).pop();
     }
   }
@@ -464,11 +457,10 @@ class _AddPlacePageState extends State<AddPlacePage> {
     _googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    // Update the selectedMarker when you navigate to the selected place
     setState(() {
       selectedMarker = [
         Marker(
-          markerId: MarkerId(place.name), // Use a unique markerId
+          markerId: MarkerId(place.name),
           position: LatLng(place.latitude, place.longitude),
         ),
         place.status,

@@ -192,7 +192,6 @@ class _EditPlacePageState extends State<EditPlacePage> {
   }
 
   Future<void> showPlaceList() async {
-    // Show loading indicator
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -220,7 +219,6 @@ class _EditPlacePageState extends State<EditPlacePage> {
             addedBy: addedby);
       }).toList();
 
-      // Close loading indicator
       Navigator.of(context).pop();
 
       showModalBottomSheet(
@@ -234,7 +232,6 @@ class _EditPlacePageState extends State<EditPlacePage> {
                 title: Text(place.name),
                 subtitle: Text("Status: ${place.status}"),
                 onTap: () {
-                  // Close the modal and navigate to the selected place
                   Navigator.pop(context);
                   _goToPlaceOnMap(place);
                 },
@@ -245,7 +242,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
       );
     } catch (e) {
       print('Error loading places from Firestore: $e');
-      // Close loading indicator in case of an error
+
       Navigator.of(context).pop();
     }
   }
@@ -259,11 +256,10 @@ class _EditPlacePageState extends State<EditPlacePage> {
     _googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    // Update the selectedMarker when you navigate to the selected place
     setState(() {
       selectedMarker = [
         Marker(
-          markerId: MarkerId(place.name), // Use a unique markerId
+          markerId: MarkerId(place.name),
           position: LatLng(place.latitude, place.longitude),
         ),
         place.status,

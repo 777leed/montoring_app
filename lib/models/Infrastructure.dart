@@ -1,19 +1,19 @@
 class Infrastructure {
   int totalHomesDemolished = 0;
   int totalHomesUnstable = 0;
-  int totalHomesIntact = 0; // Updated field name
+  int totalHomesIntact = 0;
 
   int totalMosquesDemolished = 0;
   int totalMosquesUnstable = 0;
-  int totalMosquesIntact = 0; // Updated field name
+  int totalMosquesIntact = 0;
 
   int totalSchoolsDemolished = 0;
   int totalSchoolsUnstable = 0;
-  int totalSchoolsIntact = 0; // Updated field name
+  int totalSchoolsIntact = 0;
 
   int totalStoresDemolished = 0;
   int totalStoresUnstable = 0;
-  int totalStoresIntact = 0; // Updated field name
+  int totalStoresIntact = 0;
 
   String roadStatus = "Stable";
   String roadName = "Unknown";

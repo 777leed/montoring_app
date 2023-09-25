@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:montoring_app/components/dropdown.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:provider/provider.dart';
-import 'package:montoring_app/pages/Survey/SurveyData.dart'; // Import your SurveyDataProvider
+import 'package:montoring_app/pages/Survey/SurveyData.dart';
 
 class StatusSurvey extends StatefulWidget {
   StatusSurvey({super.key});
@@ -19,20 +19,17 @@ class _StatusSurveyState extends State<StatusSurvey>
   Widget build(BuildContext context) {
     super.build(context);
 
-    // Access the SurveyDataProvider
     SurveyDataProvider surveyDataProvider =
         Provider.of<SurveyDataProvider>(context);
 
     return Scaffold(
-      backgroundColor:
-          Colors.blueGrey[100], // Adjust background color as needed
+      backgroundColor: Colors.blueGrey[100],
       body: SafeArea(
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(25),
             child: Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start, // Center the content vertically
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 10,
@@ -62,7 +59,7 @@ class _StatusSurveyState extends State<StatusSurvey>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 150, // Adjust the width of the image as needed
+                          width: 150,
                           child: Image.asset('Assets/images/analytic.png'),
                         ),
                         Text(
@@ -70,13 +67,11 @@ class _StatusSurveyState extends State<StatusSurvey>
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w400),
                         ),
-                        SizedBox(height: 20), // Add some spacing
+                        SizedBox(height: 20),
                         CustomDropDown(
-                          value: surveyDataProvider
-                              .selectedStatus, // Use the value from the provider
+                          value: surveyDataProvider.selectedStatus,
                           itemsList: statusList,
                           onChanged: (value) {
-                            // Update the value in the provider
                             surveyDataProvider.updateSelectedStatus(value);
                           },
                         ),

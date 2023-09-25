@@ -1,7 +1,7 @@
 class User {
-  final String uid; // Unique user ID
-  final String email; // User's email address
-  final String name; // User's name
+  final String uid;
+  final String email;
+  final String name;
 
   User({
     required this.uid,

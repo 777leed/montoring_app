@@ -31,7 +31,7 @@ class Place {
     this.currentSupplies,
     this.neededSupplies,
     this.images,
-    required this.addedBy, // AddedBy attribute
+    required this.addedBy,
   });
 
   factory Place.fromFirestore(Map<String, dynamic> data) {
