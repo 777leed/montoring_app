@@ -55,10 +55,10 @@ class SurveyDataProvider extends ChangeNotifier {
   String selectedStatus = "Unknown";
 
   Map<String, dynamic> currentSupplies = {
-    'Tents': '',
-    'Blankets': '',
-    'Cushions': '',
-    'Pallets': '',
+    'Tents': '0',
+    'Blankets': '0',
+    'Cushions': '0',
+    'Pallets': '0',
     'Food': 'Unknown',
     'Construction Materials for Building Rehab': 'Unknown',
     'Hygiene Products': 'Unknown',
@@ -66,10 +66,10 @@ class SurveyDataProvider extends ChangeNotifier {
   };
 
   Map<String, dynamic> neededSupplies = {
-    'Tents': '',
-    'Blankets': '',
-    'Cushions': '',
-    'Pallets': '',
+    'Tents': '0',
+    'Blankets': '0',
+    'Cushions': '0',
+    'Pallets': '0',
     'Food': 'Unknown',
     'Construction Materials for Building Rehab': 'Unknown',
     'Hygiene Products': 'Unknown',

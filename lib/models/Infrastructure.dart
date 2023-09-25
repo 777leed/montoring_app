@@ -16,7 +16,7 @@ class Infrastructure {
   int totalStoresIntact = 0; // Updated field name
 
   String roadStatus = "Stable";
-  String roadName = "";
+  String roadName = "Unknown";
   String roadVehicleType = "N/A";
 
   String waterStatus = "Available";

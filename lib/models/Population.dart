@@ -41,6 +41,28 @@ class Population {
     this.totalLivestockAnimals = 0,
   });
 
+  factory Population.initial() {
+    return Population(
+      totalMenBefore: 0,
+      totalWomenBefore: 0,
+      totalBoysBefore: 0,
+      totalGirlsBefore: 0,
+      totalMenDeaths: 0,
+      totalWomenDeaths: 0,
+      totalBoysDeaths: 0,
+      totalGirlsDeaths: 0,
+      totalMenInjured: 0,
+      totalWomenInjured: 0,
+      totalBoysInjured: 0,
+      totalGirlsInjured: 0,
+      totalMenDisplaced: 0,
+      totalWomenDisplaced: 0,
+      totalBoysDisplaced: 0,
+      totalGirlsDisplaced: 0,
+      totalLivestockAnimals: 0,
+    );
+  }
+
   factory Population.fromMap(Map<String, dynamic> data) {
     return Population(
       totalMenBefore: data['totalMenBefore'],

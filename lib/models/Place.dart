@@ -16,6 +16,7 @@ class Place {
   String addedBy;
   Map<String, dynamic>? currentSupplies;
   Map<String, dynamic>? neededSupplies;
+  List<String>? images;
 
   Place({
     required this.name,
@@ -29,30 +30,32 @@ class Place {
     this.contacts,
     this.currentSupplies,
     this.neededSupplies,
+    this.images,
     required this.addedBy, // AddedBy attribute
   });
 
   factory Place.fromFirestore(Map<String, dynamic> data) {
     return Place(
-      name: data['name'],
-      latitude: data['latitude'],
-      longitude: data['longitude'],
-      status: data['status'],
-      needs: List<String>.from(data['needs'] ?? []),
-      supplies: (data['supplies'] as List<dynamic>?)
-          ?.map((supply) => Supplies.fromMap(supply))
-          .toList(),
-      population: data['population'] != null
-          ? Population.fromMap(data['population'])
-          : null,
-      infrastructure: Infrastructure.fromMap(data['infrastructure'] ?? {}),
-      contacts: (data['contacts'] as List<dynamic>?)
-          ?.map((contact) => Contacts.fromMap(contact))
-          .toList(),
-      addedBy: data['AddedBy'],
-      currentSupplies: (data['currentSupplies'] as Map<String, dynamic>?) ?? {},
-      neededSupplies: (data['neededSupplies'] as Map<String, dynamic>?) ?? {},
-    );
+        name: data['name'],
+        latitude: data['latitude'],
+        longitude: data['longitude'],
+        status: data['status'],
+        needs: List<String>.from(data['needs'] ?? []),
+        supplies: (data['supplies'] as List<dynamic>?)
+            ?.map((supply) => Supplies.fromMap(supply))
+            .toList(),
+        population: data['population'] != null
+            ? Population.fromMap(data['population'])
+            : null,
+        infrastructure: Infrastructure.fromMap(data['infrastructure'] ?? {}),
+        contacts: (data['contacts'] as List<dynamic>?)
+            ?.map((contact) => Contacts.fromMap(contact))
+            .toList(),
+        addedBy: data['AddedBy'],
+        currentSupplies:
+            (data['currentSupplies'] as Map<String, dynamic>?) ?? {},
+        neededSupplies: (data['neededSupplies'] as Map<String, dynamic>?) ?? {},
+        images: List<String>.from(data['images'] ?? []));
   }
 
   Map<String, dynamic> toFirestore() {
@@ -69,6 +72,7 @@ class Place {
       'addedBy': addedBy,
       'currentSupplies': currentSupplies,
       'neededSupplies': neededSupplies,
+      'images': images
     };
   }
 }

@@ -17,10 +17,14 @@ class GoBack extends StatelessWidget {
         SizedBox(
           width: 20,
         ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 18),
-        )
+        Container(
+          width: 200,
+          child: Text(
+            title,
+            style: TextStyle(fontSize: 18),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     );
   }

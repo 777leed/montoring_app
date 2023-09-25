@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/models/Infrastructure.dart'; // Import the Infrastructure model
+import 'package:montoring_app/models/Infrastructure.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InfrastructurePage extends StatefulWidget {
@@ -20,49 +20,256 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
   @override
   void initState() {
     super.initState();
-
     fetchInfrastructureFromFirestore();
   }
 
   Future<void> fetchInfrastructureFromFirestore() async {
-    final firestore = FirebaseFirestore.instance;
-    final placeDocument =
-        await firestore.collection('places').doc(widget.id).get();
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final placeDocument =
+          await firestore.collection('places').doc(widget.id).get();
 
-    if (placeDocument.exists) {
-      final infrastructureData = placeDocument.data()?['infrastructure'];
+      if (placeDocument.exists) {
+        final infrastructureData = placeDocument.data()?['infrastructure'];
 
-      if (infrastructureData != null &&
-          infrastructureData is Map<String, dynamic>) {
-        final infrastructure = Infrastructure.fromMap(infrastructureData);
-        setState(() {
-          this.infrastructure = infrastructure;
-        });
-      } else {
-        setState(() {
-          this.infrastructure = Infrastructure
-              .initial(); // Use the constructor to initialize with default values
-        });
+        if (infrastructureData != null &&
+            infrastructureData is Map<String, dynamic>) {
+          final infrastructure = Infrastructure.fromMap(infrastructureData);
+          setState(() {
+            this.infrastructure = infrastructure;
+          });
+        } else {
+          setState(() {
+            this.infrastructure = Infrastructure.initial();
+          });
+        }
       }
+    } catch (e) {
+      print('Error loading infrastructure data from Firestore: $e');
     }
   }
 
-  void _showInfrastructureDialog(String infrastructureType) {
+  void _showInfrastructureDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('$infrastructureType Statistics'),
+          title: Text('Infrastructure Statistics'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // for (int index = 0; index < 4; index++)
-                //   _buildTextField(
-                //     _getLabelText(index),
-                //     infrastructureType,
-                //     index,
-                //   ),
+                _buildTextField('Total Homes Demolished',
+                    infrastructure?.totalHomesDemolished.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalHomesDemolished =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Homes Unstable',
+                    infrastructure?.totalHomesUnstable.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalHomesUnstable =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Homes Intact',
+                    infrastructure?.totalHomesIntact.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalHomesIntact = int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Schools Demolished',
+                    infrastructure?.totalSchoolsDemolished.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalSchoolsDemolished =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Schools Unstable',
+                    infrastructure?.totalSchoolsUnstable.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalSchoolsUnstable =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Schools Intact',
+                    infrastructure?.totalSchoolsIntact.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalSchoolsIntact =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Stores Demolished',
+                    infrastructure?.totalStoresDemolished.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalStoresDemolished =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Stores Unstable',
+                    infrastructure?.totalStoresUnstable.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalStoresUnstable =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Stores Intact',
+                    infrastructure?.totalStoresIntact.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalStoresIntact =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Mosques Demolished',
+                    infrastructure?.totalMosquesDemolished.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalMosquesDemolished =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Mosques Unstable',
+                    infrastructure?.totalMosquesUnstable.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalMosquesUnstable =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildTextField('Total Mosques Intact',
+                    infrastructure?.totalMosquesIntact.toString() ?? "0",
+                    (value) {
+                  setState(() {
+                    infrastructure?.totalMosquesIntact =
+                        int.tryParse(value) ?? 0;
+                  });
+                }),
+                _buildNameField(
+                  'Road Name',
+                  infrastructure?.roadName ?? "Unknown",
+                  (value) {
+                    setState(() {
+                      infrastructure?.roadName = value;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Road Status",
+                    ),
+                  ],
+                ),
+                DropdownButtonFormField<String>(
+                  value: infrastructure?.roadStatus ?? 'Blocked',
+                  onChanged: (value) {
+                    setState(() {
+                      infrastructure?.roadStatus = value!;
+                    });
+                  },
+                  items: <String>['Blocked', 'Demolished', 'Unstable', 'Stable']
+                      .map((status) {
+                    return DropdownMenuItem<String>(
+                      value: status,
+                      child: Text(status),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Vehicle Type",
+                    ),
+                  ],
+                ),
+                DropdownButtonFormField<String>(
+                  value: infrastructure?.roadVehicleType ?? 'Regular Car',
+                  onChanged: (value) {
+                    setState(() {
+                      infrastructure?.roadVehicleType = value!;
+                    });
+                  },
+                  items: <String>[
+                    'Regular Car',
+                    '4x4',
+                    'Truck',
+                    'Motorcycle',
+                    'N/A'
+                  ].map((type) {
+                    return DropdownMenuItem<String>(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Electricity Status",
+                    ),
+                  ],
+                ),
+                DropdownButtonFormField<String>(
+                  value: infrastructure?.electricityStatus ?? 'Unknown',
+                  onChanged: (value) {
+                    setState(() {
+                      infrastructure?.electricityStatus = value!;
+                    });
+                  },
+                  items: <String>['Available', 'Not Available'].map((type) {
+                    return DropdownMenuItem<String>(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Water Status",
+                    ),
+                  ],
+                ),
+                DropdownButtonFormField<String>(
+                  value: infrastructure?.waterStatus ?? 'Unknown',
+                  onChanged: (value) {
+                    setState(() {
+                      infrastructure?.waterStatus = value!;
+                    });
+                  },
+                  items: <String>['Available', 'Not Available'].map((type) {
+                    return DropdownMenuItem<String>(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),
@@ -80,84 +287,24 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
     );
   }
 
-  String _getLabelText(int index) {
-    switch (index) {
-      case 0:
-        return 'Total Before Earthquake';
-      case 1:
-        return 'Lost';
-      case 2:
-        return 'Unstable & Need Rehab';
-      case 3:
-        return 'Stable';
-      default:
-        return '';
-    }
+  Widget _buildTextField(
+      String labelText, String value, ValueChanged<String> onChanged) {
+    return TextField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: labelText),
+      onChanged: onChanged,
+      controller: TextEditingController(text: value),
+    );
   }
 
-  // Widget _buildTextField(
-  //   String labelText,
-  //   String infrastructureType,
-  //   int index,
-  // ) {
-  //   return TextField(
-  //     keyboardType: TextInputType.number,
-  //     decoration: InputDecoration(labelText: labelText),
-  //     onChanged: (value) {
-  //       setState(() {
-  //         if (infrastructure != null) {
-  //           switch (infrastructureType) {
-  //             case 'Home':
-  //               infrastructure!.homeStatistics[index] =
-  //                   int.tryParse(value) ?? 0;
-  //               break;
-  //             case 'School':
-  //               infrastructure!.schoolStatistics[index] =
-  //                   int.tryParse(value) ?? 0;
-  //               break;
-  //             case 'Mosque':
-  //               infrastructure!.mosqueStatistics[index] =
-  //                   int.tryParse(value) ?? 0;
-  //               break;
-  //             case 'Road':
-  //               infrastructure!.roadStatistics[index] =
-  //                   int.tryParse(value) ?? 0;
-  //               break;
-  //             case 'Store':
-  //               infrastructure!.storeStatistics[index] =
-  //                   int.tryParse(value) ?? 0;
-  //               break;
-  //             default:
-  //               break;
-  //           }
-  //         }
-  //       });
-  //     },
-  //     controller: TextEditingController(
-  //       text: _getInfrastructureValue(infrastructureType, index),
-  //     ),
-  //   );
-  // }
-
-  // String _getInfrastructureValue(String type, int index) {
-  //   if (infrastructure != null) {
-  //     switch (type) {
-  //       case 'Home':
-  //         return infrastructure!.homeStatistics[index].toString();
-  //       case 'School':
-  //         return infrastructure!.schoolStatistics[index].toString();
-  //       case 'Mosque':
-  //         return infrastructure!.mosqueStatistics[index].toString();
-  //       case 'Road':
-  //         return infrastructure!.roadStatistics[index].toString();
-  //       case 'Store':
-  //         return infrastructure!.storeStatistics[index].toString();
-  //       default:
-  //         break;
-  //     }
-  //   }
-  //   return '';
-  // }
+  Widget _buildNameField(
+      String labelText, String value, ValueChanged<String> onChanged) {
+    return TextField(
+      decoration: InputDecoration(labelText: labelText),
+      onChanged: onChanged,
+      controller: TextEditingController(text: value),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,32 +314,79 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
       ),
       body: infrastructure != null
           ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  _buildInfrastructureTile('Home', Icons.home),
-                  _buildInfrastructureTile('School', Icons.school),
-                  _buildInfrastructureTile('Mosque', Icons.mosque),
-                  _buildInfrastructureTile('Road', Icons.directions),
-                  _buildInfrastructureTile('Store', Icons.store),
-                  // Add more tiles for other types
-                ],
+              padding: const EdgeInsets.all(25.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    _buildInfrastructureTile('Homes', Icon(Icons.home), 'home'),
+                    _buildInfrastructureTile(
+                        "Schools", Icon(Icons.school), 'school'),
+                    _buildInfrastructureTile(
+                        "Mosques", Icon(Icons.mosque), 'mosque'),
+                    _buildInfrastructureTile(
+                        "Stores", Icon(Icons.store), 'store'),
+                    _buildInfrastructureTile(
+                        "Road", Icon(Icons.roundabout_left), 'road'),
+                    _buildInfrastructureTile("Water & Electricity",
+                        Icon(Icons.energy_savings_leaf), 'we')
+                  ],
+                ),
               ),
             )
           : Center(
               child: CircularProgressIndicator(),
             ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showInfrastructureDialog();
+        },
+        child: Icon(Icons.edit),
+      ),
     );
   }
 
-  Widget _buildInfrastructureTile(String infrastructureType, IconData icon) {
+  Widget _buildInfrastructureTile(
+      String infrastructureType, Icon icon, String type) {
     return ListTile(
       title: Text(infrastructureType),
-      leading: Icon(icon),
-      onTap: () {
-        _showInfrastructureDialog(infrastructureType);
-      },
+      leading: icon, // Use an appropriate icon
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (type == "home") ...{
+            Text(
+                'Total Demolished: ${infrastructure?.totalHomesDemolished ?? 0}'),
+            Text('Total Unstable: ${infrastructure?.totalHomesUnstable ?? 0}'),
+            Text('Total Intact: ${infrastructure?.totalHomesIntact ?? 0}'),
+          } else if (type == "mosque") ...{
+            Text(
+                'Total Demolished: ${infrastructure?.totalMosquesDemolished ?? 0}'),
+            Text(
+                'Total Unstable: ${infrastructure?.totalMosquesUnstable ?? 0}'),
+            Text('Total Intact: ${infrastructure?.totalMosquesIntact ?? 0}'),
+          } else if (type == "school") ...{
+            Text(
+                'Total Demolished: ${infrastructure?.totalSchoolsDemolished ?? 0}'),
+            Text(
+                'Total Unstable: ${infrastructure?.totalSchoolsUnstable ?? 0}'),
+            Text('Total Intact: ${infrastructure?.totalSchoolsIntact ?? 0}'),
+          } else if (type == "store") ...{
+            Text(
+                'Total Demolished: ${infrastructure?.totalStoresDemolished ?? 0}'),
+            Text('Total Unstable: ${infrastructure?.totalStoresUnstable ?? 0}'),
+            Text('Total Intact: ${infrastructure?.totalStoresIntact ?? 0}'),
+          } else if (type == "road") ...{
+            Text('Road Name: ${infrastructure?.roadName ?? "Unknown"}'),
+            Text('Road Status: ${infrastructure?.roadStatus ?? "Unknown"}'),
+            Text('Vehicle Type: ${infrastructure?.roadVehicleType ?? "N/A"}'),
+          } else if (type == "we") ...{
+            Text('Water Status: ${infrastructure?.waterStatus ?? "Unknown"}'),
+            Text(
+                'Electricity Status: ${infrastructure?.electricityStatus ?? "Unknown"}'),
+          }
+        ],
+      ),
     );
   }
 
@@ -201,7 +395,7 @@ class _InfrastructurePageState extends State<InfrastructurePage> {
       final firestore = FirebaseFirestore.instance;
 
       final Map<String, dynamic> updatedInfrastructureData =
-          infrastructure!.toMap();
+          infrastructure?.toMap() ?? {};
 
       await firestore.collection('places').doc(widget.id).update({
         'infrastructure': updatedInfrastructureData,

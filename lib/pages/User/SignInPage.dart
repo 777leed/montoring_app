@@ -27,8 +27,8 @@ class _SignInPageState extends State<SignInPage> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passController.text,
+        email: emailController.text.trim(),
+        password: passController.text.trim(),
       );
     } catch (e) {
       print('Error signing in: $e');
@@ -64,96 +64,89 @@ class _SignInPageState extends State<SignInPage> {
             padding: EdgeInsets.all(25),
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Center(
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      child: Image.asset('Assets/images/rc.png'),
+                    ),
+                  ),
+                  Text(
+                    "Log In",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: mainTextColor, fontSize: 36),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  MyTextField(
+                    obs: false,
+                    controller: emailController,
+                    hint: "Email / ID",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  MyTextField(
+                    obs: true,
+                    controller: passController,
+                    hint: "Key / Password",
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : ElevatedButton(
+                          onPressed: () {
+                            signUserIn();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.all(14),
+                          ),
+                          child: Text(
+                            "Log In",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          child: Image.asset('Assets/images/rc.png'),
+                      Text(
+                        "If you don't have an account, ",
+                        style: TextStyle(
+                          color: secondaryTextColor,
+                          fontSize: 14,
                         ),
                       ),
-                      Text(
-                        "Log In",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: mainTextColor, fontSize: 36),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      MyTextField(
-                        obs: false,
-                        controller: emailController,
-                        hint: "Email / ID",
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      MyTextField(
-                        obs: true,
-                        controller: passController,
-                        hint: "Key / Password",
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      isLoading
-                          ? Center(child: CircularProgressIndicator())
-                          : GestureDetector(
-                              onTap: () {
-                                signUserIn();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(14),
-                                decoration: BoxDecoration(
-                                  color: mainColor,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Log In",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "If you don't have an account, ",
-                            style: TextStyle(
-                              color: secondaryTextColor,
-                              fontSize: 14,
-                            ),
+                      TextButton(
+                        onPressed: goToSignUpPage, // Navigate to sign-up page
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color:
+                                mainColor, // You can use your main color here
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                          TextButton(
-                            onPressed:
-                                goToSignUpPage, // Navigate to sign-up page
-                            child: Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                color:
-                                    mainColor, // You can use your main color here
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:montoring_app/models/InverntoryItem.dart';
+import 'package:path_provider/path_provider.dart';
 
 class InventoryPage extends StatefulWidget {
   @override
@@ -169,11 +172,85 @@ class _InventoryPageState extends State<InventoryPage> {
     }
   }
 
+  Future<void> _exportInventoryItems() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final List<Map<String, dynamic>> jsonData = [];
+
+      inventoryItems.forEach((item) {
+        final Map<String, dynamic> itemData = {
+          'id': item.id,
+          'name': item.name,
+          'type': item.type,
+          'quantity': item.quantity,
+          'dateAdded': item.dateAdded.toIso8601String(),
+          'imageURL': item.imageURL,
+        };
+
+        jsonData.add(itemData);
+      });
+
+      final String jsonString = jsonEncode(jsonData);
+
+      final String jsonFileName = 'inventory_items.json';
+      final Directory? directory = await getExternalStorageDirectory();
+      final String filePath = '${directory!.path}/$jsonFileName';
+      final File file = File(filePath);
+
+      await file.writeAsString(jsonString);
+
+      final Reference storageReference = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('exports/$jsonFileName');
+      final UploadTask uploadTask = storageReference.putFile(file);
+
+      await uploadTask.whenComplete(() async {
+        final String downloadURL = await storageReference.getDownloadURL();
+
+        await FirebaseFirestore.instance.collection('exports').add({
+          'downloadURL': downloadURL,
+          'exportDate': FieldValue.serverTimestamp(),
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Inventory items exported and uploaded.'),
+          ),
+        );
+
+        setState(() {
+          isLoading = false;
+        });
+      });
+    } catch (e) {
+      print('Error exporting inventory items: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error exporting inventory items.'),
+        ),
+      );
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Inventory Page'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.cloud_upload),
+            onPressed: _exportInventoryItems,
+          ),
+        ],
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

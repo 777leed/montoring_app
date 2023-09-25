@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
+import 'package:montoring_app/pages/Survey/FullSurvey.dart';
 import 'package:uuid/uuid.dart';
 
 class LocationSearch extends StatefulWidget {
-  const LocationSearch({super.key});
+  LocationSearch({super.key});
 
   @override
   State<LocationSearch> createState() => _LocationSearchState();
@@ -55,6 +58,58 @@ class _LocationSearchState extends State<LocationSearch> {
     });
   }
 
+  Future<void> addPlaceToFirestore(
+    String name,
+    double latitude,
+    double longitude,
+    String status,
+  ) async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    String? currentId;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      final querySnapshot = await firestore
+          .collection('places')
+          .where('latitude', isEqualTo: latitude)
+          .where('longitude', isEqualTo: longitude)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Location already added'),
+          ),
+        );
+      } else {
+        await firestore.collection('places').add({
+          'name': name,
+          'latitude': latitude,
+          'longitude': longitude,
+          'status': status,
+          'needs': [],
+          'infrastructure': [],
+          'population': [],
+          'supplies': [],
+          'contacts': [],
+          'AddedBy': userId,
+          'currentSupplies': [],
+          'neededSupplies': [],
+          'images': []
+        }).then((documentSnapshot) {
+          currentId = documentSnapshot.id;
+          print(currentId);
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => FullSurvey(placeId: currentId),
+            ),
+          );
+        });
+      }
+    } catch (e) {
+      print('Error adding place to Firestore: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,8 +131,11 @@ class _LocationSearchState extends State<LocationSearch> {
                         onTap: () async {
                           List<Location> locations = await locationFromAddress(
                               listForPlaces[index]['description']);
-                          print(locations.last.longitude);
-                          print(locations.last.latitude);
+                          addPlaceToFirestore(
+                              listForPlaces[index]['description'],
+                              locations.last.latitude,
+                              locations.last.longitude,
+                              "Unknown");
                         },
                         title: Text(listForPlaces[index]["description"]),
                       );

@@ -6,6 +6,7 @@ import 'package:montoring_app/components/MyOptions.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
+import 'package:montoring_app/pages/Maps/LocationSearch.dart';
 import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/pages/Survey/FullSurvey.dart';
 import 'package:montoring_app/styles.dart';
@@ -191,52 +192,6 @@ class _AddPlacePageState extends State<AddPlacePage> {
       }
     } catch (e) {
       print('Error adding current location to Firestore: $e');
-    }
-  }
-
-  Future<void> updatePlace(Function callback) async {
-    if (selectedMarker != null && selectedMarker!.isNotEmpty) {
-      final selectedLatitude = selectedMarker![0].position.latitude;
-      final selectedLongitude = selectedMarker![0].position.longitude;
-      try {
-        final querySnapshot = await firestore
-            .collection('places')
-            .where('latitude', isEqualTo: selectedLatitude)
-            .where('longitude', isEqualTo: selectedLongitude)
-            .get();
-
-        if (querySnapshot.docs.isNotEmpty) {
-          final placeId = querySnapshot.docs[0].id;
-
-          final placeDoc =
-              await firestore.collection('places').doc(placeId).get();
-          if (placeDoc.exists) {
-            final place = placeDoc.data();
-            final name = place!['name'];
-            final latitude = place['latitude'];
-            final longitude = place['longitude'];
-            final status = place['status'];
-            final needs = List<String>.from(place['needs'] ?? []);
-
-            setState(() {
-              selectedPlace = Place(
-                  name: name,
-                  latitude: latitude,
-                  longitude: longitude,
-                  status: status,
-                  needs: needs,
-                  addedBy: userId);
-              id = placeId;
-            });
-            callback();
-          }
-        } else {
-          print(
-              'Place not found for latitude: $selectedLatitude, longitude: $selectedLongitude');
-        }
-      } catch (e) {
-        print('Error getting place from Firestore: $e');
-      }
     }
   }
 
@@ -475,7 +430,12 @@ class _AddPlacePageState extends State<AddPlacePage> {
                         title: "Search",
                         onTap: () {
                           Navigator.of(context).pop();
-                          addCurrentLocationToFirestore();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => LocationSearch(),
+                            ),
+                          );
+                          ;
                         }),
                     MyOptions(
                         icon: Icon(Icons.handyman),
@@ -680,12 +640,16 @@ class _AddPlacePageState extends State<AddPlacePage> {
                           children: [
                             Row(
                               children: [
-                                Text(
-                                  selectedMarker != null &&
-                                          selectedMarker!.isNotEmpty
-                                      ? selectedMarker![0].markerId.value
-                                      : "Select an Area",
-                                  style: TextStyle(fontSize: 20),
+                                Container(
+                                  width: 200,
+                                  child: Text(
+                                    selectedMarker != null &&
+                                            selectedMarker!.isNotEmpty
+                                        ? selectedMarker![0].markerId.value
+                                        : "Select an Area",
+                                    style: TextStyle(fontSize: 20),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                                 SizedBox(width: 10),
                                 Icon(Icons.pin_drop_rounded)

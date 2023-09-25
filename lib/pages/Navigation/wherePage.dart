@@ -3,6 +3,7 @@ import 'package:montoring_app/pages/Maps/AddPlacePage.dart';
 import 'package:montoring_app/pages/Maps/ExploreMap.dart';
 import 'package:montoring_app/pages/User/AuthPage.dart';
 import 'package:montoring_app/pages/Maps/EditPlacePage.dart';
+import 'package:montoring_app/pages/data/ExportPage.dart';
 import 'package:montoring_app/pages/data/InventoryPage.dart';
 
 import 'package:montoring_app/styles.dart';
@@ -48,7 +49,7 @@ class WherePage extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).push(
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => AuthPage(),
               ),
@@ -61,7 +62,7 @@ class WherePage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(25),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
@@ -129,6 +130,42 @@ class WherePage extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => InventoryPage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildButton(
+                    Icon(
+                      Icons.import_export,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                    "Export",
+                    () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ExportPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  buildButton(
+                    Icon(
+                      Icons.dashboard,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                    "Home",
+                    () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => AuthPage(),
                         ),
                       );
                     },

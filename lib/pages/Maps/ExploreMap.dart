@@ -59,21 +59,10 @@ class _ExploreMapState extends State<ExploreMap> {
           final placeDoc =
               await firestore.collection('places').doc(placeId).get();
           if (placeDoc.exists) {
-            final place = placeDoc.data();
-            final name = place!['name'];
-            final latitude = place['latitude'];
-            final longitude = place['longitude'];
-            final status = place['status'];
-            final needs = List<String>.from(place['needs'] ?? []);
+            final placeData = placeDoc.data() as Map<String, dynamic>;
 
             setState(() {
-              selectedPlace = Place(
-                  name: name,
-                  latitude: latitude,
-                  longitude: longitude,
-                  status: status,
-                  needs: needs,
-                  addedBy: userId);
+              selectedPlace = Place.fromFirestore(placeData);
               id = placeId;
             });
             callback();
@@ -348,12 +337,16 @@ class _ExploreMapState extends State<ExploreMap> {
                           children: [
                             Row(
                               children: [
-                                Text(
-                                  selectedMarker != null &&
-                                          selectedMarker!.isNotEmpty
-                                      ? selectedMarker![0].markerId.value
-                                      : "Select an Area",
-                                  style: TextStyle(fontSize: 20),
+                                Container(
+                                  width: 200,
+                                  child: Text(
+                                    selectedMarker != null &&
+                                            selectedMarker!.isNotEmpty
+                                        ? selectedMarker![0].markerId.value
+                                        : "Select an Area",
+                                    style: TextStyle(fontSize: 20),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                                 SizedBox(width: 10),
                                 Icon(Icons.pin_drop_rounded)

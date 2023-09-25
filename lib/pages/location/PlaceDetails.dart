@@ -1,3 +1,4 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/EditCard.dart';
@@ -5,9 +6,12 @@ import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
 import 'package:montoring_app/pages/location/ContactsPage.dart';
 import 'package:montoring_app/pages/Maps/EditPlacePage.dart';
+import 'package:montoring_app/pages/location/CurrentNeeds.dart';
+import 'package:montoring_app/pages/location/GalleryPage.dart';
 import 'package:montoring_app/pages/location/InfraPage.dart';
 import 'package:montoring_app/pages/location/LocationPage.dart';
 import 'package:montoring_app/pages/location/NeedsPage.dart';
+import 'package:montoring_app/pages/location/NormalSupplies.dart';
 import 'package:montoring_app/pages/location/PopulationPage.dart';
 import 'package:montoring_app/pages/location/SuppliesPage.dart';
 
@@ -69,6 +73,9 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                 await firestore.collection('places').doc(widget.id).update({
                   'status': selectedStatus,
                 });
+                setState(() {
+                  widget.place!.status = selectedStatus;
+                });
                 Navigator.of(context).pop();
               },
               child: Text('Save'),
@@ -102,7 +109,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GoBack(
-                        title: widget.place!.name,
+                        title: StringUtils.capitalize(widget.place!.name),
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
@@ -197,9 +204,19 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                         children: [
                           Flexible(
                             child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => NormalSuppliesPage(
+                                      place: widget.place,
+                                      id: widget.id,
+                                    ),
+                                  ),
+                                );
+                              },
                               child: EditCard(
-                                title: "Analytics",
-                                img: "Assets/images/analytics.png",
+                                title: "Current\n Supplies",
+                                img: "Assets/images/export.png",
                               ),
                             ),
                           ),
@@ -209,7 +226,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => NeedsPage(
+                                    builder: (context) => CurrentNeedsPage(
                                       place: widget.place,
                                       id: widget.id,
                                     ),
@@ -217,11 +234,11 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                                 );
                               },
                               child: EditCard(
-                                title: "Needs",
-                                img: "Assets/images/expectation.png",
+                                title: "Needed\nSupplies",
+                                img: "Assets/images/unboxing.png",
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                       SizedBox(
@@ -268,6 +285,50 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => GalleryPage(
+                                      place: widget.place,
+                                      placeId: widget.id,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: EditCard(
+                                title: "Gallery\n",
+                                img: "Assets/images/image.png",
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => NeedsPage(
+                                      place: widget.place,
+                                      id: widget.id,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: EditCard(
+                                title: "Needs",
+                                img: "Assets/images/expectation.png",
+                              ),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
