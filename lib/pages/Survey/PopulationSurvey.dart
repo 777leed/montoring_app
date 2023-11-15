@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:montoring_app/components/MyBanner.dart';
+import 'package:montoring_app/components/myHeader.dart';
 import 'package:montoring_app/pages/Survey/SurveyData.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PopulationSurvey extends StatefulWidget {
   @override
@@ -9,206 +13,150 @@ class PopulationSurvey extends StatefulWidget {
 
 class _PopulationSurveyState extends State<PopulationSurvey>
     with AutomaticKeepAliveClientMixin {
-  int totalMenBefore = 0;
-  int totalWomenBefore = 0;
-  int totalBoysBefore = 0;
-  int totalGirlsBefore = 0;
+  int totalMen = 0;
+  int totalWomen = 0;
+  int totalOlderBoys = 0;
+  int totalOlderGirls = 0;
+  int totalYoungerBoys = 0;
+  int totalYoungerGirls = 0;
 
-  int totalMenDeaths = 0;
-  int totalWomenDeaths = 0;
-  int totalBoysDeaths = 0;
-  int totalGirlsDeaths = 0;
+  int totalFamilies = 0;
 
-  int totalMenInjured = 0;
-  int totalWomenInjured = 0;
-  int totalBoysInjured = 0;
-  int totalGirlsInjured = 0;
+  int totalPopulation = 0;
+  int totalHouseholds = 0;
 
   int totalMenDisplaced = 0;
   int totalWomenDisplaced = 0;
   int totalBoysDisplaced = 0;
   int totalGirlsDisplaced = 0;
 
-  int totalLivestockAnimals = 0;
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: AppBar(
+        title: myHeader(
+            title: l.populationSurveyTitle, icon: Icon(LineIcons.users)),
+      ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Population Status:',
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Icon(Icons.people_alt)
-                ],
-              ),
-              SizedBox(
-                height: 20,
+              Center(
+                child: MyBanner(title: "", img: "Assets/images/people.png"),
               ),
               Text(
-                'Total Population Before the Earthquake:',
+                l.generalInfoTitle,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.0),
               buildPopulationInputFields(
-                'Men',
-                totalMenBefore,
+                l.totalPopulationLabelText,
+                totalPopulation,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalMenBefore(int.tryParse(value) ?? 0),
+                        .updateTotalPopulation(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Women',
-                totalWomenBefore,
+                l.totalFamiliesLabelText,
+                totalFamilies,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalWomenBefore(int.tryParse(value) ?? 0),
+                        .updateTotalFamilies(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Boys',
-                totalBoysBefore,
+                l.totalHouseholdsText,
+                totalHouseholds,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalBoysBefore(int.tryParse(value) ?? 0),
-              ),
-              buildPopulationInputFields(
-                'Girls',
-                totalGirlsBefore,
-                (value) =>
-                    Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalGirlsBefore(int.tryParse(value) ?? 0),
+                        .updateTotalHouseHolds(int.tryParse(value) ?? 0),
               ),
               SizedBox(height: 16.0),
               Text(
-                'Total Deaths:',
+                l.currentPopulationSectionTitle,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.0),
               buildPopulationInputFields(
-                'Men',
-                totalMenDeaths,
+                l.menLabelText,
+                totalMen,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalMenDeaths(int.tryParse(value) ?? 0),
+                        .updateTotalMen(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Women',
-                totalWomenDeaths,
+                l.womenLabelText,
+                totalWomen,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalWomenDeaths(int.tryParse(value) ?? 0),
+                        .updateTotalWomen(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Boys',
-                totalBoysDeaths,
+                l.boysAbove18LabelText,
+                totalOlderBoys,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalBoysDeaths(int.tryParse(value) ?? 0),
+                        .updateTotalOlderBoys(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Girls',
-                totalGirlsDeaths,
+                l.boysUnder18LabelText,
+                totalYoungerBoys,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalGirlsDeaths(int.tryParse(value) ?? 0),
+                        .updateTotalYoungerBoys(int.tryParse(value) ?? 0),
+              ),
+              buildPopulationInputFields(
+                l.girlsAbove18LabelText,
+                totalOlderGirls,
+                (value) =>
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateTotalOlderGirls(int.tryParse(value) ?? 0),
+              ),
+              buildPopulationInputFields(
+                l.girlsUnder18LabelText,
+                totalYoungerGirls,
+                (value) =>
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateTotalYoungerGirls(int.tryParse(value) ?? 0),
               ),
               SizedBox(height: 16.0),
               Text(
-                'Total Injured:',
+                l.totalDisplacedTitle,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8.0),
               buildPopulationInputFields(
-                'Men',
-                totalMenInjured,
-                (value) =>
-                    Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalMenInjured(int.tryParse(value) ?? 0),
-              ),
-              buildPopulationInputFields(
-                'Women',
-                totalWomenInjured,
-                (value) =>
-                    Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalWomenInjured(int.tryParse(value) ?? 0),
-              ),
-              buildPopulationInputFields(
-                'Boys',
-                totalBoysInjured,
-                (value) =>
-                    Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalBoysInjured(int.tryParse(value) ?? 0),
-              ),
-              buildPopulationInputFields(
-                'Girls',
-                totalGirlsInjured,
-                (value) =>
-                    Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalGirlsInjured(int.tryParse(value) ?? 0),
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                'Total Displaced:',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8.0),
-              buildPopulationInputFields(
-                'Men',
+                l.menLabelText,
                 totalMenDisplaced,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
                         .updateTotalMenDisplaced(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Women',
+                l.womenLabelText,
                 totalWomenDisplaced,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
                         .updateTotalWomenDisplaced(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Boys',
+                l.boysText,
                 totalBoysDisplaced,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
                         .updateTotalBoysDisplaced(int.tryParse(value) ?? 0),
               ),
               buildPopulationInputFields(
-                'Girls',
+                l.girlsText,
                 totalGirlsDisplaced,
                 (value) =>
                     Provider.of<SurveyDataProvider>(context, listen: false)
                         .updateTotalGirlsDisplaced(int.tryParse(value) ?? 0),
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                'Total Livestock Animals:',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8.0),
-              buildPopulationInputFields(
-                'Animals',
-                totalLivestockAnimals,
-                (value) =>
-                    Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateTotalLivestockAnimals(int.tryParse(value) ?? 0),
               ),
             ],
           ),
@@ -233,7 +181,7 @@ class _PopulationSurveyState extends State<PopulationSurvey>
           child: TextFormField(
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              hintText: 'Enter $label',
+              hintText: '$label',
             ),
             initialValue: value.toString(),
             onChanged: onChanged,

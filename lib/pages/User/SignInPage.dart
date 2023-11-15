@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:montoring_app/components/myTextField.dart';
 import 'package:montoring_app/pages/User/SignUpPage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:montoring_app/utils/ChangeLanguageNotifier.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -31,12 +35,10 @@ class _SignInPageState extends State<SignInPage> {
         password: passController.text.trim(),
       );
     } catch (e) {
-      print('Error signing in: $e');
+      debugPrint('Error signing in: $e');
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error signing in: $e'),
-        ),
+        SnackBar(content: Text(AppLocalizations.of(context)!.error)),
       );
     } finally {
       setState(() {
@@ -45,18 +47,60 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  // Function to navigate to the sign-up page
   void goToSignUpPage() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => SignUpPage(), // Replace with your sign-up page
+        builder: (context) => SignUpPage(),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () {
+          final provider = Provider.of<ChangeLanguage>(context, listen: false);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(AppLocalizations.of(context)!.selectPreferenceHint),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('English'),
+                        onTap: () {
+                          provider.changeLocale(Locale('en'));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Arabic'),
+                        onTap: () {
+                          provider.changeLocale(Locale('ar'));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ListTile(
+                        title: Text('French'),
+                        onTap: () {
+                          provider.changeLocale(Locale('fr'));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        child: Icon(Icons.language),
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
@@ -74,10 +118,16 @@ class _SignInPageState extends State<SignInPage> {
                       child: Image.asset('Assets/images/rc.png'),
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
-                    "Log In",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: mainTextColor, fontSize: 36),
+                    l.logInButton,
+                    style: GoogleFonts.poppins(
+                        textStyle: Theme.of(context).textTheme.displayLarge,
+                        fontSize: 36,
+                        fontWeight: FontWeight.w400,
+                        color: mainTextColor),
                   ),
                   SizedBox(
                     height: 30,
@@ -85,7 +135,7 @@ class _SignInPageState extends State<SignInPage> {
                   MyTextField(
                     obs: false,
                     controller: emailController,
-                    hint: "Email / ID",
+                    hint: l.nameTextField,
                   ),
                   SizedBox(
                     height: 20,
@@ -93,7 +143,7 @@ class _SignInPageState extends State<SignInPage> {
                   MyTextField(
                     obs: true,
                     controller: passController,
-                    hint: "Key / Password",
+                    hint: l.passwordTextField,
                   ),
                   SizedBox(
                     height: 30,
@@ -105,19 +155,20 @@ class _SignInPageState extends State<SignInPage> {
                             signUserIn();
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: mainColor,
+                            backgroundColor: mainColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             padding: EdgeInsets.all(14),
                           ),
                           child: Text(
-                            "Log In",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            l.signIn,
+                            style: GoogleFonts.poppins(
+                                textStyle:
+                                    Theme.of(context).textTheme.displayLarge,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
                           ),
                         ),
                   SizedBox(
@@ -127,25 +178,27 @@ class _SignInPageState extends State<SignInPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "If you don't have an account, ",
+                        l.noAccountText,
                         style: TextStyle(
                           color: secondaryTextColor,
                           fontSize: 14,
                         ),
                       ),
-                      TextButton(
-                        onPressed: goToSignUpPage, // Navigate to sign-up page
+                      GestureDetector(
+                        onTap: goToSignUpPage,
                         child: Text(
-                          "Sign Up",
+                          ' ' + l.signUpLink,
                           style: TextStyle(
-                            color:
-                                mainColor, // You can use your main color here
+                            color: mainColor,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: 30,
                   ),
                 ],
               ),

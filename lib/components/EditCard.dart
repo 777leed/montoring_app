@@ -17,17 +17,20 @@ class EditCard extends StatelessWidget {
           color: CustomColors.secondaryColor,
           borderRadius: BorderRadius.circular(10)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
+              Flexible(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
               ),
               Icon(
                 Icons.edit,

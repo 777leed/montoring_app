@@ -3,9 +3,22 @@ import 'package:montoring_app/components/myCard.dart';
 import 'package:montoring_app/components/myTitle.dart';
 import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class onlyDisaster extends StatelessWidget {
-  const onlyDisaster({super.key});
+class onlyDisaster extends StatefulWidget {
+  onlyDisaster({super.key});
+
+  @override
+  State<onlyDisaster> createState() => _onlyDisasterState();
+}
+
+class _onlyDisasterState extends State<onlyDisaster> {
+  late AppLocalizations l;
+  @override
+  void didChangeDependencies() {
+    l = AppLocalizations.of(context)!;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,8 @@ class onlyDisaster extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        myTitle(title: "Disaster Relief", icon: Icon(Icons.warning_rounded)),
+        myTitle(
+            title: l.disasterReliefTitle, icon: Icon(Icons.warning_rounded)),
         SizedBox(
           height: 10,
         ),
@@ -28,9 +42,8 @@ class onlyDisaster extends StatelessWidget {
             },
             img: 'Assets/images/earthquake.png',
             color: CustomColors.secondaryColor,
-            title: "Moroco Earthquake",
-            desc:
-                "Disaster Recovery for towns and villages impacted by the earthquake"),
+            title: l.moroccoEarthquakeTitle,
+            desc: l.disasterRecoveryDescription),
       ],
     );
   }

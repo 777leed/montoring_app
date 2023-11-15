@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:montoring_app/pages/Survey/SurveyData.dart';
 import 'dart:io';
@@ -11,7 +12,8 @@ class ImageUploadPage extends StatefulWidget {
   _ImageUploadPageState createState() => _ImageUploadPageState();
 }
 
-class _ImageUploadPageState extends State<ImageUploadPage> {
+class _ImageUploadPageState extends State<ImageUploadPage>
+    with AutomaticKeepAliveClientMixin {
   final picker = ImagePicker();
   List<File> _images = [];
 
@@ -29,21 +31,41 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
     _processPickedFile(pickedFile);
   }
 
-  void _processPickedFile(XFile? pickedFile) {
-    setState(() {
-      if (pickedFile != null) {
-        _images.add(File(pickedFile.path));
+  Future<void> _processPickedFile(XFile? pickedFile) async {
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      final compressedImage = await testCompressAndGetFile(
+        file,
+        pickedFile.path,
+      );
+
+      setState(() {
+        _images.add(compressedImage);
         Provider.of<SurveyDataProvider>(context, listen: false)
             .addImagePath(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+      });
+    } else {
+      debugPrint('No image selected.');
+    }
+  }
+
+  Future<File> testCompressAndGetFile(File file, String targetPath) async {
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 75,
+      rotate: 180,
+    );
+    var newfile = File(result!.path);
+    return newfile;
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(25),
@@ -145,4 +167,7 @@ class _ImageUploadPageState extends State<ImageUploadPage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

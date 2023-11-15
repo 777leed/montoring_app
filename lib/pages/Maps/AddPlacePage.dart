@@ -5,7 +5,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:montoring_app/components/MyOptions.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
+import 'package:montoring_app/models/EducationStatistics.dart';
+import 'package:montoring_app/models/Infrastructure.dart';
 import 'package:montoring_app/models/Place.dart';
+import 'package:montoring_app/models/Population.dart';
+import 'package:montoring_app/models/coordinates.dart';
+import 'package:montoring_app/pages/Maps/HelperMe.dart';
 import 'package:montoring_app/pages/Maps/LocationSearch.dart';
 import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/pages/Survey/FullSurvey.dart';
@@ -13,6 +18,8 @@ import 'package:montoring_app/styles.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddPlacePage extends StatefulWidget {
   const AddPlacePage({Key? key});
@@ -30,26 +37,27 @@ class _AddPlacePageState extends State<AddPlacePage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleMapController? _googleMapController;
   TextEditingController searchController = TextEditingController();
-  var dropdownValue = "Unknown";
+  late var dropdownValue;
   Set<Marker> myMarkers = {};
   List<Place> placeListToShow = [];
-
-  List<String> list = <String>[
-    'Unknown',
-    'Safe',
-    'Severe',
-    'Moderate',
-    'Minor'
-  ];
   List<dynamic> availablePlaces = [];
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  late AppLocalizations l;
 
   @override
   void initState() {
     selectedMarker = [];
     loadMarkers();
     fetchPlaces();
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    l = AppLocalizations.of(context)!;
+    dropdownValue = l.unknownText;
+    super.didChangeDependencies();
   }
 
   Future<void> fetchPlaces() async {
@@ -58,18 +66,44 @@ class _AddPlacePageState extends State<AddPlacePage> {
       final places = placesSnapshot.docs;
 
       final placeList = places.map((place) {
-        final name = place.get('name');
-        final latitude = place.get('latitude');
-        final longitude = place.get('longitude');
-        final status = place.get('status');
-        final addedby = place.get('AddedBy');
+        final data = place.data();
+        final name = data.containsKey('name') ? data['name'] : '';
+        final coordinates = data.containsKey('coordinates')
+            ? MyCoordinates(
+                latitude: data['coordinates']['latitude'],
+                longitude: data['coordinates']['longitude'],
+              )
+            : null;
+        final status = data.containsKey('status') ? data['status'] : '';
+        final addedBy = data.containsKey('AddedBy') ? data['AddedBy'] : '';
 
         return Place(
           name: name,
-          latitude: latitude,
-          longitude: longitude,
+          coordinates: coordinates,
           status: status,
-          addedBy: addedby,
+          supplies: [],
+          population: null,
+          crafts: [],
+          infrastructure: null,
+          contacts: [],
+          educationStatistics: null,
+          addedBy: addedBy,
+          images: [],
+          trees: [],
+          irrigationSystems: [],
+          animals: [],
+          myHerbs: [],
+          irrigatedLands: 0.0,
+          barrenLands: 0.0,
+          subsistence: false,
+          financial: false,
+          belongsToubkal: false,
+          landSize: 0.0,
+          village: '',
+          valley: '',
+          commune: '',
+          province: '',
+          myNeeds: [],
         );
       }).toList();
 
@@ -77,13 +111,13 @@ class _AddPlacePageState extends State<AddPlacePage> {
         availablePlaces = placeList;
         placeListToShow = placeList;
       });
-    } catch (e) {
-      print('Error loading places from Firestore: $e');
+    } catch (e, stacktrace) {
+      debugPrint('Error loading places from Firestore: $e, $stacktrace');
     }
   }
 
   Future<void> _filterPlaces(String searchText) async {
-    FocusScope.of(context).unfocus(); // Dismiss keyboard
+    FocusScope.of(context).unfocus();
     final filteredPlaces = (availablePlaces as List<Place>).where((place) {
       return place.name.toLowerCase().contains(searchText.toLowerCase());
     }).toList();
@@ -107,7 +141,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                 children: [
                   CircularProgressIndicator(),
                   SizedBox(width: 20),
-                  Text("Loading..."),
+                  Text(l.loadingText),
                 ],
               ),
             );
@@ -146,7 +180,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Add Current Location'),
+              title: Text(l.addCurrentLocationText),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
@@ -154,20 +188,20 @@ class _AddPlacePageState extends State<AddPlacePage> {
                     TextFormField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        labelText: "Custom Name",
+                        labelText: l.nameInputLabel,
                       ),
                     ),
                     TextFormField(
                       controller: latitudeController,
                       decoration: InputDecoration(
-                        labelText: 'Latitude',
+                        labelText: l.latitudeInputLabelText,
                       ),
                       keyboardType: TextInputType.number,
                     ),
                     TextFormField(
                       controller: longitudeController,
                       decoration: InputDecoration(
-                        labelText: 'Longitude',
+                        labelText: l.longitudeInputLabelText,
                       ),
                       keyboardType: TextInputType.number,
                     ),
@@ -176,14 +210,14 @@ class _AddPlacePageState extends State<AddPlacePage> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Save'),
+                  child: Text(l.save),
                   onPressed: () {
                     if (nameController.text.isNotEmpty &&
                         nameController.text != "" &&
                         nameController.text.length < 20) {
                       String customName = nameController.text.isNotEmpty
                           ? nameController.text
-                          : "unknown";
+                          : l.unknownText;
                       final double newlatitude =
                           double.parse(latitudeController.text);
                       final double newlongitude =
@@ -199,7 +233,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                              'Current location added as a marker: $customName'),
+                              '${l.currentLocationAddedSnackbar}: $customName'),
                         ),
                       );
 
@@ -207,14 +241,14 @@ class _AddPlacePageState extends State<AddPlacePage> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Name Is Empty or Is too long'),
+                          content: Text(l.invalidNameOrTooLong),
                         ),
                       );
                     }
                   },
                 ),
                 TextButton(
-                  child: Text('Cancel'),
+                  child: Text(l.cancel),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -226,12 +260,87 @@ class _AddPlacePageState extends State<AddPlacePage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Location permissions denied'),
+            content: Text(l.locationPermissionsDenied),
           ),
         );
       }
     } catch (e) {
-      print('Error adding current location to Firestore: $e');
+      debugPrint('Error adding current location to Firestore: $e');
+    }
+  }
+
+  void showdialogg(double latitude, double longitude) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l.deleteText),
+        content: Text(l.areYouSureDelete),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              deleteMarker(latitude, longitude);
+            },
+            child: Text(l.deleteText),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> showPlaceList() async {
+    try {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                child: TextField(
+                  onChanged: (value) {
+                    _filterPlaces(value);
+                  },
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.search),
+                    hintText: l.searchForLocationHint,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: CustomColors.mainColor),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: placeListToShow.length,
+                  itemBuilder: (context, index) {
+                    final place = placeListToShow[index];
+                    String? selectedStatus =
+                        HelperMe().localTrans(place.status, l);
+                    return ListTile(
+                      title: Text(place.name),
+                      subtitle: Text("${l.placeStatusText} ${selectedStatus}"),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _goToPlaceOnMap(place);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      debugPrint('Error loading places from Firestore: $e');
     }
   }
 
@@ -239,8 +348,8 @@ class _AddPlacePageState extends State<AddPlacePage> {
     try {
       final querySnapshot = await firestore
           .collection('places')
-          .where('latitude', isEqualTo: latitude)
-          .where('longitude', isEqualTo: longitude)
+          .where('coordinates.latitude', isEqualTo: latitude)
+          .where('coordinates.longitude', isEqualTo: longitude)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -251,10 +360,11 @@ class _AddPlacePageState extends State<AddPlacePage> {
 
         loadMarkers();
       } else {
-        print('Place not found for latitude: $latitude, longitude: $longitude');
+        debugPrint(
+            'Place not found for latitude: $latitude, longitude: $longitude');
       }
     } catch (e) {
-      print('Error deleting place from Firestore: $e');
+      debugPrint('Error deleting place from Firestore: $e');
     }
   }
 
@@ -267,46 +377,65 @@ class _AddPlacePageState extends State<AddPlacePage> {
     try {
       final querySnapshot = await firestore
           .collection('places')
-          .where('latitude', isEqualTo: latitude)
-          .where('longitude', isEqualTo: longitude)
+          .where('coordinates.latitude', isEqualTo: latitude)
+          .where('coordinates.longitude', isEqualTo: longitude)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Location already added'),
+            content: Text(l.locationAlreadyAddedMessage),
           ),
         );
       } else {
-        await firestore.collection('places').add({
-          'name': name,
-          'latitude': latitude,
-          'longitude': longitude,
-          'status': status,
-          'needs': [],
-          'infrastructure': [],
-          'population': [],
-          'supplies': [],
-          'contacts': [],
-          'AddedBy': userId,
-          'currentSupplies': [],
-          'neededSupplies': [],
-          'images': []
-        }).then((documentSnapshot) {
-          currentId = documentSnapshot.id;
-          Navigator.pop(context);
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => FullSurvey(placeId: currentId),
-            ),
-          );
-        });
+        final place = Place(
+          id: Uuid().v4(),
+          name: name,
+          coordinates: MyCoordinates(latitude: latitude, longitude: longitude),
+          status: status,
+          supplies: [],
+          population: Population.initial(),
+          crafts: [],
+          infrastructure: Infrastructure.initial(),
+          contacts: [],
+          educationStatistics: EducationStatistics.initial(),
+          addedBy: userId,
+          images: [],
+          trees: [],
+          irrigationSystems: [],
+          animals: [],
+          myHerbs: [],
+          irrigatedLands: 0.0,
+          barrenLands: 0.0,
+          subsistence: false,
+          financial: false,
+          belongsToubkal: false,
+          landSize: 0.0,
+          village: '',
+          valley: '',
+          commune: '',
+          province: '',
+          myNeeds: [],
+        );
+
+        final Map<String, dynamic> data = place.toFirestore();
+
+        final documentReference =
+            await firestore.collection('places').add(data);
+
+        currentId = documentReference.id;
+
+        Navigator.pop(context);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => FullSurvey(placeId: currentId!),
+          ),
+        );
       }
 
       loadMarkers();
-      fetchPlaces();
     } catch (e) {
-      print('Error adding place to Firestore: $e');
+      debugPrint('Error adding place to Firestore: $e');
     }
   }
 
@@ -318,35 +447,25 @@ class _AddPlacePageState extends State<AddPlacePage> {
       final updatedMarkers = <Marker>{};
       for (final place in places) {
         final name = place.get('name');
-        final latitude = place.get('latitude');
-        final longitude = place.get('longitude');
+        final latitude = place.get('coordinates')['latitude'];
+        final longitude = place.get('coordinates')['longitude'];
         final status = place.get('status');
 
         BitmapDescriptor markerIcon;
-        switch (status) {
-          case 'Safe':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueAzure,
-            );
-            break;
-          case 'Severe':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueRed,
-            );
-            break;
-          case 'Moderate':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueOrange,
-            );
-            break;
-          case 'Minor':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueYellow,
-            );
-            break;
-          default:
-            markerIcon = BitmapDescriptor.defaultMarker;
-            break;
+        if (status == l.lowText) {
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueAzure,
+          );
+        } else if (status == l.mediumText) {
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueRed,
+          );
+        } else if (status == l.highText) {
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueOrange,
+          );
+        } else {
+          markerIcon = BitmapDescriptor.defaultMarker;
         }
 
         final marker = Marker(
@@ -374,57 +493,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
         myMarkers = updatedMarkers;
       });
     } catch (e) {
-      print('Error loading markers from Firestore: $e');
-    }
-  }
-
-  Future<void> showPlaceList() async {
-    try {
-      showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                child: TextField(
-                  onChanged: (value) {
-                    _filterPlaces(value);
-                  },
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.search),
-                    hintText: "Search For A Location",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide:
-                          const BorderSide(color: CustomColors.mainColor),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: placeListToShow.length,
-                  itemBuilder: (context, index) {
-                    final place = placeListToShow[index];
-                    return ListTile(
-                      title: Text(place.name),
-                      subtitle: Text("Status: ${place.status}"),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _goToPlaceOnMap(place);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    } catch (e) {
-      print('Error loading places from Firestore: $e');
+      debugPrint('Error loading markers from Firestore: $e');
     }
   }
 
@@ -444,7 +513,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                   children: [
                     MyOptions(
                       icon: Icon(Icons.gps_fixed),
-                      title: "Current",
+                      title: l.currentText,
                       onTap: () {
                         Navigator.of(context).pop();
 
@@ -453,7 +522,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                     ),
                     MyOptions(
                         icon: Icon(Icons.search),
-                        title: "Search",
+                        title: l.searchText,
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(
@@ -465,7 +534,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                         }),
                     MyOptions(
                         icon: Icon(Icons.handyman),
-                        title: "Manual",
+                        title: l.manualText,
                         onTap: () {
                           Navigator.of(context).pop();
 
@@ -483,7 +552,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
 
   void _goToPlaceOnMap(Place place) {
     final cameraPosition = CameraPosition(
-      target: LatLng(place.latitude, place.longitude),
+      target: LatLng(place.coordinates!.latitude, place.coordinates!.longitude),
       zoom: 15.0,
     );
 
@@ -494,7 +563,8 @@ class _AddPlacePageState extends State<AddPlacePage> {
       selectedMarker = [
         Marker(
           markerId: MarkerId(place.name),
-          position: LatLng(place.latitude, place.longitude),
+          position:
+              LatLng(place.coordinates!.latitude, place.coordinates!.longitude),
         ),
         place.status,
       ];
@@ -519,7 +589,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
               children: [
                 CircularProgressIndicator(),
                 SizedBox(width: 20),
-                Text("Loading..."),
+                Text(l.loadingText),
               ],
             ),
           );
@@ -536,27 +606,27 @@ class _AddPlacePageState extends State<AddPlacePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Add Current Location'),
+            title: Text(l.addCurrentLocationText),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
                   TextFormField(
                     controller: nameController,
                     decoration: InputDecoration(
-                      labelText: "Custom Name",
+                      labelText: l.name,
                     ),
                   ),
                   TextFormField(
                     controller: latitudeController,
                     decoration: InputDecoration(
-                      labelText: 'Latitude',
+                      labelText: l.latitudeInputLabelText,
                     ),
                     keyboardType: TextInputType.number,
                   ),
                   TextFormField(
                     controller: longitudeController,
                     decoration: InputDecoration(
-                      labelText: 'Longitude',
+                      labelText: l.longitudeInputLabelText,
                     ),
                     keyboardType: TextInputType.number,
                   ),
@@ -565,11 +635,11 @@ class _AddPlacePageState extends State<AddPlacePage> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Save'),
+                child: Text(l.save),
                 onPressed: () {
                   String name = nameController.text.trim();
                   if (name.isNotEmpty && name.length != 0 && name.length < 20) {
-                    String customName = name.isNotEmpty ? name : "unknown";
+                    String customName = name.isNotEmpty ? name : l.unknownText;
                     final double newlatitude =
                         double.parse(latitudeController.text);
                     final double newlongitude =
@@ -585,7 +655,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                            'Current location added as a marker: $customName'),
+                            '${l.currentLocationAddedSnackbar} $customName'),
                       ),
                     );
 
@@ -593,14 +663,14 @@ class _AddPlacePageState extends State<AddPlacePage> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Verify All the fields'),
+                        content: Text(l.verifyFieldsText),
                       ),
                     );
                   }
                 },
               ),
               TextButton(
-                child: Text('Cancel'),
+                child: Text(l.cancel),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -612,11 +682,11 @@ class _AddPlacePageState extends State<AddPlacePage> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Location permissions denied'),
+          content: Text(l.locationPermissionsDenied),
         ),
       );
     } catch (e) {
-      print('Error adding current location to Firestore: $e');
+      debugPrint('Error adding current location to Firestore: $e');
     }
   }
 
@@ -634,7 +704,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: GoBack(
-                  title: "MAP",
+                  title: l.map,
                   onTap: () {
                     navigateToHomePage();
                   },
@@ -659,64 +729,59 @@ class _AddPlacePageState extends State<AddPlacePage> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 200,
-                                  child: Text(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 200,
+                                    child: Text(
+                                      selectedMarker != null &&
+                                              selectedMarker!.isNotEmpty
+                                          ? selectedMarker![0].markerId.value
+                                          : l.selectAnAreaText,
+                                      style: TextStyle(fontSize: 20),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
                                     selectedMarker != null &&
                                             selectedMarker!.isNotEmpty
-                                        ? selectedMarker![0].markerId.value
-                                        : "Select an Area",
-                                    style: TextStyle(fontSize: 20),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Icon(Icons.pin_drop_rounded)
-                              ],
+                                        ? l.placeStatusText +
+                                            HelperMe().localTransNotNull(
+                                                selectedMarker![1], l)
+                                        : "${l.statusInvalidText}",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ]),
+                        GestureDetector(
+                          onTap: () {
+                            _showOptions();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: CustomColors.mainColor,
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  selectedMarker != null &&
-                                          selectedMarker!.isNotEmpty
-                                      ? "Status: ${selectedMarker![1]}"
-                                      : "Status: Invalid",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ],
+                            child: Icon(
+                              Icons.add_location,
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
-                        Spacer(),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                _showOptions();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: CustomColors.mainColor,
-                                ),
-                                child: Icon(
-                                  Icons.add_location,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -725,26 +790,39 @@ class _AddPlacePageState extends State<AddPlacePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         categorieButton(
-                          text: "All Areas",
+                          text: l.allAreasButtonText,
                           icon: Icon(
                             Icons.local_attraction,
                             color: Colors.white,
                           ),
                           color: CustomColors.mainColor,
-                          onTap: () async {
-                            await showPlaceList();
+                          onTap: () {
+                            showPlaceList();
                           },
                         ),
                         categorieButton(
-                          text: "Remove Area",
+                          text: l.deleteText,
                           icon: Icon(
                             Icons.remove_circle_outline_rounded,
                             color: Colors.white,
                           ),
                           color: const Color.fromARGB(255, 119, 14, 14),
                           onTap: () {
-                            deleteMarker(selectedMarker![0].position.latitude,
-                                selectedMarker![0].position.longitude);
+                            if (selectedMarker != null &&
+                                selectedMarker!.isNotEmpty &&
+                                selectedMarker![0] != null) {
+                              // Your existing code for handling the selected place
+                              showdialogg(
+                                selectedMarker![0].position.latitude,
+                                selectedMarker![0].position.longitude,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l.selectPlaceToDelete),
+                                ),
+                              );
+                            }
                           },
                         ),
                       ],

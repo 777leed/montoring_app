@@ -1,118 +1,96 @@
+import 'package:montoring_app/models/MyBuilding.dart';
+import 'package:montoring_app/models/MyRoads.dart';
+
 class Infrastructure {
-  int totalHomesDemolished = 0;
+  int totalHomes = 0;
   int totalHomesUnstable = 0;
   int totalHomesIntact = 0;
 
-  int totalMosquesDemolished = 0;
-  int totalMosquesUnstable = 0;
-  int totalMosquesIntact = 0;
+  List<MyRoads>? roadList = [];
 
-  int totalSchoolsDemolished = 0;
-  int totalSchoolsUnstable = 0;
-  int totalSchoolsIntact = 0;
+  bool hasRunningWater = false;
+  bool hasWell = false;
+  bool hasSinks = false;
+  bool usesNaturalSources = false;
+  bool isWaterAvailable = true;
+  String notAvailableReason = "";
+  bool isElectricityAvailable = true;
+  String electricityNotAvailableReason = "";
+  bool hasInternet = false;
+  bool hasSatellites = false;
+  bool hasMobileNetworkTowers = false;
 
-  int totalStoresDemolished = 0;
-  int totalStoresUnstable = 0;
-  int totalStoresIntact = 0;
-
-  String roadStatus = "Stable";
-  String roadName = "Unknown";
-  String roadVehicleType = "N/A";
-
-  String waterStatus = "Available";
-  String electricityStatus = "Available";
-  String selectedStatus = "Unknown";
+  List<MyBuilding>? buildings = [];
 
   Infrastructure({
-    required this.totalHomesDemolished,
+    required this.totalHomes,
     required this.totalHomesUnstable,
     required this.totalHomesIntact,
-    required this.totalMosquesDemolished,
-    required this.totalMosquesUnstable,
-    required this.totalMosquesIntact,
-    required this.totalSchoolsDemolished,
-    required this.totalSchoolsUnstable,
-    required this.totalSchoolsIntact,
-    required this.totalStoresDemolished,
-    required this.totalStoresUnstable,
-    required this.totalStoresIntact,
-    required this.roadStatus,
-    required this.roadName,
-    required this.roadVehicleType,
-    required this.waterStatus,
-    required this.electricityStatus,
-    required this.selectedStatus,
+    required this.roadList,
+    required this.buildings,
+    required this.hasRunningWater,
+    required this.isWaterAvailable,
+    required this.isElectricityAvailable,
+    required this.usesNaturalSources,
+    required this.notAvailableReason,
+    required this.hasWell,
+    required this.hasSinks,
+    required this.electricityNotAvailableReason,
+    required this.hasInternet,
+    required this.hasMobileNetworkTowers,
+    required this.hasSatellites,
   });
 
   Infrastructure.initial() {
-    totalHomesDemolished = 0;
+    totalHomes = 0;
     totalHomesUnstable = 0;
     totalHomesIntact = 0;
-
-    totalMosquesDemolished = 0;
-    totalMosquesUnstable = 0;
-    totalMosquesIntact = 0;
-
-    totalSchoolsDemolished = 0;
-    totalSchoolsUnstable = 0;
-    totalSchoolsIntact = 0;
-
-    totalStoresDemolished = 0;
-    totalStoresUnstable = 0;
-    totalStoresIntact = 0;
-
-    roadStatus = "Stable";
-    roadName = "";
-    roadVehicleType = "N/A";
-
-    waterStatus = "Available";
-    electricityStatus = "Available";
-    selectedStatus = "Unknown";
   }
 
   factory Infrastructure.fromMap(Map<String, dynamic> data) {
     return Infrastructure(
-      totalHomesDemolished: data['totalHomesDemolished'],
+      totalHomes: data['totalHomes'],
       totalHomesUnstable: data['totalHomesUnstable'],
       totalHomesIntact: data['totalHomesIntact'],
-      totalMosquesDemolished: data['totalMosquesDemolished'],
-      totalMosquesUnstable: data['totalMosquesUnstable'],
-      totalMosquesIntact: data['totalMosquesIntact'],
-      totalSchoolsDemolished: data['totalSchoolsDemolished'],
-      totalSchoolsUnstable: data['totalSchoolsUnstable'],
-      totalSchoolsIntact: data['totalSchoolsIntact'],
-      totalStoresDemolished: data['totalStoresDemolished'],
-      totalStoresUnstable: data['totalStoresUnstable'],
-      totalStoresIntact: data['totalStoresIntact'],
-      roadStatus: data['roadStatus'] ?? "Stable",
-      roadName: data['roadName'] ?? "",
-      roadVehicleType: data['roadVehicleType'] ?? "N/A",
-      waterStatus: data['waterStatus'] ?? "Available",
-      electricityStatus: data['electricityStatus'] ?? "Available",
-      selectedStatus: data['selectedStatus'] ?? "Unknown",
+      roadList: (data['roadList'] as List<dynamic>?)
+          ?.map((road) => MyRoads.fromMap(road))
+          .toList(),
+      buildings: (data['buildings'] as List<dynamic>?)
+          ?.map((building) => MyBuilding.fromMap(building))
+          .toList(),
+      hasRunningWater: data['hasRunningWater'] ?? false,
+      isWaterAvailable: data['isWaterAvailable'] ?? true,
+      isElectricityAvailable: data['isWaterAvailable'] ?? true,
+      usesNaturalSources: data['usesNaturalSources'] ?? false,
+      notAvailableReason: data['notAvailableReason'] ?? "",
+      hasWell: data['hasWell'] ?? false,
+      hasSinks: data['hasSinks'] ?? false,
+      electricityNotAvailableReason:
+          data['electricityNotAvailableReason'] ?? "",
+      hasInternet: data['hasInternet'] ?? false,
+      hasMobileNetworkTowers: data['hasMobileNetworkTowers'] ?? false,
+      hasSatellites: data['hasSatellites'] ?? false,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'totalHomesDemolished': totalHomesDemolished,
+      'totalHomes': totalHomes,
       'totalHomesUnstable': totalHomesUnstable,
       'totalHomesIntact': totalHomesIntact,
-      'totalMosquesDemolished': totalMosquesDemolished,
-      'totalMosquesUnstable': totalMosquesUnstable,
-      'totalMosquesIntact': totalMosquesIntact,
-      'totalSchoolsDemolished': totalSchoolsDemolished,
-      'totalSchoolsUnstable': totalSchoolsUnstable,
-      'totalSchoolsIntact': totalSchoolsIntact,
-      'totalStoresDemolished': totalStoresDemolished,
-      'totalStoresUnstable': totalStoresUnstable,
-      'totalStoresIntact': totalStoresIntact,
-      'roadStatus': roadStatus,
-      'roadName': roadName,
-      'roadVehicleType': roadVehicleType,
-      'waterStatus': waterStatus,
-      'electricityStatus': electricityStatus,
-      'selectedStatus': selectedStatus,
+      'roadList': roadList?.map((road) => road.toMap()).toList(),
+      'buildings': buildings?.map((buildings) => buildings.toMap()).toList(),
+      'hasRunningWater': hasRunningWater,
+      'isWaterAvailable': isWaterAvailable,
+      'isElectricityAvailable': isElectricityAvailable,
+      'usesNaturalSources': usesNaturalSources,
+      'notAvailableReason': notAvailableReason,
+      'hasWell': hasWell,
+      'hasSinks': hasSinks,
+      'electricityNotAvailableReason': electricityNotAvailableReason,
+      'hasInternet': hasInternet,
+      'hasMobileNetworkTowers': hasMobileNetworkTowers,
+      'hasSatellites': hasSatellites,
     };
   }
 }

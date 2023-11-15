@@ -76,7 +76,7 @@ class _ExportPageState extends State<ExportPage> {
         });
       });
     } catch (e) {
-      print('Error exporting data: $e');
+      debugPrint('Error exporting data: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error exporting data.'),

@@ -1,50 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/models/Contacts.dart';
+import 'package:montoring_app/models/EducationStatistics.dart';
 import 'package:montoring_app/models/Infrastructure.dart';
+import 'package:montoring_app/models/IrrigationSystem.dart';
+import 'package:montoring_app/models/LiveStock.dart';
+import 'package:montoring_app/models/MyBuilding.dart';
+import 'package:montoring_app/models/MyCrafts.dart';
+import 'package:montoring_app/models/MyHerbs.dart';
+import 'package:montoring_app/models/MyNeeds.dart';
+import 'package:montoring_app/models/MyRoads.dart';
+import 'package:montoring_app/models/MyTrees.dart';
 import 'package:montoring_app/models/Population.dart';
 
 class SurveyDataProvider extends ChangeNotifier {
+  Infrastructure _infrastructure = Infrastructure.initial();
+
+  Infrastructure get infrastructure => _infrastructure;
+
   List<String> imagePaths = [];
 
-  int totalMenBefore = 0;
-  int totalWomenBefore = 0;
-  int totalBoysBefore = 0;
-  int totalGirlsBefore = 0;
+  int totalMen = 0;
+  int totalWomen = 0;
+  int totalOlderBoys = 0;
+  int totalOlderGirls = 0;
+  int totalYoungerBoys = 0;
+  int totalYoungerGirls = 0;
 
-  int totalMenDeaths = 0;
-  int totalWomenDeaths = 0;
-  int totalBoysDeaths = 0;
-  int totalGirlsDeaths = 0;
+  int totalFamilies = 0;
+  int totalHouseholds = 0;
 
-  int totalMenInjured = 0;
-  int totalWomenInjured = 0;
-  int totalBoysInjured = 0;
-  int totalGirlsInjured = 0;
+  int totalPopulation = 0;
 
   int totalMenDisplaced = 0;
   int totalWomenDisplaced = 0;
   int totalBoysDisplaced = 0;
   int totalGirlsDisplaced = 0;
 
+  // remove this
   int totalLivestockAnimals = 0;
-
+  String village = "";
+  String valley = "";
+  String commune = "";
+  String province = "";
   List<Contacts> contacts = [];
+  List<Myherbs> herbs = [];
+  List<MyCrafts> crafts = [];
+  List<IrrigationSystem> irrigationSystems = [];
+  List<Livestock> livestock = [];
+  List<MyBuilding> buildings = [];
+  List<MyNeeds> needs = [];
+  List<IrrigationSystem> irrigations = [];
+  List<MyTrees> trees = [];
+  List<MyRoads> roads = [];
 
-  int totalHomesDemolished = 0;
+  int numberOfLiterateMen = 0;
+  int numberOfLiterateWomen = 0;
+  int numberOfPostGraduateMen = 0;
+  int numberOfPostGraduateWomen = 0;
+  int numberOfBaccalaureateMen = 0;
+  int numberOfBaccalaureateWomen = 0;
+  int numberOfMiddleSchoolGraduateMen = 0;
+  int numberOfMiddleSchoolGraduateWomen = 0;
+  int numberOfPrimarySchoolGraduateMen = 0;
+  int numberOfPrimarySchoolGraduateWomen = 0;
+  int numberOfIlliterateMen = 0;
+  int numberOfIlliterateWomen = 0;
+
+  int totalHomes = 0;
   int totalHomesUnstable = 0;
   int totalHomesIntact = 0;
 
-  int totalMosquesDemolished = 0;
-  int totalMosquesUnstable = 0;
-  int totalMosquesIntact = 0;
+  bool hasRunningWater = false;
+  bool hasWell = false;
+  bool hasSinks = false;
+  bool usesNaturalSources = false;
+  bool isWaterAvailable = true;
+  bool isElectricityAvailable = true;
+  String notAvailableReason = "";
+  String electricityNotAvailableReason = "";
+  bool hasInternet = false;
+  bool hasSatellites = false;
+  bool hasMobileNetworkTowers = false;
+  bool hasSchool = true;
 
-  int totalSchoolsDemolished = 0;
-  int totalSchoolsUnstable = 0;
-  int totalSchoolsIntact = 0;
+  double irrigatedLands = 0;
+  double barrenLands = 0;
+  double landsize = 0;
 
-  int totalStoresDemolished = 0;
-  int totalStoresUnstable = 0;
-  int totalStoresIntact = 0;
+  bool subsistence = false;
+  bool financial = false;
+  bool belongsToubkal = false;
 
   String roadStatus = "Stable";
   String roadName = "";
@@ -54,28 +99,6 @@ class SurveyDataProvider extends ChangeNotifier {
   String electricityStatus = "Available";
   String selectedStatus = "Unknown";
 
-  Map<String, dynamic> currentSupplies = {
-    'Tents': '',
-    'Blankets': '',
-    'Cushions': '',
-    'Pallets': '',
-    'Food': 'Unknown',
-    'Construction Materials for Building Rehab': 'Unknown',
-    'Hygiene Products': 'Unknown',
-    'Medicine/First Aid': 'Unknown',
-  };
-
-  Map<String, dynamic> neededSupplies = {
-    'Tents': '',
-    'Blankets': '',
-    'Cushions': '',
-    'Pallets': '',
-    'Food': 'Unknown',
-    'Construction Materials for Building Rehab': 'Unknown',
-    'Hygiene Products': 'Unknown',
-    'Medicine/First Aid': 'Unknown',
-  };
-
   void addImagePath(String path) {
     imagePaths.add(path);
     notifyListeners();
@@ -83,50 +106,166 @@ class SurveyDataProvider extends ChangeNotifier {
 
   Population getPopulation() {
     return Population(
-        totalMenBefore: totalMenBefore,
-        totalWomenBefore: totalWomenBefore,
-        totalBoysBefore: totalBoysBefore,
-        totalGirlsBefore: totalGirlsBefore,
-        totalMenDeaths: totalMenDeaths,
-        totalWomenDeaths: totalWomenDeaths,
-        totalBoysDeaths: totalBoysDeaths,
-        totalGirlsDeaths: totalGirlsDeaths,
-        totalMenInjured: totalMenInjured,
-        totalWomenInjured: totalWomenInjured,
-        totalBoysInjured: totalBoysInjured,
-        totalGirlsInjured: totalGirlsInjured,
         totalMenDisplaced: totalMenDisplaced,
         totalWomenDisplaced: totalWomenDisplaced,
         totalBoysDisplaced: totalBoysDisplaced,
         totalGirlsDisplaced: totalGirlsDisplaced,
-        totalLivestockAnimals: totalLivestockAnimals);
+        totalPopulation: totalPopulation,
+        totalMen: totalMen,
+        totalWomen: totalWomen,
+        totalOlderBoys: totalOlderBoys,
+        totalOlderGirls: totalOlderGirls,
+        totalYoungerBoys: totalYoungerBoys,
+        totalYoungerGirls: totalYoungerGirls,
+        totalFamilies: totalFamilies,
+        totalHouseholds: totalHouseholds);
   }
 
   Infrastructure getInfrastructure() {
     return Infrastructure(
-      totalHomesDemolished: totalHomesDemolished,
+      totalHomes: totalHomes,
       totalHomesUnstable: totalHomesUnstable,
       totalHomesIntact: totalHomesIntact,
-      totalMosquesDemolished: totalMosquesDemolished,
-      totalMosquesUnstable: totalMosquesUnstable,
-      totalMosquesIntact: totalMosquesIntact,
-      totalSchoolsDemolished: totalSchoolsDemolished,
-      totalSchoolsUnstable: totalSchoolsUnstable,
-      totalSchoolsIntact: totalSchoolsIntact,
-      totalStoresDemolished: totalStoresDemolished,
-      totalStoresUnstable: totalStoresUnstable,
-      totalStoresIntact: totalStoresIntact,
-      roadStatus: roadStatus,
-      roadName: roadName,
-      roadVehicleType: roadVehicleType,
-      waterStatus: waterStatus,
-      electricityStatus: electricityStatus,
-      selectedStatus: selectedStatus,
+      roadList: roads,
+      hasRunningWater: hasRunningWater,
+      hasWell: hasWell,
+      hasSinks: hasSinks,
+      usesNaturalSources: usesNaturalSources,
+      isWaterAvailable: isWaterAvailable,
+      notAvailableReason: notAvailableReason,
+      electricityNotAvailableReason: electricityNotAvailableReason,
+      hasInternet: hasInternet,
+      hasSatellites: hasSatellites,
+      hasMobileNetworkTowers: hasMobileNetworkTowers,
+      buildings: buildings,
+      isElectricityAvailable: isElectricityAvailable,
     );
   }
 
-  void updateTotalMenBefore(int newValue) {
-    totalMenBefore = newValue;
+  EducationStatistics getEducationStatistics() {
+    return EducationStatistics(
+        numberOfLiterateMen: numberOfLiterateMen,
+        numberOfLiterateWomen: numberOfLiterateWomen,
+        numberOfPostGraduateMen: numberOfPostGraduateMen,
+        numberOfPostGraduateWomen: numberOfPostGraduateWomen,
+        numberOfBaccalaureateMen: numberOfBaccalaureateMen,
+        numberOfBaccalaureateWomen: numberOfBaccalaureateWomen,
+        numberOfMiddleSchoolGraduateMen: numberOfMiddleSchoolGraduateMen,
+        numberOfMiddleSchoolGraduateWomen: numberOfMiddleSchoolGraduateWomen,
+        numberOfPrimarySchoolGraduateMen: numberOfPrimarySchoolGraduateMen,
+        numberOfPrimarySchoolGraduateWomen: numberOfPrimarySchoolGraduateWomen,
+        numberOfIlliterateMen: numberOfIlliterateMen,
+        numberOfIlliterateWomen: numberOfIlliterateWomen,
+        hasSchool: hasSchool);
+  }
+
+  void updateVillage(String newValue) {
+    village = newValue;
+    notifyListeners();
+  }
+
+  void updateValley(String newValue) {
+    valley = newValue;
+    notifyListeners();
+  }
+
+  void updateCommune(String newValue) {
+    commune = newValue;
+    notifyListeners();
+  }
+
+  void updateProvince(String newValue) {
+    province = newValue;
+    notifyListeners();
+  }
+
+  void updateIrrigatedLands(double newValue) {
+    irrigatedLands = newValue;
+    notifyListeners();
+  }
+
+  void updateBarrenLands(double newValue) {
+    barrenLands = newValue;
+    notifyListeners();
+  }
+
+  void updateLandSize(double newValue) {
+    landsize = newValue;
+    notifyListeners();
+  }
+
+  void updateSubsistence(bool newValue) {
+    subsistence = newValue;
+    notifyListeners();
+  }
+
+  void updateFinancial(bool newValue) {
+    financial = newValue;
+    notifyListeners();
+  }
+
+  void updateBelongsToubkal(bool newValue) {
+    belongsToubkal = newValue;
+    notifyListeners();
+  }
+
+  void updateHasRunningWater(bool newValue) {
+    hasRunningWater = newValue;
+    notifyListeners();
+  }
+
+  void updateHasSchool(bool newValue) {
+    hasSchool = newValue;
+    notifyListeners();
+  }
+
+  void updateHasWell(bool newValue) {
+    hasWell = newValue;
+    notifyListeners();
+  }
+
+  void updateHasSinks(bool newValue) {
+    hasSinks = newValue;
+    notifyListeners();
+  }
+
+  void updateUsesNaturalSources(bool newValue) {
+    usesNaturalSources = newValue;
+    notifyListeners();
+  }
+
+  void updateIsWaterAvailable(bool newValue) {
+    isWaterAvailable = newValue;
+    notifyListeners();
+  }
+
+  void updateIsElectricityAvailable(bool newValue) {
+    isWaterAvailable = newValue;
+    notifyListeners();
+  }
+
+  void updateNotAvailableReason(String newValue) {
+    notAvailableReason = newValue;
+    notifyListeners();
+  }
+
+  void updateElectricityNotAvailableReason(String newValue) {
+    electricityNotAvailableReason = newValue;
+    notifyListeners();
+  }
+
+  void updateHasInternet(bool newValue) {
+    hasInternet = newValue;
+    notifyListeners();
+  }
+
+  void updateHasSatellites(bool newValue) {
+    hasSatellites = newValue;
+    notifyListeners();
+  }
+
+  void updateHasMobileNetworkTowers(bool newValue) {
+    hasMobileNetworkTowers = newValue;
     notifyListeners();
   }
 
@@ -135,58 +274,88 @@ class SurveyDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTotalWomenBefore(int newValue) {
-    totalWomenBefore = newValue;
+  void updateHerbs(List<Myherbs> newValue) {
+    herbs = newValue;
     notifyListeners();
   }
 
-  void updateTotalBoysBefore(int newValue) {
-    totalBoysBefore = newValue;
+  void updateCrafts(List<MyCrafts> newValue) {
+    crafts = newValue;
     notifyListeners();
   }
 
-  void updateTotalGirlsBefore(int newValue) {
-    totalGirlsBefore = newValue;
+  void updateLivestock(List<Livestock> newValue) {
+    livestock = newValue;
     notifyListeners();
   }
 
-  void updateTotalMenDeaths(int newValue) {
-    totalMenDeaths = newValue;
+  void updateIrrigationSystems(List<IrrigationSystem> newValue) {
+    irrigations = newValue;
     notifyListeners();
   }
 
-  void updateTotalWomenDeaths(int newValue) {
-    totalWomenDeaths = newValue;
+  void updateBuildings(List<MyBuilding> newValue) {
+    buildings = newValue;
     notifyListeners();
   }
 
-  void updateTotalBoysDeaths(int newValue) {
-    totalBoysDeaths = newValue;
+  void updateRoads(List<MyRoads> newValue) {
+    roads = newValue;
     notifyListeners();
   }
 
-  void updateTotalGirlsDeaths(int newValue) {
-    totalGirlsDeaths = newValue;
+  void updateTrees(List<MyTrees> newValue) {
+    trees = newValue;
     notifyListeners();
   }
 
-  void updateTotalMenInjured(int newValue) {
-    totalMenInjured = newValue;
+  void updateNeeds(List<MyNeeds> newValue) {
+    needs = newValue;
     notifyListeners();
   }
 
-  void updateTotalWomenInjured(int newValue) {
-    totalWomenInjured = newValue;
+  void updateTotalWomen(int newValue) {
+    totalWomen = newValue;
     notifyListeners();
   }
 
-  void updateTotalBoysInjured(int newValue) {
-    totalBoysInjured = newValue;
+  void updateTotalPopulation(int newValue) {
+    totalPopulation = newValue;
     notifyListeners();
   }
 
-  void updateTotalGirlsInjured(int newValue) {
-    totalGirlsInjured = newValue;
+  void updateTotalFamilies(int newValue) {
+    totalFamilies = newValue;
+    notifyListeners();
+  }
+
+  void updateTotalHouseHolds(int newValue) {
+    totalHouseholds = newValue;
+    notifyListeners();
+  }
+
+  void updateTotalMen(int newValue) {
+    totalMen = newValue;
+    notifyListeners();
+  }
+
+  void updateTotalYoungerBoys(int newValue) {
+    totalYoungerBoys = newValue;
+    notifyListeners();
+  }
+
+  void updateTotalYoungerGirls(int newValue) {
+    totalYoungerGirls = newValue;
+    notifyListeners();
+  }
+
+  void updateTotalOlderBoys(int newValue) {
+    totalOlderBoys = newValue;
+    notifyListeners();
+  }
+
+  void updateTotalOlderGirls(int newValue) {
+    totalOlderGirls = newValue;
     notifyListeners();
   }
 
@@ -215,8 +384,8 @@ class SurveyDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTotalHomesDemolished(int newValue) {
-    totalHomesDemolished = newValue;
+  void updatetotalHomes(int newValue) {
+    totalHomes = newValue;
     notifyListeners();
   }
 
@@ -230,48 +399,63 @@ class SurveyDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateTotalMosquesDemolished(int newValue) {
-    totalMosquesDemolished = newValue;
+  void updateNumberOfLiterateMen(int newValue) {
+    numberOfLiterateMen = newValue;
     notifyListeners();
   }
 
-  void updateTotalMosquesUnstable(int newValue) {
-    totalMosquesUnstable = newValue;
+  void updateNumberOfLiterateWomen(int newValue) {
+    numberOfLiterateWomen = newValue;
     notifyListeners();
   }
 
-  void updateTotalMosquesIntact(int newValue) {
-    totalMosquesIntact = newValue;
+  void updateNumberOfPostGraduateMen(int newValue) {
+    numberOfPostGraduateMen = newValue;
     notifyListeners();
   }
 
-  void updateTotalSchoolsDemolished(int newValue) {
-    totalSchoolsDemolished = newValue;
+  void updateNumberOfPostGraduateWomen(int newValue) {
+    numberOfPostGraduateWomen = newValue;
     notifyListeners();
   }
 
-  void updateTotalSchoolsUnstable(int newValue) {
-    totalSchoolsUnstable = newValue;
+  void updateNumberOfBaccalaureateMen(int newValue) {
+    numberOfBaccalaureateMen = newValue;
     notifyListeners();
   }
 
-  void updateTotalSchoolsIntact(int newValue) {
-    totalSchoolsIntact = newValue;
+  void updateNumberOfBaccalaureateWomen(int newValue) {
+    numberOfBaccalaureateWomen = newValue;
     notifyListeners();
   }
 
-  void updateTotalStoresDemolished(int newValue) {
-    totalStoresDemolished = newValue;
+  void updateNumberOfMiddleSchoolGraduateMen(int newValue) {
+    numberOfMiddleSchoolGraduateMen = newValue;
     notifyListeners();
   }
 
-  void updateTotalStoresUnstable(int newValue) {
-    totalStoresUnstable = newValue;
+  void updateNumberOfMiddleSchoolGraduateWomen(int newValue) {
+    numberOfMiddleSchoolGraduateWomen = newValue;
     notifyListeners();
   }
 
-  void updateTotalStoresIntact(int newValue) {
-    totalStoresIntact = newValue;
+  void updateNumberOfPrimarySchoolGraduateMen(int newValue) {
+    numberOfPrimarySchoolGraduateMen = newValue;
+    notifyListeners();
+  }
+
+  void updateNumberOfPrimarySchoolGraduateWomen(int newValue) {
+    numberOfPrimarySchoolGraduateWomen = newValue;
+    notifyListeners();
+  }
+
+  void updateNumberOfIlliterateMen(int newValue) {
+    numberOfIlliterateMen = newValue;
+    notifyListeners();
+  }
+
+  void updateNumberOfIlliterateWomen(int newValue) {
+    numberOfIlliterateWomen = newValue;
     notifyListeners();
   }
 
@@ -305,52 +489,29 @@ class SurveyDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateCurrentSupplies(String key, dynamic value) {
-    currentSupplies[key] = value;
-    notifyListeners();
-  }
-
-  void updateNeededSupplies(String key, dynamic value) {
-    neededSupplies[key] = value;
-    notifyListeners();
-  }
-
   void resetData() {
     // Reset population data
-    totalMenBefore = 0;
-    totalWomenBefore = 0;
-    totalBoysBefore = 0;
-    totalGirlsBefore = 0;
-    totalMenDeaths = 0;
-    totalWomenDeaths = 0;
-    totalBoysDeaths = 0;
-    totalGirlsDeaths = 0;
-    totalMenInjured = 0;
-    totalWomenInjured = 0;
-    totalBoysInjured = 0;
-    totalGirlsInjured = 0;
+    totalMen = 0;
+    totalWomen = 0;
+    totalOlderBoys = 0;
+    totalOlderGirls = 0;
+    totalYoungerBoys = 0;
+    totalYoungerGirls = 0;
+    totalFamilies = 0;
+    totalPopulation = 0;
     totalMenDisplaced = 0;
     totalWomenDisplaced = 0;
     totalBoysDisplaced = 0;
     totalGirlsDisplaced = 0;
-    totalLivestockAnimals = 0;
 
     // Reset contacts
     contacts.clear();
 
     // Reset infrastructure data
-    totalHomesDemolished = 0;
+    totalHomes = 0;
     totalHomesUnstable = 0;
     totalHomesIntact = 0;
-    totalMosquesDemolished = 0;
-    totalMosquesUnstable = 0;
-    totalMosquesIntact = 0;
-    totalSchoolsDemolished = 0;
-    totalSchoolsUnstable = 0;
-    totalSchoolsIntact = 0;
-    totalStoresDemolished = 0;
-    totalStoresUnstable = 0;
-    totalStoresIntact = 0;
+
     roadStatus = "Stable";
     roadName = "";
     roadVehicleType = "N/A";
@@ -358,88 +519,53 @@ class SurveyDataProvider extends ChangeNotifier {
     electricityStatus = "Available";
     selectedStatus = "Unknown";
 
-    // Reset supplies
-    currentSupplies = {
-      'Tents': '',
-      'Blankets': '',
-      'Cushions': '',
-      'Pallets': '',
-      'Food': 'Unknown',
-      'Construction Materials for Building Rehab': 'Unknown',
-      'Hygiene Products': 'Unknown',
-      'Medicine/First Aid': 'Unknown',
-    };
-
-    neededSupplies = {
-      'Tents': '',
-      'Blankets': '',
-      'Cushions': '',
-      'Pallets': '',
-      'Food': 'Unknown',
-      'Construction Materials for Building Rehab': 'Unknown',
-      'Hygiene Products': 'Unknown',
-      'Medicine/First Aid': 'Unknown',
-    };
-
-    // Reset image paths
+    // Reset other data properties
     imagePaths.clear();
+    totalLivestockAnimals = 0;
+    village = "";
+    valley = "";
+    commune = "";
+    province = "";
+    herbs.clear();
+    crafts.clear();
+    irrigationSystems.clear();
+    livestock.clear();
+    buildings.clear();
+    needs.clear();
+    irrigations.clear();
+    trees.clear();
+    roads.clear();
+    numberOfLiterateMen = 0;
+    numberOfLiterateWomen = 0;
+    numberOfPostGraduateMen = 0;
+    numberOfPostGraduateWomen = 0;
+    numberOfBaccalaureateMen = 0;
+    numberOfBaccalaureateWomen = 0;
+    numberOfMiddleSchoolGraduateMen = 0;
+    numberOfMiddleSchoolGraduateWomen = 0;
+    numberOfPrimarySchoolGraduateMen = 0;
+    numberOfPrimarySchoolGraduateWomen = 0;
+    numberOfIlliterateMen = 0;
+    numberOfIlliterateWomen = 0;
+    landsize = 0;
+    irrigatedLands = 0;
+    barrenLands = 0;
+    subsistence = false;
+    financial = false;
+    belongsToubkal = false;
+    hasRunningWater = false;
+    hasWell = false;
+    hasSinks = false;
+    usesNaturalSources = false;
+    isWaterAvailable = true;
+    isElectricityAvailable = true;
+    notAvailableReason = "";
+    electricityNotAvailableReason = "";
+    hasInternet = false;
+    hasSatellites = false;
+    hasMobileNetworkTowers = false;
 
     // Notify listeners to update UI
     notifyListeners();
-  }
-
-  @override
-  String toString() {
-    return '''
-      Survey Data:
-      Total Men Before: $totalMenBefore
-      Total Women Before: $totalWomenBefore
-      Total Boys Before: $totalBoysBefore
-      Total Girls Before: $totalGirlsBefore
-
-      Total Men Deaths: $totalMenDeaths
-      Total Women Deaths: $totalWomenDeaths
-      Total Boys Deaths: $totalBoysDeaths
-      Total Girls Deaths: $totalGirlsDeaths
-
-      Total Men Injured: $totalMenInjured
-      Total Women Injured: $totalWomenInjured
-      Total Boys Injured: $totalBoysInjured
-      Total Girls Injured: $totalGirlsInjured
-
-      Total Men Displaced: $totalMenDisplaced
-      Total Women Displaced: $totalWomenDisplaced
-      Total Boys Displaced: $totalBoysDisplaced
-      Total Girls Displaced: $totalGirlsDisplaced
-
-      Total Livestock Animals: $totalLivestockAnimals
-
-      Total Homes Demolished: $totalHomesDemolished
-      Total Homes Unstable: $totalHomesUnstable
-      Total Homes Intact: $totalHomesIntact
-
-      Total Mosques Demolished: $totalMosquesDemolished
-      Total Mosques Unstable: $totalMosquesUnstable
-      Total Mosques Intact: $totalMosquesIntact
-
-      Total Schools Demolished: $totalSchoolsDemolished
-      Total Schools Unstable: $totalSchoolsUnstable
-      Total Schools Intact: $totalSchoolsIntact
-
-      Total Stores Demolished: $totalStoresDemolished
-      Total Stores Unstable: $totalStoresUnstable
-      Total Stores Intact: $totalStoresIntact
-
-      Road Status: $roadStatus
-      Road Name: $roadName
-      Road Vehicle Type: $roadVehicleType
-
-      Water Status: $waterStatus
-      Electricity Status: $electricityStatus
-      Selected Status: $selectedStatus
-
-      Current Supplies: $currentSupplies
-      Needed Supplies: $neededSupplies
-    ''';
   }
 }

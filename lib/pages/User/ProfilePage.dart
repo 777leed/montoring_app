@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:montoring_app/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyProfile extends StatelessWidget {
   MyProfile({super.key});
@@ -8,7 +9,9 @@ class MyProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.all(25),
@@ -41,7 +44,7 @@ class MyProfile extends StatelessWidget {
                     height: 60,
                     width: 150,
                     child: Text(
-                      "Log Out",
+                      l.logoutButton,
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),

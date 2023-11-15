@@ -3,6 +3,7 @@ import 'package:montoring_app/components/dropdown.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:montoring_app/pages/Survey/SurveyData.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatusSurvey extends StatefulWidget {
   StatusSurvey({super.key});
@@ -13,11 +14,24 @@ class StatusSurvey extends StatefulWidget {
 
 class _StatusSurveyState extends State<StatusSurvey>
     with AutomaticKeepAliveClientMixin {
-  List<String> statusList = ['Unknown', 'Safe', 'Severe', 'Moderate', 'Minor'];
+  late List<String> statusList;
+
+  @override
+  void didChangeDependencies() {
+    final l = AppLocalizations.of(context)!;
+    statusList = [l.unknownText, l.lowText, l.mediumText, l.highText];
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final l = AppLocalizations.of(context)!;
 
     SurveyDataProvider surveyDataProvider =
         Provider.of<SurveyDataProvider>(context);
@@ -35,7 +49,7 @@ class _StatusSurveyState extends State<StatusSurvey>
                   height: 10,
                 ),
                 Text(
-                  "Disaster Relief Monitoring & Evaluation Survey",
+                  l.disasterReliefText,
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -45,7 +59,7 @@ class _StatusSurveyState extends State<StatusSurvey>
                   height: 30,
                 ),
                 Text(
-                  "Please fill in the information in this survey carefully to assess the current status of the area.",
+                  l.pleaseFill,
                   style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -63,7 +77,7 @@ class _StatusSurveyState extends State<StatusSurvey>
                           child: Image.asset('Assets/images/analytic.png'),
                         ),
                         Text(
-                          "What's The Current Status of The Area",
+                          l.currentNeedsStatusQuestion,
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w400),
                         ),

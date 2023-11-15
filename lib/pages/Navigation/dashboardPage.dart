@@ -6,7 +6,10 @@ import 'package:montoring_app/pages/Subpages/projects.dart';
 import 'package:montoring_app/pages/Subpages/workshops.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:montoring_app/utils/ChangeLanguageNotifier.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class dashboard extends StatefulWidget {
   dashboard({super.key});
@@ -16,10 +19,23 @@ class dashboard extends StatefulWidget {
 }
 
 class _dashboardState extends State<dashboard> {
+  List<String> items = [];
+
   @override
   void initState() {
-    getPermission();
     super.initState();
+    getPermission();
+  }
+
+  @override
+  void didChangeDependencies() {
+    items = [
+      AppLocalizations.of(context)!.allText,
+      AppLocalizations.of(context)!.disasterText,
+      AppLocalizations.of(context)!.projectsText,
+      AppLocalizations.of(context)!.workshopsText
+    ];
+    super.didChangeDependencies();
   }
 
   void getPermission() async {
@@ -33,12 +49,7 @@ class _dashboardState extends State<dashboard> {
   }
 
   final user = FirebaseAuth.instance.currentUser!;
-  List<String> items = [
-    "All",
-    "Disaster",
-    "Projects",
-    "Workshops",
-  ];
+
   List<IconData> icons = [
     Icons.clear_all_rounded,
     Icons.warning_rounded,
@@ -116,7 +127,7 @@ class _dashboardState extends State<dashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Dashboard",
+              AppLocalizations.of(context)!.dashboardText,
               style: TextStyle(color: CustomColors.secondaryTextColor),
             ),
             Container(
@@ -133,9 +144,52 @@ class _dashboardState extends State<dashboard> {
             )
           ],
         ),
-        Icon(
-          Icons.notifications_active,
-          color: CustomColors.mainTextColor,
+        IconButton(
+          icon: Icon(
+            Icons.language,
+            color: CustomColors.mainTextColor,
+          ),
+          onPressed: () {
+            final provider =
+                Provider.of<ChangeLanguage>(context, listen: false);
+
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title:
+                      Text(AppLocalizations.of(context)!.selectPreferenceHint),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text('English'),
+                          onTap: () {
+                            provider.changeLocale(Locale('en'));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        ListTile(
+                          title: Text('Arabic'),
+                          onTap: () {
+                            provider.changeLocale(Locale('ar'));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        ListTile(
+                          title: Text('French'),
+                          onTap: () {
+                            provider.changeLocale(Locale('fr'));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         )
       ],
     );
@@ -145,54 +199,57 @@ class _dashboardState extends State<dashboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ClipPath(
-              clipper: WaveClipperOne(flip: true),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: CustomColors.secondaryLighterColor,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Column(
-                    children: [
-                      renderHeader(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "Welcome Abroad!",
-                            style: TextStyle(
-                                fontSize: 32,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
+        child: Container(
+          decoration: BoxDecoration(color: Colors.white),
+          child: Column(
+            children: [
+              ClipPath(
+                clipper: WaveClipperOne(flip: true),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CustomColors.secondaryLighterColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Column(
+                      children: [
+                        renderHeader(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.welcomeAboardText,
+                              style: TextStyle(
+                                  fontSize: 32,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  renderTabBar(),
-                  myTabs[current],
-                ],
-              ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    renderTabBar(),
+                    myTabs[current],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

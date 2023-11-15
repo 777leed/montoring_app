@@ -5,9 +5,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:montoring_app/components/categorieButton.dart';
 import 'package:montoring_app/components/goback.dart';
 import 'package:montoring_app/models/Place.dart';
-import 'package:montoring_app/pages/location/PlaceDetails.dart';
+import 'package:montoring_app/models/coordinates.dart';
+import 'package:montoring_app/pages/Maps/HelperMe.dart';
+import 'package:montoring_app/pages/location/new/PlaceDetails.dart';
 import 'package:montoring_app/pages/Navigation/wherePage.dart';
 import 'package:montoring_app/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditPlacePage extends StatefulWidget {
   const EditPlacePage({Key? key});
@@ -27,17 +30,10 @@ class _EditPlacePageState extends State<EditPlacePage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   GoogleMapController? _googleMapController;
 
-  var dropdownValue = "Unknown";
   Set<Marker> myMarkers = {};
-  List<String> list = <String>[
-    'Unknown',
-    'Safe',
-    'Severe',
-    'Moderate',
-    'Minor'
-  ];
   List<dynamic> availablePlaces = [];
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  late AppLocalizations l;
   @override
   void initState() {
     selectedMarker = [];
@@ -46,24 +42,56 @@ class _EditPlacePageState extends State<EditPlacePage> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    l = AppLocalizations.of(context)!;
+    super.didChangeDependencies();
+  }
+
   Future<void> fetchPlaces() async {
     try {
       final placesSnapshot = await firestore.collection('places').get();
       final places = placesSnapshot.docs;
 
       final placeList = places.map((place) {
-        final name = place.get('name');
-        final latitude = place.get('latitude');
-        final longitude = place.get('longitude');
-        final status = place.get('status');
-        final addedby = place.get('AddedBy');
+        final data = place.data();
+        final name = data.containsKey('name') ? data['name'] : '';
+        final coordinates = data.containsKey('coordinates')
+            ? MyCoordinates(
+                latitude: data['coordinates']['latitude'],
+                longitude: data['coordinates']['longitude'],
+              )
+            : null;
+        final status = data.containsKey('status') ? data['status'] : '';
+        final addedBy = data.containsKey('AddedBy') ? data['AddedBy'] : '';
 
         return Place(
           name: name,
-          latitude: latitude,
-          longitude: longitude,
+          coordinates: coordinates,
           status: status,
-          addedBy: addedby,
+          supplies: [],
+          population: null,
+          crafts: [],
+          infrastructure: null,
+          contacts: [],
+          educationStatistics: null,
+          addedBy: addedBy,
+          images: [],
+          trees: [],
+          irrigationSystems: [],
+          animals: [],
+          myHerbs: [],
+          irrigatedLands: 0.0,
+          barrenLands: 0.0,
+          subsistence: false,
+          financial: false,
+          belongsToubkal: false,
+          landSize: 0.0,
+          village: '',
+          valley: '',
+          commune: '',
+          province: '',
+          myNeeds: [],
         );
       }).toList();
 
@@ -71,8 +99,8 @@ class _EditPlacePageState extends State<EditPlacePage> {
         availablePlaces = placeList;
         placeListToShow = placeList;
       });
-    } catch (e) {
-      print('Error loading places from Firestore: $e');
+    } catch (e, stacktrace) {
+      debugPrint('Error loading places from Firestore: $e, $stacktrace');
     }
   }
 
@@ -83,8 +111,8 @@ class _EditPlacePageState extends State<EditPlacePage> {
       try {
         final querySnapshot = await firestore
             .collection('places')
-            .where('latitude', isEqualTo: selectedLatitude)
-            .where('longitude', isEqualTo: selectedLongitude)
+            .where('coordinates.latitude', isEqualTo: selectedLatitude)
+            .where('coordinates.longitude', isEqualTo: selectedLongitude)
             .get();
 
         if (querySnapshot.docs.isNotEmpty) {
@@ -102,53 +130,12 @@ class _EditPlacePageState extends State<EditPlacePage> {
             callback();
           }
         } else {
-          print(
+          debugPrint(
               'Place not found for latitude: $selectedLatitude, longitude: $selectedLongitude');
         }
-      } catch (e) {
-        print('Error getting place from Firestore: $e');
+      } catch (e, stacktrace) {
+        debugPrint('Error getting place from Firestore: $e, $stacktrace');
       }
-    }
-  }
-
-  Future<void> addPlaceToFirestore(
-    String name,
-    double latitude,
-    double longitude,
-    String status,
-  ) async {
-    try {
-      final querySnapshot = await firestore
-          .collection('places')
-          .where('latitude', isEqualTo: latitude)
-          .where('longitude', isEqualTo: longitude)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Location already added'),
-          ),
-        );
-      } else {
-        await firestore.collection('places').add({
-          'name': name,
-          'latitude': latitude,
-          'longitude': longitude,
-          'status': status,
-          'needs': [],
-          'infrastructure': [],
-          'population': [],
-          'supplies': [],
-          'contacts': [],
-          'AddedBy': userId
-        });
-      }
-
-      loadMarkers();
-      fetchPlaces();
-    } catch (e) {
-      print('Error adding place to Firestore: $e');
     }
   }
 
@@ -160,35 +147,25 @@ class _EditPlacePageState extends State<EditPlacePage> {
       final updatedMarkers = <Marker>{};
       for (final place in places) {
         final name = place.get('name');
-        final latitude = place.get('latitude');
-        final longitude = place.get('longitude');
+        final latitude = place.get('coordinates')['latitude'];
+        final longitude = place.get('coordinates')['longitude'];
         final status = place.get('status');
 
         BitmapDescriptor markerIcon;
-        switch (status) {
-          case 'Safe':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueAzure,
-            );
-            break;
-          case 'Severe':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueRed,
-            );
-            break;
-          case 'Moderate':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueOrange,
-            );
-            break;
-          case 'Minor':
-            markerIcon = BitmapDescriptor.defaultMarkerWithHue(
-              BitmapDescriptor.hueYellow,
-            );
-            break;
-          default:
-            markerIcon = BitmapDescriptor.defaultMarker;
-            break;
+        if (status == l.lowText) {
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueAzure,
+          );
+        } else if (status == l.mediumText) {
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueRed,
+          );
+        } else if (status == l.highText) {
+          markerIcon = BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueOrange,
+          );
+        } else {
+          markerIcon = BitmapDescriptor.defaultMarker;
         }
 
         final marker = Marker(
@@ -216,7 +193,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
         myMarkers = updatedMarkers;
       });
     } catch (e) {
-      print('Error loading markers from Firestore: $e');
+      debugPrint('Error loading markers from Firestore: $e');
     }
   }
 
@@ -247,7 +224,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
                   controller: searchController,
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.search),
-                    hintText: "Search For A Location",
+                    hintText: l.searchForLocationHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
@@ -261,9 +238,12 @@ class _EditPlacePageState extends State<EditPlacePage> {
                   itemCount: placeListToShow.length,
                   itemBuilder: (context, index) {
                     final place = placeListToShow[index];
+                    String? selectedStatus =
+                        HelperMe().localTrans(place.status, l);
+
                     return ListTile(
                       title: Text(place.name),
-                      subtitle: Text("Status: ${place.status}"),
+                      subtitle: Text("${l.placeStatusText} ${selectedStatus}"),
                       onTap: () {
                         Navigator.pop(context);
                         _goToPlaceOnMap(place);
@@ -277,28 +257,28 @@ class _EditPlacePageState extends State<EditPlacePage> {
         },
       );
     } catch (e) {
-      print('Error loading places from Firestore: $e');
+      debugPrint('Error loading places from Firestore: $e');
     }
   }
 
   void _goToPlaceOnMap(Place place) {
+    setState(() {
+      selectedMarker = [
+        Marker(
+          markerId: MarkerId(place.name),
+          position:
+              LatLng(place.coordinates!.latitude, place.coordinates!.longitude),
+        ),
+        place.status,
+      ];
+    });
     final cameraPosition = CameraPosition(
-      target: LatLng(place.latitude, place.longitude),
+      target: LatLng(place.coordinates!.latitude, place.coordinates!.longitude),
       zoom: 15.0,
     );
 
     _googleMapController!
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-
-    setState(() {
-      selectedMarker = [
-        Marker(
-          markerId: MarkerId(place.name),
-          position: LatLng(place.latitude, place.longitude),
-        ),
-        place.status,
-      ];
-    });
   }
 
   void navigateToHomePage() {
@@ -336,7 +316,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: GoBack(
-                  title: "MAP",
+                  title: l.map,
                   onTap: () {
                     navigateToHomePage();
                   },
@@ -373,7 +353,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
                                     selectedMarker != null &&
                                             selectedMarker!.isNotEmpty
                                         ? selectedMarker![0].markerId.value
-                                        : "Select an Area",
+                                        : l.selectAnAreaText,
                                     style: TextStyle(fontSize: 20),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -387,8 +367,10 @@ class _EditPlacePageState extends State<EditPlacePage> {
                                 Text(
                                   selectedMarker != null &&
                                           selectedMarker!.isNotEmpty
-                                      ? "Status: ${selectedMarker![1]}"
-                                      : "Status: Invalid",
+                                      ? l.placeStatusText +
+                                          HelperMe().localTransNotNull(
+                                              selectedMarker![1], l)
+                                      : "${l.statusInvalidText}",
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
@@ -407,7 +389,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         categorieButton(
-                          text: "All Areas",
+                          text: l.allAreasButtonText,
                           icon: Icon(
                             Icons.local_attraction,
                             color: Colors.white,
@@ -418,7 +400,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
                           },
                         ),
                         categorieButton(
-                          text: "Edit Area",
+                          text: l.editAreaButtonText,
                           icon: Icon(
                             Icons.edit,
                             color: Colors.white,

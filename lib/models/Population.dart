@@ -1,109 +1,83 @@
 class Population {
-  int totalMenBefore = 0;
-  int totalWomenBefore = 0;
-  int totalBoysBefore = 0;
-  int totalGirlsBefore = 0;
+  int totalMen;
+  int totalWomen;
+  int totalOlderBoys;
+  int totalOlderGirls;
+  int totalYoungerBoys;
+  int totalYoungerGirls;
 
-  int totalMenDeaths = 0;
-  int totalWomenDeaths = 0;
-  int totalBoysDeaths = 0;
-  int totalGirlsDeaths = 0;
+  int totalMenDisplaced;
+  int totalWomenDisplaced;
+  int totalBoysDisplaced;
+  int totalGirlsDisplaced;
 
-  int totalMenInjured = 0;
-  int totalWomenInjured = 0;
-  int totalBoysInjured = 0;
-  int totalGirlsInjured = 0;
+  int totalFamilies;
+  int totalHouseholds;
+  int totalPopulation;
 
-  int totalMenDisplaced = 0;
-  int totalWomenDisplaced = 0;
-  int totalBoysDisplaced = 0;
-  int totalGirlsDisplaced = 0;
-
-  int totalLivestockAnimals = 0;
-
-  Population({
-    this.totalMenBefore = 0,
-    this.totalWomenBefore = 0,
-    this.totalBoysBefore = 0,
-    this.totalGirlsBefore = 0,
-    this.totalMenDeaths = 0,
-    this.totalWomenDeaths = 0,
-    this.totalBoysDeaths = 0,
-    this.totalGirlsDeaths = 0,
-    this.totalMenInjured = 0,
-    this.totalWomenInjured = 0,
-    this.totalBoysInjured = 0,
-    this.totalGirlsInjured = 0,
-    this.totalMenDisplaced = 0,
-    this.totalWomenDisplaced = 0,
-    this.totalBoysDisplaced = 0,
-    this.totalGirlsDisplaced = 0,
-    this.totalLivestockAnimals = 0,
-  });
+  Population(
+      {required this.totalPopulation,
+      required this.totalMenDisplaced,
+      required this.totalWomenDisplaced,
+      required this.totalBoysDisplaced,
+      required this.totalGirlsDisplaced,
+      required this.totalMen,
+      required this.totalWomen,
+      required this.totalOlderBoys,
+      required this.totalOlderGirls,
+      required this.totalYoungerBoys,
+      required this.totalYoungerGirls,
+      required this.totalFamilies,
+      required this.totalHouseholds});
 
   factory Population.initial() {
     return Population(
-      totalMenBefore: 0,
-      totalWomenBefore: 0,
-      totalBoysBefore: 0,
-      totalGirlsBefore: 0,
-      totalMenDeaths: 0,
-      totalWomenDeaths: 0,
-      totalBoysDeaths: 0,
-      totalGirlsDeaths: 0,
-      totalMenInjured: 0,
-      totalWomenInjured: 0,
-      totalBoysInjured: 0,
-      totalGirlsInjured: 0,
-      totalMenDisplaced: 0,
-      totalWomenDisplaced: 0,
-      totalBoysDisplaced: 0,
-      totalGirlsDisplaced: 0,
-      totalLivestockAnimals: 0,
-    );
+        totalMenDisplaced: 0,
+        totalWomenDisplaced: 0,
+        totalBoysDisplaced: 0,
+        totalGirlsDisplaced: 0,
+        totalPopulation: 0,
+        totalMen: 0,
+        totalWomen: 0,
+        totalOlderBoys: 0,
+        totalOlderGirls: 0,
+        totalYoungerBoys: 0,
+        totalYoungerGirls: 0,
+        totalFamilies: 0,
+        totalHouseholds: 0);
   }
 
   factory Population.fromMap(Map<String, dynamic> data) {
     return Population(
-      totalMenBefore: data['totalMenBefore'],
-      totalWomenBefore: data['totalWomenBefore'],
-      totalBoysBefore: data['totalBoysBefore'],
-      totalGirlsBefore: data['totalGirlsBefore'],
-      totalMenDeaths: data['totalMenDeaths'],
-      totalWomenDeaths: data['totalWomenDeaths'],
-      totalBoysDeaths: data['totalBoysDeaths'],
-      totalGirlsDeaths: data['totalGirlsDeaths'],
-      totalMenInjured: data['totalMenInjured'],
-      totalWomenInjured: data['totalWomenInjured'],
-      totalBoysInjured: data['totalBoysInjured'],
-      totalGirlsInjured: data['totalGirlsInjured'],
-      totalMenDisplaced: data['totalMenDisplaced'],
-      totalWomenDisplaced: data['totalWomenDisplaced'],
-      totalBoysDisplaced: data['totalBoysDisplaced'],
-      totalGirlsDisplaced: data['totalGirlsDisplaced'],
-      totalLivestockAnimals: data['totalLivestockAnimals'],
-    );
+        totalMenDisplaced: data['totalMenDisplaced'],
+        totalWomenDisplaced: data['totalWomenDisplaced'],
+        totalBoysDisplaced: data['totalBoysDisplaced'],
+        totalGirlsDisplaced: data['totalGirlsDisplaced'],
+        totalMen: data['totalMen'],
+        totalWomen: data['totalWomen'],
+        totalOlderBoys: data['totalOlderBoys'],
+        totalOlderGirls: data['totalOlderGirls'],
+        totalYoungerBoys: data['totalYoungerBoys'],
+        totalYoungerGirls: data['totalYoungerGirls'],
+        totalPopulation: data['totalPopulation'],
+        totalFamilies: data['totalFamilies'],
+        totalHouseholds: data['totalHouseholds']);
   }
-
   Map<String, dynamic> toMap() {
     return {
-      'totalMenBefore': totalMenBefore,
-      'totalWomenBefore': totalWomenBefore,
-      'totalBoysBefore': totalBoysBefore,
-      'totalGirlsBefore': totalGirlsBefore,
-      'totalMenDeaths': totalMenDeaths,
-      'totalWomenDeaths': totalWomenDeaths,
-      'totalBoysDeaths': totalBoysDeaths,
-      'totalGirlsDeaths': totalGirlsDeaths,
-      'totalMenInjured': totalMenInjured,
-      'totalWomenInjured': totalWomenInjured,
-      'totalBoysInjured': totalBoysInjured,
-      'totalGirlsInjured': totalGirlsInjured,
       'totalMenDisplaced': totalMenDisplaced,
       'totalWomenDisplaced': totalWomenDisplaced,
       'totalBoysDisplaced': totalBoysDisplaced,
       'totalGirlsDisplaced': totalGirlsDisplaced,
-      'totalLivestockAnimals': totalLivestockAnimals,
+      'totalMen': totalMen,
+      'totalWomen': totalWomen,
+      'totalOlderBoys': totalOlderBoys,
+      'totalOlderGirls': totalOlderGirls,
+      'totalYoungerBoys': totalYoungerBoys,
+      'totalYoungerGirls': totalYoungerGirls,
+      'totalPopulation': totalPopulation,
+      'totalFamilies': totalFamilies,
+      'totalHouseholds': totalHouseholds
     };
   }
 }

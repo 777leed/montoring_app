@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SyncPage extends StatelessWidget {
   const SyncPage({super.key});
@@ -7,6 +8,7 @@ class SyncPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: CustomColors.secondaryLighterColor,
       body: SafeArea(
           child: Padding(
@@ -18,12 +20,14 @@ class SyncPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "Unavailable",
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.syncPageTitle,
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                  ),
                 ),
                 Image.asset(
                   'Assets/images/unavailable.png',

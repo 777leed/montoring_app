@@ -1,0 +1,1614 @@
+{
+  "@rankPlacesTitle": {
+    "description": "Title for the rank places page"
+  },
+  "rankPlacesTitle": "Rank Places",
+  "@loadingText": {
+    "description": "Loading text when data is being fetched"
+  },
+  "loadingText": "Loading...",
+  "@placeStatusText": {
+    "description": "Text for the status of a place"
+  },
+  "placeStatusText": "Status: ",
+  "@filterOptionsText": {
+    "description": "Text for the filter options"
+  },
+  "filterOptionsText": "Filter Options",
+  "@needsFilterText": {
+    "description": "Text for the 'Needs' filter option"
+  },
+  "needsFilterText": "Needs",
+  "@totalPopulationFilterText": {
+    "description": "Text for the 'Total Population' filter option"
+  },
+  "totalPopulationFilterText": "Total Population",
+  "@toubkalFilterText": {
+    "description": "Text for the 'Belongs to Toubkal' filter option"
+  },
+  "toubkalFilterText": "Belongs to Toubkal",
+  "@damagedHousesFilterText": {
+    "description": "Text for the 'Damaged Houses' filter option"
+  },
+  "damagedHousesFilterText": "Damaged Houses",
+  "myHomeTitle": "Home",
+  "@myHomeTitle": {
+  "description": "Title for the Home page"
+    },
+"myHomeAdd": "Add",
+"@myHomeAdd": {
+  "description": "Text for the Add button on the Home page"
+},
+"myHomeProfile": "Profile",
+"@myHomeProfile": {
+  "description": "Text for the Profile button on the Home page"
+},
+"myHomeSync": "Sync",
+"@myHomeSync": {
+  "description": "Text for the Sync button on the Home page"
+},
+
+"@signUpText": {
+    "description": "Text for the sign up page title"
+  },
+  "signUpText": "Sign Up",
+  "@nameTextField": {
+    "description": "Label for the name text field"
+  },
+  "nameTextField": "Name",
+
+
+  "@signUpButton": {
+    "description": "Text for the sign up button"
+  },
+  "signUpButton": "Sign Up",
+  "@logInText": {
+    "description": "Text for the log in instruction"
+  },
+  "logInText": "If you already have an account, Please",
+  "@logInLink": {
+    "description": "Text for the log in link"
+  },
+  "logInLink": "log in",
+  "@logInDot": {
+    "description": "Dot for the log in instruction"
+  },
+  "logInDot": ".",
+
+  "@emailTextField": {
+    "description": "Label for the email text field"
+  },
+  "emailTextField": "Email / ID",
+  "@passwordTextField": {
+    "description": "Label for the password text field"
+  },
+  "passwordTextField": "Key / Password",
+  "@logInButton": {
+    "description": "Text for the log in button"
+  },
+  "logInButton": "Log In",
+  "@noAccountText": {
+    "description": "Instruction for creating a new account"
+  },
+  "noAccountText": "If you don't have an account,",
+  "@signUpLink": {
+    "description": "Text for the sign up link"
+  },
+  "signUpLink": "Sign Up",
+
+"myProfileTitle": "my Profile",
+"@myProfileTitle": {
+"description": "Title for the user's profile page"
+},
+"logoutButton": "Log Out",
+"@logoutButton": {
+"description": "Text for the log out button"
+},
+
+"addNewTitle": "Unavailable",
+"@addNewTitle": {
+"description": "Title for the unavailable add new page"
+},
+
+"syncPageTitle": "Unavailable",
+"@syncPageTitle": {
+"description": "Title for the unavailable sync page"
+},
+
+"waterSurveyTitle": "Water Survey",
+"@waterSurveyTitle": {
+"description": "Title for the water survey page"
+},
+
+
+"waterSurveyQuestion": "What's the current status of water ?",
+"@waterSurveyQuestion": {
+"description": "Question for the water survey page"
+},
+
+
+
+"isWaterAvailableQuestion": "Is water available?",
+"@isWaterAvailableQuestion": {
+"description": "Question asking if water is available"
+},
+"notAvailableReasonLabel": "Reason",
+"@notAvailableReasonLabel": {
+"description": "Label for the reason why water is not available"
+},
+"runningWaterLinkQuestion": "Are the houses linked with running water?",
+"@runningWaterLinkQuestion": {
+"description": "Question asking if the houses are linked with running water"
+},
+"runningWaterSourceQuestion": "The source of the running water is well",
+"@runningWaterSourceQuestion": {
+"description": "Question asking if the source of the running water is well"
+},
+"sinksInVillageQuestion": "Are there any fountains in the village?",
+"@sinksInVillageQuestion": {
+"description": "Question asking if there are any fountains in the village"
+},
+"naturalWaterSourcesQuestion": "Do people bring water from natural sources?",
+"@naturalWaterSourcesQuestion": {
+"description": "Question asking if people bring water from natural sources"
+},
+"treesSurveyTitle": "Trees Survey:",
+"@treesSurveyTitle": {
+"description": "Title for the trees survey page"
+},
+"treeTypeLabel": "Tree Type",
+"@treeTypeLabel": {
+"description": "Label for the type of tree"
+},
+"treeNumberLabel": "Number of Trees",
+"@treeNumberLabel": {
+"description": "Label for the number of trees"
+},
+"saveTreesButton": "Save Trees",
+"@saveTreesButton": {
+"description": "Button text to save trees"
+},
+"savedTreesTitle": "Saved Trees:",
+"@savedTreesTitle": {
+"description": "Title for the saved trees section"
+},
+
+
+
+  "roadsSurveyTitle": "Roads Survey:",
+  "@roadsSurveyTitle": {
+    "description": "Title for the roads survey page"
+  },
+  "roadNameLabel": "Road Name",
+  "@roadNameLabel": {
+    "description": "Label for the name of the road"
+  },
+  "blockedOption": "Blocked",
+  "@blockedOption": {
+    "description": "Option for a blocked road in the dropdown menu"
+  },
+  "demolishedOption": "Demolished",
+  "@demolishedOption": {
+    "description": "Option for a demolished road in the dropdown menu"
+  },
+  "unstableOption": "Unstable",
+  "@unstableOption": {
+    "description": "Option for an unstable road in the dropdown menu"
+  },
+  "stableOption": "Stable",
+  "@stableOption": {
+    "description": "Option for a stable road in the dropdown menu"
+  },
+  "regularCarOption": "Regular Car",
+  "@regularCarOption": {
+    "description": "Option for a regular car in the dropdown menu"
+  },
+  "fourByFourOption": "4x4",
+  "@fourByFourOption": {
+    "description": "Option for a 4x4 vehicle in the dropdown menu"
+  },
+  "truckOption": "Truck",
+  "@truckOption": {
+    "description": "Option for a truck in the dropdown menu"
+  },
+  "motorcycleOption": "Motorcycle",
+  "@motorcycleOption": {
+    "description": "Option for a motorcycle in the dropdown menu"
+  },
+  "muelOption": "Mule",
+  "@muelOption": {
+    "description": "Option for a mule in the dropdown menu"
+  },
+  "byFootOption": "by foot",
+  "@byFootOption": {
+    "description": "Option for traveling by foot in the dropdown menu"
+  },
+  "naOption": "N/A",
+  "@naOption": {
+    "description": "Option for N/A in the dropdown menu"
+  },
+  "saveRoadButton": "Save Road",
+  "@saveRoadButton": {
+    "description": "Button text to save a road"
+  },
+  "savedRoadsTitle": "Saved Roads:",
+  "@savedRoadsTitle": {
+    "description": "Title for the section displaying saved roads"
+  },
+
+
+
+  
+  "populationSurveyTitle": "Population Status",
+  "@populationSurveyTitle": {
+    "description": "Title for the population survey page"
+  },
+  "peopleIcon": "Icons.people",
+  "@peopleIcon": {
+    "description": "Icon for representing people in the population survey page"
+  },
+  "generalInfoTitle": "General Information",
+  "@generalInfoTitle": {
+    "description": "Title for the general information section"
+  },
+  "currentPopulationTitle": "Current Population",
+  "@currentPopulationTitle": {
+    "description": "Title for the current population section"
+  },
+  "totalDisplacedTitle": "Total Displaced:",
+  "@totalDisplacedTitle": {
+    "description": "Title for the total displaced section"
+  },
+  "enterLabel": "Enter",
+  "@enterLabel": {
+    "description": "Label for the input field to enter data"
+  },
+
+
+
+  
+  "currentNeedsTitle": "Current Needs",
+  "@currentNeedsTitle": {
+    "description": "Title for the current needs section"
+  },
+  "shoppingBagIcon": "Icons.shopping_bag",
+  "@shoppingBagIcon": {
+    "description": "Icon representing a shopping bag for the needs survey page"
+  },
+  "insertNameLabel": "Insert name",
+  "@insertNameLabel": {
+    "description": "Label for the input field to insert a name"
+  },
+  "quantityLabel": "Quantity",
+  "@quantityLabel": {
+    "description": "Label for the input field to enter the quantity"
+  },
+  "commentLabel": "Comment (optional)",
+  "@commentLabel": {
+    "description": "Label for the input field to enter a comment (optional)"
+  },
+  "unknownType": "unknown",
+  "@unknownType": {
+    "description": "Default type for an unknown need"
+  },
+"foodType": "Food",
+"@foodType": {
+  "description": "Type for food needs"
+},
+"hygieneType": "Hygiene",
+"@hygieneType": {
+  "description": "Type for hygiene needs"
+},
+"medicineType": "Medicine",
+"@medicineType": {
+  "description": "Type for medical needs"
+},
+"constructionType": "Construction",
+"@constructionType": {
+  "description": "Type for construction needs"
+},
+"otherType": "Other",
+"@otherType": {
+  "description": "Type for other needs"
+}
+,
+  "saveNeedsButton": "Save Needs",
+  "@saveNeedsButton": {
+    "description": "Button text to save the entered needs data"
+  },
+  "savedItemsTitle": "Saved Items:",
+  "@savedItemsTitle": {
+    "description": "Title for the saved items section"
+  },
+  "needNameText": "Need Name: ",
+  "@needNameText": {
+    "description": "Text to label the need name in the saved items list"
+  },
+  "quantityText": "Quantity: ",
+  "@quantityText": {
+    "description": "Text to label the quantity in the saved items list"
+  },
+  "needTypeText": "Need Type: ",
+  "@needTypeText": {
+    "description": "Text to label the need type in the saved items list"
+  },
+  "dateText": "Date: ",
+  "@dateText": {
+    "description": "Text to label the date in the saved items list"
+  },
+  "commentText": "Comment: ",
+  "@commentText": {
+    "description": "Text to label the comment in the saved items list"
+  },
+
+
+  "locationSurveyTitle": "Location Survey",
+  "@locationSurveyTitle": {
+    "description": "Title for the location survey page"
+  },
+  "villageLabel": "Village",
+  "@villageLabel": {
+    "description": "Label for the input field to enter the village name"
+  },
+  "valleyLabel": "Valley",
+  "@valleyLabel": {
+    "description": "Label for the input field to enter the valley name"
+  },
+  "communeLabel": "Commune",
+  "@communeLabel": {
+    "description": "Label for the input field to enter the commune name"
+  },
+  "provinceLabel": "Province",
+  "@provinceLabel": {
+    "description": "Label for the input field to enter the province name"
+  },
+
+"livestockSurveyTitle": "Livestock Survey",
+"@livestockSurveyTitle": {
+  "description": "Title for the livestock survey page"
+},
+"livestockNameLabel": "Livestock Name",
+"@livestockNameLabel": {
+  "description": "Label for the input field to enter the livestock name"
+},
+"livestockNumberLabel": "Number of Livestock",
+"@livestockNumberLabel": {
+  "description": "Label for the input field to enter the number of livestock"
+},
+"saveLivestockButton": "Save Livestock",
+"@saveLivestockButton": {
+  "description": "Text for the button to save livestock data"
+},
+"savedLivestockTitle": "Saved Livestock:",
+"@savedLivestockTitle": {
+  "description": "Title for the section displaying saved livestock data"
+},
+
+
+"landsSurveyTitle": "Lands Survey",
+"@landsSurveyTitle": {
+  "description": "Title for the lands survey page"
+},
+"landSizeLabel": "Land size in hectares",
+"@landSizeLabel": {
+  "description": "Label for the input field to enter the land size in hectares"
+},
+"irrigatedLandsLabel": "Irrigated Lands",
+"@irrigatedLandsLabel": {
+  "description": "Label for the input field to enter the amount of irrigated lands"
+},
+"barrenLandsLabel": "Barren Lands",
+"@barrenLandsLabel": {
+  "description": "Label for the input field to enter the amount of barren lands"
+},
+"subsistenceCheckboxLabel": "Subsistence Farming",
+"@subsistenceCheckboxLabel": {
+  "description": "Label for the subsistence checkbox"
+},
+"financialCheckboxLabel": "Financial Farming",
+"@financialCheckboxLabel": {
+  "description": "Label for the financial checkbox"
+},
+"belongsToubkalCheckboxLabel": "Belongs to Toubkal",
+"@belongsToubkalCheckboxLabel": {
+  "description": "Label for the 'belongs to Toubkal' checkbox"
+},
+
+
+"irrigationSurveyTitle": "Irrigation System Survey",
+"@irrigationSurveyTitle": {
+  "description": "Title for the irrigation system survey page"
+},
+"nameLabel": "Name of Irrigation System",
+"@nameLabel": {
+  "description": "Label for the input field to enter the name of the irrigation system"
+},
+"purposeLabel": "Purpose of Irrigation System",
+"@purposeLabel": {
+  "description": "Label for the input field to enter the purpose of the irrigation system"
+},
+"timingLabel": "Timing of Irrigation System",
+"@timingLabel": {
+  "description": "Label for the input field to enter the timing of the irrigation system"
+},
+"saveButtonLabel": "Save Irrigation System",
+"@saveButtonLabel": {
+  "description": "Label for the save button in the irrigation system survey page"
+},
+"savedSystemsLabel": "Saved Irrigation Systems:",
+"@savedSystemsLabel": {
+  "description": "Label for the saved irrigation systems section in the irrigation system survey page"
+},
+
+
+"infraSurveyTitle": "Infrastructure Status",
+"@infraSurveyTitle": {
+  "description": "Title for the infrastructure status survey page"
+},
+"homesLabel": "Homes:",
+"@homesLabel": {
+  "description": "Label for the homes section in the infrastructure survey page"
+},
+"totalHomesLabel": "Total Homes",
+"@totalHomesLabel": {
+  "description": "Label for the input field to enter the total number of homes"
+},
+"unsafeHomesLabel": "Total Unsafe / Destroyed Homes",
+"@unsafeHomesLabel": {
+  "description": "Label for the input field to enter the total number of unsafe or destroyed homes"
+},
+"remainingHomesLabel": "Remaining Homes",
+"@remainingHomesLabel": {
+  "description": "Label for the input field to enter the total number of remaining intact homes"
+},
+"enterFieldHint": "Enter",
+"@enterFieldHint": {
+  "description": "Hint text for the input fields in the infrastructure survey page"
+},
+
+
+"imageUploadTitle": "Image Upload:",
+"@imageUploadTitle": {
+  "description": "Title for the image upload page"
+},
+"noPicturesText": "No pictures",
+"@noPicturesText": {
+  "description": "Text to display when no pictures are available"
+},
+"takePictureButton": "Take Picture",
+"@takePictureButton": {
+  "description": "Text for the button to capture a new picture"
+},
+"importImagesButton": "Import Images",
+"@importImagesButton": {
+  "description": "Text for the button to import images from the gallery"
+},
+
+
+"herbsSurveyTitle": "Herbs Survey:",
+"@herbsSurveyTitle": {
+  "description": "Title for the herbs survey page"
+},
+"herbNameInputLabel": "Herb Name",
+"@herbNameInputLabel": {
+  "description": "Label for the input field to enter the herb name"
+},
+"saveHerbButton": "Save Herb",
+"@saveHerbButton": {
+  "description": "Text for the button to save the herb"
+},
+"savedHerbsText": "Saved Herbs:",
+"@savedHerbsText": {
+  "description": "Text to display above the list of saved herbs"
+},
+  "craftsSurveyTitle": "Crafts Survey:",
+  "@craftsSurveyTitle": {
+    "description": "Title for the crafts survey section"
+  },
+  "craftTypeInputLabel": "Craft Type",
+  "@craftTypeInputLabel": {
+    "description": "Label for the input field to enter the type of craft"
+  },
+  "menCountInputLabel": "Number of Men",
+  "@menCountInputLabel": {
+    "description": "Label for the input field to enter the number of men in a craft"
+  },
+  "womenCountInputLabel": "Number of Women",
+  "@womenCountInputLabel": {
+    "description": "Label for the input field to enter the number of women in a craft"
+  },
+  "saveCraftButtonText": "Save Craft",
+  "@saveCraftButtonText": {
+    "description": "Text for the button to save the craft details"
+  },
+  "savedCraftsTitle": "Saved Crafts:",
+  "@savedCraftsTitle": {
+    "description": "Title for the section displaying the saved crafts"
+  },
+  "craftTypeTitle": "Craft Type",
+  "@craftTypeTitle": {
+    "description": "Title for the craft type in the saved crafts section"
+  },
+  "numberOfMenTitle": "Number of Men",
+  "@numberOfMenTitle": {
+    "description": "Title for the number of men in the saved crafts section"
+  },
+  "numberOfWomenTitle": "Number of Women",
+  "@numberOfWomenTitle": {
+    "description": "Title for the number of women in the saved crafts section"
+  },
+
+
+
+  "contactsBookTitle": "Contacts book:",
+  "@contactsBookTitle": {
+    "description": "Title for the contacts book section"
+  },
+  "nameInputLabel": "Name",
+  "@nameInputLabel": {
+    "description": "Label for the input field to enter the name"
+  },
+  "phoneNumberInputLabel": "Phone Number",
+  "@phoneNumberInputLabel": {
+    "description": "Label for the input field to enter the phone number"
+  },
+  "emailInputLabel": "Email",
+  "@emailInputLabel": {
+    "description": "Label for the input field to enter the email"
+  },
+  "selectPreferenceHint": "Select a preference",
+  "@selectPreferenceHint": {
+    "description": "Hint for the dropdown button to select a preference"
+  },
+  "saveContactButtonText": "Save Contact",
+  "@saveContactButtonText": {
+    "description": "Text for the button to save the contact details"
+  },
+  "savedContactsTitle": "Saved Contacts:",
+  "@savedContactsTitle": {
+    "description": "Title for the section displaying the saved contacts"
+  },
+  "nameTitle": "Name",
+  "@nameTitle": {
+    "description": "Title for the name in the saved contacts section"
+  },
+  "phoneNumberTitle": "Phone Number",
+  "@phoneNumberTitle": {
+    "description": "Title for the phone number in the saved contacts section"
+  },
+  "emailTitle": "Email",
+  "@emailTitle": {
+    "description": "Title for the email in the saved contacts section"
+  },
+  "preferenceTitle": "Preference",
+  "@preferenceTitle": {
+    "description": "Title for the preference in the saved contacts section"
+  },
+
+
+
+  "buildingSurveyTitle": "Building Survey:",
+  "@buildingSurveyTitle": {
+    "description": "Title for the building survey section"
+  },
+  "buildingTypeInputLabel": "Building Type",
+  "@buildingTypeInputLabel": {
+    "description": "Label for the input field to enter the type of building"
+  },
+  "conditionLabelText": "Condition",
+  "@conditionLabelText": {
+    "description": "Label for the condition dropdown in the building survey"
+  },
+  "saveBuildingButtonText": "Save Building",
+  "@saveBuildingButtonText": {
+    "description": "Text for the button to save the building details"
+  },
+  "savedBuildingsTitle": "Saved Buildings:",
+  "@savedBuildingsTitle": {
+    "description": "Title for the section displaying the saved buildings"
+  },
+  "buildingTypeTitle": "Building Type",
+  "@buildingTypeTitle": {
+    "description": "Title for the building type in the saved buildings section"
+  },
+  "buildingConditionTitle": "Building Condition",
+  "@buildingConditionTitle": {
+    "description": "Title for the building condition in the saved buildings section"
+  },
+
+
+
+  "workshopsTitle": "Workshops",
+  "@workshopsTitle": {
+    "description": "Title for the workshops section"
+  },
+  "sustainabilityWorkshopTitle": "Sustainability Workshop",
+  "@sustainabilityWorkshopTitle": {
+    "description": "Title for the sustainability workshop"
+  },
+  "groupManagementTitle": "Group Management",
+  "@groupManagementTitle": {
+    "description": "Title for the group management workshop"
+  },
+  "businessModelTitle": "Business Model",
+  "@businessModelTitle": {
+    "description": "Title for the business model workshop"
+  },
+
+  
+
+  "projectsTitle": "Projects",
+  "@projectsTitle": {
+    "description": "Title for the projects section"
+  },
+  "tassdertSolarPanelsTitle": "Tassdert Solar Panels",
+  "@tassdertSolarPanelsTitle": {
+    "description": "Title for the Tassdert Solar Panels project"
+  },
+  "zwinUpActivityITitle": "Zwin Up Activity I",
+  "@zwinUpActivityITitle": {
+    "description": "Title for the Zwin Up Activity I project"
+  },
+  "zwinUpActivityIITitle": "Zwin Up Activity II",
+  "@zwinUpActivityIITitle": {
+    "description": "Title for the Zwin Up Activity II project"
+  },
+
+
+
+  "disasterReliefTitle": "Disaster Relief",
+  "@disasterReliefTitle": {
+    "description": "Title for the Disaster Relief section"
+  },
+  "moroccoEarthquakeTitle": "Morocco Earthquake",
+  "@moroccoEarthquakeTitle": {
+    "description": "Title for the Morocco Earthquake disaster"
+  },
+  "disasterRecoveryDescription": "Disaster Recovery for towns and villages impacted by the earthquake",
+  "@disasterRecoveryDescription": {
+    "description": "Description for the disaster recovery action"
+  },
+
+
+
+  "featuresTitle": "Features",
+  "@featuresTitle": {
+    "description": "Title for the Features screen"
+  },
+  "addAreasButton": "Add Areas",
+  "@addAreasButton": {
+    "description": "Text for the button to add areas"
+  },
+  "editAreasButton": "Edit Areas",
+  "@editAreasButton": {
+    "description": "Text for the button to edit areas"
+  },
+  "exploreButton": "Explore",
+  "@exploreButton": {
+    "description": "Text for the button to explore"
+  },
+  "rankingAnalysisButton": "Ranking Analysis",
+  "@rankingAnalysisButton": {
+    "description": "Text for the button to perform ranking analysis"
+  },
+  "exportButton": "Export",
+  "@exportButton": {
+    "description": "Text for the button to export data"
+  },
+  "homeButton": "Home",
+  "@homeButton": {
+    "description": "Text for the button to go back to the home screen"
+  },
+
+
+
+  "homeText": "Home",
+  "@homeText": {
+    "description": "Text for the 'Home' tab in the bottom navigation bar"
+  },
+  "addText": "Add",
+  "@addText": {
+    "description": "Text for the 'Add' tab in the bottom navigation bar"
+  },
+  "profileText": "Profile",
+  "@profileText": {
+    "description": "Text for the 'Profile' tab in the bottom navigation bar"
+  },
+  "syncText": "Sync",
+  "@syncText": {
+    "description": "Text for the 'Sync' tab in the bottom navigation bar"
+  },
+
+
+
+  "dashboardText": "Dashboard",
+  "@dashboardText": {
+    "description": "Text for the 'Dashboard' title on the dashboard page"
+  },
+  "welcomeAboardText": "Welcome Aboard!",
+  "@welcomeAboardText": {
+    "description": "Text for the welcome message on the dashboard page"
+  },
+  "allText": "All",
+  "@allText": {
+    "description": "Text for the 'All' category tab in the dashboard page"
+  },
+  "disasterText": "Disaster",
+  "@disasterText": {
+    "description": "Text for the 'Disaster' category tab in the dashboard page"
+  },
+  "projectsText": "Projects",
+  "@projectsText": {
+    "description": "Text for the 'Projects' category tab in the dashboard page"
+  },
+  "workshopsText": "Workshops",
+  "@workshopsText": {
+    "description": "Text for the 'Workshops' category tab in the dashboard page"
+  },
+  "emailText": "Email",
+  "@emailText": {
+    "description": "Text label for the user's email address on the dashboard page"
+  },
+
+
+
+  "locationSearchHint": "Search",
+  "@locationSearchHint": {
+    "description": "Hint text for the location search bar"
+  },
+  "locationAlreadyAddedMessage": "Location already added",
+  "@locationAlreadyAddedMessage": {
+    "description": "Message displayed when the location has already been added"
+  },
+  "errorAddingPlaceMessage": "Error adding place to Firestore: ",
+  "@errorAddingPlaceMessage": {
+    "description": "Error message displayed when there is an issue while adding a place to Firestore"
+  },
+
+  "exploreAreaButtonText": "Explore Area",
+  "@exploreAreaButtonText": {
+    "description": "Text displayed on the button to explore a specific area on the map"
+  },
+
+
+  "allAreasButtonText": "All Areas",
+  "@allAreasButtonText": {
+    "description": "Text displayed on the button to show all areas on the map"
+  },
+  "editAreaButtonText": "Edit Area",
+  "@editAreaButtonText": {
+    "description": "Text displayed on the button to edit a specific area on the map"
+  },
+
+
+
+
+  "searchForLocationHint": "Search For A Location",
+  "@searchForLocationHint": {
+    "description": "Hint text for the search bar to find a location on the map"
+  },
+  "statusInvalidText": "Status: Invalid",
+  "@statusInvalidText": {
+    "description": "Text displayed when the status of the selected marker is invalid"
+  },
+  "selectAnAreaText": "Select an Area",
+  "@selectAnAreaText": {
+    "description": "Text displayed when no area is selected on the map"
+  },
+  "currentText": "Current",
+  "@currentText": {
+    "description": "Text displayed for the option to add the current location"
+  },
+  "searchText": "Search",
+  "@searchText": {
+    "description": "Text displayed for the option to search for a location"
+  },
+  "manualText": "Manual",
+  "@manualText": {
+    "description": "Text displayed for the option to manually add a location"
+  },
+  "invalidNameOrTooLong": "Name Is Empty or Is too long",
+  "@invalidNameOrTooLong": {
+    "description": "Error message displayed when the name is empty or too long"
+  },
+  "verifyFieldsText": "Verify All the fields",
+  "@verifyFieldsText": {
+    "description": "Error message displayed when there is an issue with the input fields"
+  },
+  "locationPermissionsDenied": "Location permissions denied",
+  "@locationPermissionsDenied": {
+    "description": "Error message displayed when location permissions are denied"
+  },
+  "locationAlreadyAddedText": "Location already added",
+  "@locationAlreadyAddedText": {
+    "description": "Error message displayed when the location is already added"
+  },
+  "currentLocationAddedText": "Current location added as a marker",
+  "@currentLocationAddedText": {
+    "description": "Success message displayed when the current location is added as a marker"
+  },
+
+
+
+  "treesPageTitle": "my Trees",
+  "@treesPageTitle": {
+    "description": "Title for the my Trees page"
+  },
+  "noTreesAddedText": "No trees added yet",
+  "@noTreesAddedText": {
+    "description": "Text displayed when no trees have been added yet"
+  },
+  "addTreeText": "Add Tree",
+  "@addTreeText": {
+    "description": "Text displayed for the button to add a tree"
+  },
+  "typeLabelText": "Type",
+  "@typeLabelText": {
+    "description": "Label text for the type input field"
+  },
+  "numberLabelText": "Number",
+  "@numberLabelText": {
+    "description": "Label text for the number input field"
+  },
+
+  "treeAddedSuccessText": "Tree added successfully",
+  "@treeAddedSuccessText": {
+    "description": "Success message displayed when a tree is added successfully"
+  },
+
+
+
+
+
+  "roadsPageTitle": "Roads",
+  "@roadsPageTitle": {
+    "description": "Title for the Roads page"
+  },
+  "noRoadsAddedText": "No roads added yet",
+  "@noRoadsAddedText": {
+    "description": "Text displayed when no roads have been added yet"
+  },
+  "addRoadText": "Add Road",
+  "@addRoadText": {
+    "description": "Text displayed for the button to add a road"
+  },
+  "roadNameLabelText": "Road Name",
+  "@roadNameLabelText": {
+    "description": "Label text for the road name input field"
+  },
+  "roadStatusLabelText": "Road Status",
+  "@roadStatusLabelText": {
+    "description": "Label text for the road status input field"
+  },
+  "vehicleTypeLabelText": "Vehicle Type",
+  "@vehicleTypeLabelText": {
+    "description": "Label text for the vehicle type input field"
+  },
+
+  "roadAddedSuccessText": "Road added successfully",
+  "@roadAddedSuccessText": {
+    "description": "Success message displayed when a road is added successfully"
+  },
+  "deleteText": "Delete",
+  "@deleteText": {
+    "description": "Text displayed for the delete action"
+  },
+  "confirmDeleteMessage": "Are you sure you want to delete this road?",
+  "@confirmDeleteMessage": {
+    "description": "Confirmation message for deleting a road"
+  },
+  "cancelText": "Cancel",
+  "@cancelText": {
+    "description": "Text displayed for the cancel action"
+  },
+  "currentLocationAddedSnackbar": "Current location added as a marker",
+  "@currentLocationAddedSnackbar": {
+    "description": "Success message displayed when the current location is added as a marker"
+  },
+
+
+
+
+  "populationPageTitle": "Population",
+  "@populationPageTitle": {
+    "description": "Title for the Population page"
+  },
+  "updateButtonText": "Update",
+  "@updateButtonText": {
+    "description": "Text displayed for the button to update population data"
+  },
+  "populationUpdatedSnackbar": "Population updated successfully",
+  "@populationUpdatedSnackbar": {
+    "description": "Success message displayed when population data is updated successfully"
+  },
+
+  "totalPopulationLabelText": "Total Population",
+  "@totalPopulationLabelText": {
+    "description": "Label text for the total population input field"
+  },
+  "totalFamiliesLabelText": "Total Number of Families",
+  "@totalFamiliesLabelText": {
+    "description": "Label text for the total number of families input field"
+  },
+  "generalInformationText": "General Information",
+  "@generalInformationText": {
+    "description": "Title for the general information section"
+  },
+  "currentPopulationText": "Current Population",
+  "@currentPopulationText": {
+    "description": "Title for the current population section"
+  },
+  "displacedPopulationText": "Displaced Population",
+  "@displacedPopulationText": {
+    "description": "Title for the displaced population section"
+  },
+  "boysAbove18LabelText": "Boys Above 18",
+  "@boysAbove18LabelText": {
+    "description": "Label text for the boys above 18 input field"
+  },
+  "boysUnder18LabelText": "Boys Under 18",
+  "@boysUnder18LabelText": {
+    "description": "Label text for the boys under 18 input field"
+  },
+  "girlsAbove18LabelText": "Girls Above 18",
+  "@girlsAbove18LabelText": {
+    "description": "Label text for the girls above 18 input field"
+  },
+  "girlsUnder18LabelText": "Girls Under 18",
+  "@girlsUnder18LabelText": {
+    "description": "Label text for the girls under 18 input field"
+  },
+  "menLabelText": "Men",
+  "@menLabelText": {
+    "description": "Label text for the men input field"
+  },
+  "womenLabelText": "Women",
+  "@womenLabelText": {
+    "description": "Label text for the women input field"
+  },
+  "currentPopulationSectionTitle": "Current Population",
+  "@currentPopulationSectionTitle": {
+    "description": "Title for the current population section"
+  },
+  "displacedPopulationSectionTitle": "Displaced Population",
+  "@displacedPopulationSectionTitle": {
+    "description": "Title for the displaced population section"
+  },
+  "girlsLabelText": "Girls",
+  "@girlsLabelText": {
+    "description": "Label text for the girls input field"
+  },
+  "totalPopulationSubtitle": "Total:",
+  "@totalPopulationSubtitle": {
+    "description": "Subtitle for the total population"
+  },
+
+
+
+  "myNeedsPageTitle": "my Needs",
+  "@myNeedsPageTitle": {
+    "description": "Title for the my Needs page"
+  },
+  "addNeedDialogTitle": "Add Need",
+  "@addNeedDialogTitle": {
+    "description": "Title for the Add Need dialog"
+  },
+
+  "quantityInputLabelText": "Quantity",
+  "@quantityInputLabelText": {
+    "description": "Label text for the quantity input field"
+  },
+  "needTypeInputLabelText": "Need Type",
+  "@needTypeInputLabelText": {
+    "description": "Label text for the need type input field"
+  },
+  "commentInputLabelText": "Comment",
+  "@commentInputLabelText": {
+    "description": "Label text for the comment input field"
+  },
+
+  "needAddedSnackbar": "Need added successfully",
+  "@needAddedSnackbar": {
+    "description": "Success message displayed when a need is added successfully"
+  },
+  "noNeedsAddedText": "No needs added yet",
+  "@noNeedsAddedText": {
+    "description": "Text displayed when no needs have been added yet"
+  },
+  "quantityGreaterThanZeroError": "Quantity must be greater than 0",
+  "@quantityGreaterThanZeroError": {
+    "description": "Error message displayed when the quantity is not greater than 0"
+  },
+
+  "errorDeletingNeedFirestore": "Error deleting need in Firestore",
+  "@errorDeletingNeedFirestore": {
+    "description": "Error message displayed when there is an error deleting a need in Firestore"
+  },
+
+
+
+
+  "editLocationPageTitle": "Edit Location",
+  "@editLocationPageTitle": {
+    "description": "Title for the Edit Location page"
+  },
+  "placeNameInputLabelText": "Place Name",
+  "@placeNameInputLabelText": {
+    "description": "Label text for the place name input field"
+  },
+  "latitudeInputLabelText": "Latitude",
+  "@latitudeInputLabelText": {
+    "description": "Label text for the latitude input field"
+  },
+  "longitudeInputLabelText": "Longitude",
+  "@longitudeInputLabelText": {
+    "description": "Label text for the longitude input field"
+  },
+  "saveChangesButtonText": "Save Changes",
+  "@saveChangesButtonText": {
+    "description": "Text displayed for the button to save changes"
+  },
+
+
+
+
+  "livestockPageTitle": "Livestock",
+  "@livestockPageTitle": {
+    "description": "Title for the Livestock page"
+  },
+  "noLivestockAddedText": "No livestock added yet",
+  "@noLivestockAddedText": {
+    "description": "Text displayed when there are no livestock added yet"
+  },
+  "addLivestockDialogTitle": "Add Livestock",
+  "@addLivestockDialogTitle": {
+    "description": "Title for the Add Livestock dialog"
+  },
+  "nameInputLabelText": "Name",
+  "@nameInputLabelText": {
+    "description": "Label text for the name input field"
+  },
+  "numberInputLabelText": "Number",
+  "@numberInputLabelText": {
+    "description": "Label text for the number input field"
+  },
+
+  "livestockAddedSuccessText": "Livestock added successfully",
+  "@livestockAddedSuccessText": {
+    "description": "Text displayed when livestock is added successfully"
+  },
+  "errorDeletingLivestockFirestore": "Error deleting livestock in Firestore",
+  "@errorDeletingLivestockFirestore": {
+    "description": "Error message displayed when there is an error deleting livestock in Firestore"
+  },
+
+
+
+  "landDetailsPageTitle": "Land Details",
+  "@landDetailsPageTitle": {
+    "description": "Title for the Land Details page"
+  },
+  "landSizeLabelText": "Land Size",
+  "@landSizeLabelText": {
+    "description": "Label text for the land size input field"
+  },
+  "irrigatedLandsLabelText": "Irrigated Lands",
+  "@irrigatedLandsLabelText": {
+    "description": "Label text for the irrigated lands input field"
+  },
+  "barrenLandsLabelText": "Barren Lands",
+  "@barrenLandsLabelText": {
+    "description": "Label text for the barren lands input field"
+  },
+  "subsistenceLabelText": "Subsistence Farming",
+  "@subsistenceLabelText": {
+    "description": "Label text for the subsistence checkbox"
+  },
+  "financialLabelText": "Financial Farming",
+  "@financialLabelText": {
+    "description": "Label text for the financial checkbox"
+  },
+  "belongsToubkalLabelText": "Belongs to Toubkal",
+  "@belongsToubkalLabelText": {
+    "description": "Label text for the belongs to Toubkal checkbox"
+  },
+  "villageLabelText": "Village",
+  "@villageLabelText": {
+    "description": "Label text for the village input field"
+  },
+  "valleyLabelText": "Valley",
+  "@valleyLabelText": {
+    "description": "Label text for the valley input field"
+  },
+  "communeLabelText": "Commune",
+  "@communeLabelText": {
+    "description": "Label text for the commune input field"
+  },
+  "provinceLabelText": "Province",
+  "@provinceLabelText": {
+    "description": "Label text for the province input field"
+  },
+  "landDetailsUpdatedSuccessText": "Land details updated successfully",
+  "@landDetailsUpdatedSuccessText": {
+    "description": "Text displayed when land details are updated successfully"
+  },
+  "errorUpdatingLandDetailsFirestore": "Error updating land details in Firestore",
+  "@errorUpdatingLandDetailsFirestore": {
+    "description": "Error message displayed when there is an error updating the land details in Firestore"
+  },
+
+
+
+  "irrigationSystemsPageTitle": "Irrigation Systems",
+  "@irrigationSystemsPageTitle": {
+    "description": "Title for the Irrigation Systems page"
+  },
+  "noIrrigationSystemsAddedText": "No irrigation systems added yet",
+  "@noIrrigationSystemsAddedText": {
+    "description": "Text displayed when no irrigation systems are added"
+  },
+  "addIrrigationSystemTitle": "Add Irrigation System",
+  "@addIrrigationSystemTitle": {
+    "description": "Title for the 'Add Irrigation System' dialog"
+  },
+  "systemNameLabelText": "System Name",
+  "@systemNameLabelText": {
+    "description": "Label text for the system name input field"
+  },
+  "purposeLabelText": "Purpose",
+  "@purposeLabelText": {
+    "description": "Label text for the purpose input field"
+  },
+  "timingLabelText": "Timing",
+  "@timingLabelText": {
+    "description": "Label text for the timing input field"
+  },
+  "irrigationSystemAddedSuccessText": "Irrigation System added successfully",
+  "@irrigationSystemAddedSuccessText": {
+    "description": "Text displayed when an irrigation system is added successfully"
+  },
+
+  "errorDeletingIrrigationSystemFirestore": "Error deleting irrigation system from Firestore",
+  "@errorDeletingIrrigationSystemFirestore": {
+    "description": "Error message displayed when there is an error deleting an irrigation system from Firestore"
+  },
+  "errorLoadingIrrigationSystemsFirestore": "Error loading irrigation systems data from Firestore",
+  "@errorLoadingIrrigationSystemsFirestore": {
+    "description": "Error message displayed when there is an error loading irrigation systems data from Firestore"
+  },
+
+
+
+
+  "waterStatusText": "Water Status",
+  "@waterStatusText": {
+    "description": "Label text for the water status field"
+  },
+
+  "selectedStatusText": "Selected Status",
+  "@selectedStatusText": {
+    "description": "Label text for the selected status field"
+  },
+  "hasRunningWaterText": "The village has Running Water",
+  "@hasRunningWaterText": {
+    "description": "Label text for the 'Has Running Water' switch field"
+  },
+  "hasWellText": "The village has Well",
+  "@hasWellText": {
+    "description": "Label text for the 'Has Well' switch field"
+  },
+  "hasSinksText": "The village has fountains",
+  "@hasSinksText": {
+    "description": "Label text for the 'Has fountains' switch field"
+  },
+  "usesNaturalSourcesText": "Uses Natural Sources",
+  "@usesNaturalSourcesText": {
+    "description": "Label text for the 'Uses Natural Sources' switch field"
+  },
+  "isWaterAvailableText": "Is Water Available",
+  "@isWaterAvailableText": {
+    "description": "Label text for the 'Is Water Available' switch field"
+  },
+  "notAvailableReasonText": "Not Available Reason",
+  "@notAvailableReasonText": {
+    "description": "Label text for the 'Not Available Reason' input field"
+  },
+  "electricityNotAvailableReasonText": "Electricity Not Available Reason",
+  "@electricityNotAvailableReasonText": {
+    "description": "Label text for the 'Electricity Not Available Reason' input field"
+  },
+  "hasInternetText": "The village has Internet",
+  "@hasInternetText": {
+    "description": "Label text for the 'Has Internet' switch field"
+  },
+  "hasSatellitesText": "The village has Satellites",
+  "@hasSatellitesText": {
+    "description": "Label text for the 'Has Satellites' switch field"
+  },
+  "hasMobileNetworkTowersText": "The village has Mobile Network Towers",
+  "@hasMobileNetworkTowersText": {
+    "description": "Label text for the 'Has Mobile Network Towers' switch field"
+  },
+
+
+
+  "infrastructurePageTitle": "Infrastructure",
+  "@infrastructurePageTitle": {
+    "description": "Title for the Infrastructure page"
+  },
+  "totalHomesText": "Total Homes",
+  "@totalHomesText": {
+    "description": "Label text for the total homes field"
+  },
+  "totalUnsafeHomesText": "Total Unsafe / Destroyed Homes",
+  "@totalUnsafeHomesText": {
+    "description": "Label text for the total unsafe or destroyed homes field"
+  },
+  "remainingHomesText": "Remaining Homes",
+  "@remainingHomesText": {
+    "description": "Label text for the remaining homes field"
+  },
+  "electricityStatusText": "Electricity Status",
+  "@electricityStatusText": {
+    "description": "Label text for the electricity status field"
+  },
+  "availableText": "Available",
+  "@availableText": {
+    "description": "Text for the 'Available' option in the electricity status dropdown"
+  },
+  "notAvailableText": "Not Available",
+  "@notAvailableText": {
+    "description": "Text for the 'Not Available' option in the electricity status dropdown"
+  },
+  "infrastructureUpdatedSuccessText": "Infrastructure updated successfully",
+  "@infrastructureUpdatedSuccessText": {
+    "description": "Text displayed when infrastructure is updated successfully"
+  },
+  "errorUpdatingInfrastructureFirestore": "Error updating infrastructure in Firestore",
+  "@errorUpdatingInfrastructureFirestore": {
+    "description": "Error message displayed when there is an error updating infrastructure in Firestore"
+  },
+  "errorLoadingInfrastructureFirestore": "Error loading infrastructure data from Firestore",
+  "@errorLoadingInfrastructureFirestore": {
+    "description": "Error message displayed when there is an error loading infrastructure data from Firestore"
+  },
+
+
+
+  "herbsPageTitle": "Herbs",
+  "@herbsPageTitle": {
+    "description": "Title for the Herbs page"
+  },
+  "noHerbsAddedText": "No herbs added yet",
+  "@noHerbsAddedText": {
+    "description": "Text displayed when no herbs have been added yet"
+  },
+  "addHerbDialogTitle": "Add Herb",
+  "@addHerbDialogTitle": {
+    "description": "Title for the dialog to add a new herb"
+  },
+  "herbNameLabelText": "Herb Name",
+  "@herbNameLabelText": {
+    "description": "Label text for the herb name input field"
+  },
+  "addButtonText": "Add",
+  "@addButtonText": {
+    "description": "Text for the 'Add' button in the add herb dialog"
+  },
+  "herbAddedSuccessText": "Herb added successfully",
+  "@herbAddedSuccessText": {
+    "description": "Text displayed when a herb is added successfully"
+  },
+  "errorUpdatingPlaceFirestore": "Error updating place in Firestore",
+  "@errorUpdatingPlaceFirestore": {
+    "description": "Error message displayed when there is an error updating the place in Firestore"
+  },
+  "errorDeletingHerbFirestore": "Error deleting herb from Firestore",
+  "@errorDeletingHerbFirestore": {
+    "description": "Error message displayed when there is an error deleting the herb from Firestore"
+  },
+  "errorLoadingHerbsFirestore": "Error loading herbs data from Firestore",
+  "@errorLoadingHerbsFirestore": {
+    "description": "Error message displayed when there is an error loading herbs data from Firestore"
+  },
+
+  "home": "Home",
+  "@home": {
+    "description": "The label for the home screen"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "The label for the settings screen"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "The label for the language selection"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "The label for enabling dark mode"
+  },
+  "lightMode": "Light Mode",
+  "@lightMode": {
+    "description": "The label for enabling light mode"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "The label for the theme selection"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "The label for the edit action"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "The label for the save action"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "The label for the cancel action"
+  },
+  "submit": "Submit",
+  "@submit": {
+    "description": "The label for the submit action"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "The label for the password field"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "The label for the sign-in action"
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "The label for the sign-up action"
+  },
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "The label for the sign-out action"
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "The welcome message"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "The label for error messages"
+  },
+  "success": "Success",
+  "@success": {
+    "description": "The label for success messages"
+  },
+  "loading": "Loading",
+  "@loading": {
+    "description": "The label for the loading state"
+  },
+  "noData": "No data available",
+  "@noData": {
+    "description": "The message displayed when no data is available"
+  },
+
+
+  "titleStats": "Education Statistics",
+  "@titleStats": {
+    "description": "Title for the Education Statistics page"
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Label for the add button"
+  },
+  "update": "Update",
+  "@update": {
+    "description": "Label for the update button"
+  },
+
+  "educationStatisticsUpdated": "Education statistics updated successfully",
+  "@educationStatisticsUpdated": {
+    "description": "Snackbar message for successful education statistics update"
+  },
+  "errorUpdatingEducationStatistics": "Error updating education statistics in Firestore",
+  "@errorUpdatingEducationStatistics": {
+    "description": "Error message for education statistics update failure"
+  },
+  "errorLoadingEducationStatistics": "Error loading education statistics data from Firestore",
+  "@errorLoadingEducationStatistics": {
+    "description": "Error message for education statistics data loading failure"
+  },
+
+
+  "titleCraft": "Crafts",
+  "@titleCraft": {
+    "description": "Title of the Crafts Page"
+  },
+  "noCrafts": "No crafts added yet",
+  "@noCrafts": {
+    "description": "Message shown when no crafts are added yet"
+  },
+  "addCraft": "Add Craft",
+  "@addCraft": {
+    "description": "Button text to add a new craft"
+  },
+  "typeOfCraft": "Type of Craft",
+  "@typeOfCraft": {
+    "description": "Label for the type of craft input field"
+  },
+  "numberOfMen": "Number of Men",
+  "@numberOfMen": {
+    "description": "Label for the input field to enter the number of men"
+  },
+  "numberOfWomen": "Number of Women",
+  "@numberOfWomen": {
+    "description": "Label for the input field to enter the number of women"
+  },
+  "craftAdded": "Craft added successfully",
+  "@craftAdded": {
+    "description": "Message shown when a new craft is added successfully"
+  },
+  "educationStatistics": "Education Statistics",
+  "@educationStatistics": {
+    "description": "Title of the Education Statistics page"
+  },
+  "literate": "Literate",
+  "@literate": {
+    "description": "Title for the literate section"
+  },
+  "postGraduate": "Post Graduate",
+  "@postGraduate": {
+    "description": "Title for the post graduate section"
+  },
+  "baccalaureate": "Baccalaureate",
+  "@baccalaureate": {
+    "description": "Title for the baccalaureate section"
+  },
+  "middleSchool": "Middle School",
+  "@middleSchool": {
+    "description": "Title for the middle school section"
+  },
+  "primarySchool": "Primary School",
+  "@primarySchool": {
+    "description": "Title for the primary school section"
+  },
+  "illiterate": "Illiterate",
+  "@illiterate": {
+    "description": "Title for the illiterate section"
+  },
+  "schoolAvailability": "School Availability",
+  "@schoolAvailability": {
+    "description": "Title for the school availability switch"
+  },
+  "available": "Available",
+  "@available": {
+    "description": "Text to indicate that something is available"
+  },
+  "notAvailable": "Not Available",
+  "@notAvailable": {
+    "description": "Text to indicate that something is not available"
+  },
+
+
+  "title": "Contacts",
+  "@title": {
+    "description": "Title of the Contacts Page"
+  },
+  "noContacts": "No contacts added yet",
+  "@noContacts": {
+    "description": "Message shown when no contacts are added yet"
+  },
+  "addContact": "Add Contact",
+  "@addContact": {
+    "description": "Button text to add a new contact"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Label for the name input field"
+  },
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Label for the input field to enter the phone number"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Label for the input field to enter the email address"
+  },
+  "contactPreference": "Contact preference",
+  "@contactPreference": {
+    "description": "Label for the input field to enter the contact preference"
+  },
+  "contactAdded": "Contact added successfully",
+  "@contactAdded": {
+    "description": "Message shown when a new contact is added successfully"
+  },
+
+
+  "titleBuildings": "Buildings",
+  "@titleBuildings": {
+    "description": "Title of the Buildings Page"
+  },
+  "noBuildings": "No buildings added yet",
+  "@noBuildings": {
+    "description": "Message shown when no buildings are added yet"
+  },
+  "addBuilding": "Add Building",
+  "@addBuilding": {
+    "description": "Button text to add a new building"
+  },
+  "buildingType": "Building Type",
+  "@buildingType": {
+    "description": "Label for the input field to enter the type of building"
+  },
+  "condition": "Condition",
+  "@condition": {
+    "description": "Label for the input field to enter the condition of the building"
+  },
+  "buildingAdded": "Building added successfully",
+  "@buildingAdded": {
+    "description": "Message shown when a new building is added successfully"
+  },
+  "lowText": "Low",
+  "mediumText": "Medium",
+  "highText": "High",
+  "unknownText":"Unknown",
+  "currentNeedsStatusQuestion":"What's the current needs status of the area?",
+  "pleaseFill":"Please fill in the information in this survey carefully to assess the current status of the area",
+  "disasterReliefText": "Disaster Relief Monitoring & Evaluation Survey",
+  "pleaseInsertDetails": "Please insert the details below",
+  "totalHouseholdsText": "Total Households",
+  "boysText": "Boys",
+  "girlsText": "Girls",
+  "electricityAndTelecommunicationText": "Electricity and Telecommunication",
+  "isElectricityAvailableQuestion": "Is Electricity available?",
+  "educationSurveyText": "Education Survey",
+  "primarySchoolOrKindergartenQuestion": "Is there any primary school or kindergarten ?",
+  "phoneText": "Phone",
+  "whatsappText": "WhatsApp",
+  "kindergartenText": "Kindergarten",
+"schoolText": "School",
+"storeText": "Store",
+"coOpText": "Co-op",
+"associationText": "Association",
+"clinicText": "Clinic",
+"subsistenceFarmingText":"Subsistence Farming",
+"financialFarmingText": "Financial Farming",
+"galleryText":"Gallery",
+"waterAndElectricityText": "Water & Electricity",
+"addCurrentLocationText": "Add Current Location",
+"map":"Map",
+"areYouSureDelete":"Are you sure you want to delete this location from the database ?",
+"nextText":"Next",
+"previousText":"Previous",
+"finishText":"Finish",
+"selectPlaceToDelete": "Select a place to delete"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+}
