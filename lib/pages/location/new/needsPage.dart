@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:montoring_app/models/MyNeeds.dart';
 import 'package:montoring_app/models/Place.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -50,6 +51,40 @@ class _MyNeedsPageState extends State<MyNeedsPage> {
     super.dispose();
   }
 
+  String itemTypeTransNotNull(String selectedType, AppLocalizations l) {
+    Map<String, String> translations = {
+      "Unknown": l.unknownText,
+      "Food": l.foodType,
+      "Hygiene": l.hygieneType,
+      "Medicine": l.medicineType,
+      "Construction": l.constructionType,
+      "Other": l.otherType,
+    };
+    Map<String, String> arabicTranslations = {
+      "غير معروف": l.unknownText,
+      "طعام": l.foodType,
+      "النظافة": l.hygieneType,
+      "الطب": l.medicineType,
+      "البناء": l.constructionType,
+      "آخر": l.otherType,
+    };
+    Map<String, String> frenchTranslations = {
+      "Inconnu": l.unknownText,
+      "Nourriture": l.foodType,
+      "Hygiène": l.hygieneType,
+      "Médecine": l.medicineType,
+      "Construction": l.constructionType,
+      "Autre": l.otherType,
+    };
+
+    String translation = translations[selectedType] ??
+        arabicTranslations[selectedType] ??
+        frenchTranslations[selectedType] ??
+        selectedType;
+
+    return translation;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +104,8 @@ class _MyNeedsPageState extends State<MyNeedsPage> {
                   itemCount: needsList.length,
                   itemBuilder: (context, index) {
                     final need = needsList[index];
+                    DateFormat formatter = DateFormat('dd-MM-yyyy');
+
                     return Dismissible(
                       key: UniqueKey(),
                       onDismissed: (direction) {
@@ -88,8 +125,10 @@ class _MyNeedsPageState extends State<MyNeedsPage> {
                           children: [
                             Text(
                                 "${l.quantityText} ${need.quantity.toString()}"),
-                            Text("${l.typeLabelText}: ${need.needType}"),
-                            Text("${l.dateText} ${need.date.toString()}"),
+                            Text(
+                                "${l.typeLabelText}: ${itemTypeTransNotNull(need.needType, l)}"),
+                            Text(
+                                "${l.dateText} ${formatter.format(need.date)}"),
                             Text("${l.commentText} ${need.comment}"),
                           ],
                         ),
@@ -98,8 +137,9 @@ class _MyNeedsPageState extends State<MyNeedsPage> {
                   },
                 ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddNeedDialog(context);
+        onPressed: () async {
+          await _showAddNeedDialog(context);
+          setState(() {});
         },
         child: Icon(Icons.add),
       ),
@@ -138,91 +178,96 @@ class _MyNeedsPageState extends State<MyNeedsPage> {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(l.addNeedDialogTitle),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: l.nameInputLabel),
-              ),
-              TextField(
-                controller: quantityController,
-                decoration: InputDecoration(labelText: l.quantityLabel),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                controller: commentController,
-                decoration: InputDecoration(labelText: l.commentLabel),
-              ),
-              SizedBox(height: 16.0),
-              buildDropdownWithStatus(
-                l.typeLabelText,
-                selectedType,
-                [
-                  l.unknownText,
-                  l.foodType,
-                  l.hygieneType,
-                  l.medicineType,
-                  l.constructionType,
-                  l.otherType
-                ],
-                (value) {
-                  setState(() {
-                    selectedType = value!;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-              if (selectedType == otherText) ...[
-                TextField(
-                  controller: typeController,
-                  decoration: InputDecoration(labelText: l.typeLabelText),
-                ),
-              ],
-            ],
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () async {
-                String type;
-                if (selectedType == otherText) {
-                  type = typeController.text;
-                } else {
-                  type = selectedType;
-                }
-                final String name = nameController.text;
-                final int quantity = int.parse(quantityController.text);
-                final String comment = commentController.text;
-
-                if (name.isNotEmpty && quantity > 0 && type.isNotEmpty) {
-                  final MyNeeds newNeed = MyNeeds(
-                    name: name,
-                    quantity: quantity,
-                    needType: type,
-                    date: DateTime.now(),
-                    comment: comment,
-                  );
-
-                  needsList.add(newNeed);
-
-                  await saveUpdatedPlace();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l.needAddedSnackbar),
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text(l.addNeedDialogTitle),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(labelText: l.nameInputLabel),
+                  ),
+                  TextField(
+                    controller: quantityController,
+                    decoration: InputDecoration(labelText: l.quantityLabel),
+                    keyboardType: TextInputType.number,
+                  ),
+                  TextField(
+                    controller: commentController,
+                    decoration: InputDecoration(labelText: l.commentLabel),
+                  ),
+                  SizedBox(height: 16.0),
+                  buildDropdownWithStatus(
+                    l.typeLabelText,
+                    selectedType,
+                    [
+                      l.unknownText,
+                      l.foodType,
+                      l.hygieneType,
+                      l.medicineType,
+                      l.constructionType,
+                      l.otherType
+                    ],
+                    (value) {
+                      setState(() {
+                        selectedType = value!;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 16.0),
+                  if (selectedType == otherText) ...[
+                    TextField(
+                      controller: typeController,
+                      decoration: InputDecoration(labelText: l.typeLabelText),
                     ),
-                  );
-
-                  Navigator.of(context).pop();
-                  setState(() {});
-                }
-              },
-              child: Text(l.add),
+                  ],
+                ],
+              ),
             ),
-          ],
-        );
+            actions: <Widget>[
+              ElevatedButton(
+                onPressed: () async {
+                  String type;
+                  if (selectedType == otherText) {
+                    type = typeController.text;
+                  } else {
+                    type = selectedType;
+                  }
+                  final String name = nameController.text;
+                  final int quantity = int.parse(quantityController.text);
+                  final String comment = commentController.text;
+
+                  if (name.isNotEmpty && quantity > 0 && type.isNotEmpty) {
+                    final MyNeeds newNeed = MyNeeds(
+                      name: name,
+                      quantity: quantity,
+                      needType: type,
+                      date: DateTime.now(),
+                      comment: comment,
+                    );
+
+                    needsList.add(newNeed);
+
+                    await saveUpdatedPlace();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l.needAddedSnackbar),
+                      ),
+                    );
+
+                    Navigator.of(context).pop();
+                    setState(() {});
+                  }
+                },
+                child: Text(l.add),
+              ),
+            ],
+          );
+        });
       },
     );
   }

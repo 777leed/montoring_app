@@ -58,7 +58,7 @@ class _TreesSurveyState extends State<TreesSurvey>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 MyBanner(
-                    title: "Please insert the details below",
+                    title: l.pleaseInsertDetails,
                     img: "Assets/images/forest.png"),
                 TextField(
                   controller: treeTypeController,
@@ -66,17 +66,18 @@ class _TreesSurveyState extends State<TreesSurvey>
                 ),
                 TextField(
                   controller: treeNumberController,
-                  decoration: InputDecoration(labelText: 'Number of Trees'),
+                  decoration:
+                      InputDecoration(labelText: l.numberInputLabelText),
                   keyboardType: TextInputType.number,
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: saveTrees,
-                  child: Text('Save Trees'),
+                  child: Text(l.saveTreesButton),
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  'Saved Trees:',
+                  l.savedTreesTitle,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(

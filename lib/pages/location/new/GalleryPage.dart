@@ -133,6 +133,28 @@ class _GalleryPageState extends State<GalleryPage> {
     }
   }
 
+  void showdialogg(double latitude, double longitude) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l.deleteText),
+        content: Text(l.areYouSureDelete),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(l.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(l.deleteText),
+          ),
+        ],
+      ),
+    );
+  }
+
   void removeImage(int index) {
     setState(() {
       if (index < _onlineImages.length) {

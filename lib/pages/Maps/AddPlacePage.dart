@@ -119,7 +119,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
   Future<void> _filterPlaces(String searchText) async {
     FocusScope.of(context).unfocus();
     final filteredPlaces = (availablePlaces as List<Place>).where((place) {
-      return place.name.toLowerCase().contains(searchText.toLowerCase());
+      return place.name!.toLowerCase().contains(searchText.toLowerCase());
     }).toList();
 
     setState(() {
@@ -325,7 +325,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
                     String? selectedStatus =
                         HelperMe().localTrans(place.status, l);
                     return ListTile(
-                      title: Text(place.name),
+                      title: Text(place.name!),
                       subtitle: Text("${l.placeStatusText} ${selectedStatus}"),
                       onTap: () {
                         Navigator.pop(context);
@@ -562,7 +562,7 @@ class _AddPlacePageState extends State<AddPlacePage> {
     setState(() {
       selectedMarker = [
         Marker(
-          markerId: MarkerId(place.name),
+          markerId: MarkerId(place.name!),
           position:
               LatLng(place.coordinates!.latitude, place.coordinates!.longitude),
         ),

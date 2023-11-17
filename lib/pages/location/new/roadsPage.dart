@@ -45,6 +45,57 @@ class _RoadsPageState extends State<RoadsPage> {
     super.dispose();
   }
 
+  String localTransNotNull(String selectedType, AppLocalizations l) {
+    Map<String, String> translations = {
+      "Regular Car": l.regularCarOption,
+      "4x4": l.fourByFourOption,
+      "Truck": l.truckOption,
+      "Motorcycle": l.motorcycleOption,
+      "Mule": l.muelOption,
+      "by foot": l.byFootOption,
+      "N/A": l.naOption,
+      "Blocked": l.blockedOption,
+      "Demolished": l.demolishedOption,
+      "Unstable": l.unstableOption,
+      "Stable": l.stableOption,
+    };
+
+    Map<String, String> arabicTranslations = {
+      "سيارة عادية": l.regularCarOption,
+      "4x4": l.fourByFourOption,
+      "شاحنة": l.truckOption,
+      "دراجة نارية": l.motorcycleOption,
+      "بغل": l.muelOption,
+      "سيرًا على الأقدام": l.byFootOption,
+      "غير متوفر": l.naOption,
+      "مسدود": l.blockedOption,
+      "مهدم": l.demolishedOption,
+      "غير مستقر": l.unstableOption,
+      "مستقر": l.stableOption,
+    };
+
+    Map<String, String> frenchTranslations = {
+      "Voiture ordinaire": l.regularCarOption,
+      "4x4": l.fourByFourOption,
+      "Camion": l.truckOption,
+      "Motocyclette": l.motorcycleOption,
+      "Mulet": l.muelOption,
+      "À pied": l.byFootOption,
+      "Non disponible": l.naOption,
+      "Bloquée": l.blockedOption,
+      "Démolie": l.demolishedOption,
+      "Instable": l.unstableOption,
+      "Stable": l.stableOption,
+    };
+
+    String translation = translations[selectedType] ??
+        arabicTranslations[selectedType] ??
+        frenchTranslations[selectedType] ??
+        selectedType;
+
+    return translation;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,9 +133,9 @@ class _RoadsPageState extends State<RoadsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                "${l.roadStatusLabelText}: ${road.roadStatus}"),
+                                "${l.roadStatusLabelText}: ${localTransNotNull(road.roadStatus, l)}"),
                             Text(
-                                "${l.vehicleTypeLabelText}: ${road.vehicleType}"),
+                                "${l.vehicleTypeLabelText}: ${localTransNotNull(road.vehicleType, l)}"),
                           ],
                         ),
                       ),

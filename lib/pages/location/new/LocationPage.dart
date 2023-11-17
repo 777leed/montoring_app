@@ -22,7 +22,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   void initState() {
     super.initState();
-    nameController.text = widget.place!.name;
+    nameController.text = widget.place!.name!;
     latitudeController.text = widget.place!.coordinates!.latitude.toString();
     longitudeController.text = widget.place!.coordinates!.longitude.toString();
   }

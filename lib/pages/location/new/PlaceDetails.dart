@@ -127,7 +127,7 @@ class _PlaceDetailsState extends State<PlaceDetails> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GoBack(
-                        title: StringUtils.capitalize(widget.place!.name),
+                        title: StringUtils.capitalize(widget.place!.name!),
                         onTap: () {
                           Navigator.pushReplacement(
                             context,

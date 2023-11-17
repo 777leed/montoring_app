@@ -99,32 +99,62 @@ class _FullSurveyState extends State<FullSurvey> {
         }
       }
 
-      Place updatedPlace = Place(
-        name: surveyDataProvider.village,
-        status: status,
-        population: surveyDataProvider.getPopulation(),
-        crafts: surveyDataProvider.crafts,
-        infrastructure: surveyDataProvider.getInfrastructure(),
-        contacts: surveyDataProvider.contacts,
-        educationStatistics: surveyDataProvider.getEducationStatistics(),
-        images: urls,
-        trees: surveyDataProvider.trees,
-        irrigationSystems: surveyDataProvider.irrigationSystems,
-        animals: surveyDataProvider.livestock,
-        myHerbs: surveyDataProvider.herbs,
-        irrigatedLands: surveyDataProvider.irrigatedLands,
-        landSize: surveyDataProvider.landsize,
-        barrenLands: surveyDataProvider.barrenLands,
-        subsistence: surveyDataProvider.subsistence,
-        financial: surveyDataProvider.financial,
-        belongsToubkal: surveyDataProvider.belongsToubkal,
-        village: surveyDataProvider.village,
-        valley: surveyDataProvider.valley,
-        commune: surveyDataProvider.commune,
-        province: surveyDataProvider.province,
-        myNeeds: surveyDataProvider.needs,
-        supplies: [],
-      );
+      Place updatedPlace;
+
+      if (surveyDataProvider.village.isNotEmpty) {
+        updatedPlace = Place(
+          name: surveyDataProvider.village,
+          status: status,
+          population: surveyDataProvider.getPopulation(),
+          crafts: surveyDataProvider.crafts,
+          infrastructure: surveyDataProvider.getInfrastructure(),
+          contacts: surveyDataProvider.contacts,
+          educationStatistics: surveyDataProvider.getEducationStatistics(),
+          images: urls,
+          trees: surveyDataProvider.trees,
+          irrigationSystems: surveyDataProvider.irrigationSystems,
+          animals: surveyDataProvider.livestock,
+          myHerbs: surveyDataProvider.herbs,
+          irrigatedLands: surveyDataProvider.irrigatedLands,
+          landSize: surveyDataProvider.landsize,
+          barrenLands: surveyDataProvider.barrenLands,
+          subsistence: surveyDataProvider.subsistence,
+          financial: surveyDataProvider.financial,
+          belongsToubkal: surveyDataProvider.belongsToubkal,
+          village: surveyDataProvider.village,
+          valley: surveyDataProvider.valley,
+          commune: surveyDataProvider.commune,
+          province: surveyDataProvider.province,
+          myNeeds: surveyDataProvider.needs,
+          supplies: [],
+        );
+      } else {
+        updatedPlace = Place(
+          status: status,
+          population: surveyDataProvider.getPopulation(),
+          crafts: surveyDataProvider.crafts,
+          infrastructure: surveyDataProvider.getInfrastructure(),
+          contacts: surveyDataProvider.contacts,
+          educationStatistics: surveyDataProvider.getEducationStatistics(),
+          images: urls,
+          trees: surveyDataProvider.trees,
+          irrigationSystems: surveyDataProvider.irrigationSystems,
+          animals: surveyDataProvider.livestock,
+          myHerbs: surveyDataProvider.herbs,
+          irrigatedLands: surveyDataProvider.irrigatedLands,
+          landSize: surveyDataProvider.landsize,
+          barrenLands: surveyDataProvider.barrenLands,
+          subsistence: surveyDataProvider.subsistence,
+          financial: surveyDataProvider.financial,
+          belongsToubkal: surveyDataProvider.belongsToubkal,
+          village: surveyDataProvider.village,
+          valley: surveyDataProvider.valley,
+          commune: surveyDataProvider.commune,
+          province: surveyDataProvider.province,
+          myNeeds: surveyDataProvider.needs,
+          supplies: [],
+        );
+      }
 
       await firestore
           .collection('places')
@@ -154,7 +184,7 @@ class _FullSurveyState extends State<FullSurvey> {
               context: context,
               builder: (context) => AlertDialog(
                 title: Text('Confirm Exit'),
-                content: Text('Are you sure you want to quit the survey?'),
+                content: Text(l.areYouSureDelete),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),

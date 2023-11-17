@@ -53,6 +53,7 @@ class _BuildingSurveyState extends State<BuildingSurvey>
     selectedType = l.kindergartenText;
     unkText = l.unknownText;
     kinderText = l.kindergartenText;
+    otherText = l.otherType;
     buildingTypes = [
       l.kindergartenText,
       l.schoolText,

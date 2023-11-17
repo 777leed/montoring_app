@@ -200,7 +200,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
   Future<void> _filterPlaces(String searchText) async {
     FocusScope.of(context).unfocus(); // Dismiss keyboard
     final filteredPlaces = (availablePlaces as List<Place>).where((place) {
-      return place.name.toLowerCase().contains(searchText.toLowerCase());
+      return place.name!.toLowerCase().contains(searchText.toLowerCase());
     }).toList();
 
     setState(() {
@@ -242,7 +242,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
                         HelperMe().localTrans(place.status, l);
 
                     return ListTile(
-                      title: Text(place.name),
+                      title: Text(place.name!),
                       subtitle: Text("${l.placeStatusText} ${selectedStatus}"),
                       onTap: () {
                         Navigator.pop(context);
@@ -265,7 +265,7 @@ class _EditPlacePageState extends State<EditPlacePage> {
     setState(() {
       selectedMarker = [
         Marker(
-          markerId: MarkerId(place.name),
+          markerId: MarkerId(place.name!),
           position:
               LatLng(place.coordinates!.latitude, place.coordinates!.longitude),
         ),

@@ -20,9 +20,10 @@ class _ContactsPageState extends State<ContactsPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController preferedController = TextEditingController();
   bool isLoading = true;
   late AppLocalizations l;
+  late List<String> prefs;
+  late String selectedPref;
 
   @override
   void initState() {
@@ -33,6 +34,8 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void didChangeDependencies() {
     l = AppLocalizations.of(context)!;
+    prefs = [l.phoneText, l.whatsappText, l.emailText];
+    selectedPref = l.phoneText;
     super.didChangeDependencies();
   }
 
@@ -83,6 +86,8 @@ class _ContactsPageState extends State<ContactsPage> {
                           children: [
                             Text("${l.phoneText}: ${contact.phoneNumber}"),
                             Text("${l.email}: ${contact.email}"),
+                            Text(
+                                "${l.preferenceTitle}: ${localTransNotNull(contact.prefered, l)}"),
                           ],
                         ),
                       ),
@@ -96,6 +101,21 @@ class _ContactsPageState extends State<ContactsPage> {
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  String localTransNotNull(String selectedStatus, AppLocalizations l) {
+    Map<String, String> translations = {
+      "Phone": l.phoneText,
+      "Email": l.emailText,
+      "البريد الإلكتروني": l.emailText,
+      "الهاتف": l.phoneText,
+      "واتساب": l.whatsappText,
+      "Téléphone": l.phoneText,
+      "WhatsApp": l.whatsappText,
+      "E-mail": l.emailText,
+    };
+
+    return translations[selectedStatus] ?? selectedStatus;
   }
 
   Future<void> _showAddContactDialog(BuildContext context) async {
@@ -121,9 +141,19 @@ class _ContactsPageState extends State<ContactsPage> {
                 decoration: InputDecoration(labelText: l.email),
                 keyboardType: TextInputType.emailAddress,
               ),
-              TextField(
-                controller: preferedController,
-                decoration: InputDecoration(labelText: l.contactPreference),
+              DropdownButtonFormField(
+                value: selectedPref.isNotEmpty ? selectedPref : l.phoneText,
+                items: prefs.map((type) {
+                  return DropdownMenuItem(
+                    value: type,
+                    child: Text(type),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedPref = value as String;
+                  });
+                },
               ),
             ],
           ),
@@ -133,7 +163,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 final String name = nameController.text;
                 final String phoneNumber = phoneNumberController.text;
                 final String email = emailController.text;
-                final String prefered = preferedController.text;
+                final String prefered = selectedPref;
 
                 if (name.isNotEmpty &&
                     phoneNumber.isNotEmpty &&

@@ -77,6 +77,12 @@ class _PopulationPageState extends State<PopulationPage> {
                     setState(() {
                       population?.totalFamilies = int.tryParse(value) ?? 0;
                     });
+                  }),
+                  _buildTextField(l.totalHouseholdsText,
+                      population?.totalHouseholds.toString() ?? "0", (value) {
+                    setState(() {
+                      population?.totalHouseholds = int.tryParse(value) ?? 0;
+                    });
                   })
                 ]),
                 _buildPopulationSection(
@@ -207,6 +213,12 @@ class _PopulationPageState extends State<PopulationPage> {
                   children: <Widget>[
                     _buildPopulationSection(
                         l.currentPopulationSectionTitle, Icons.group, [
+                      _buildPopulationTile(l.totalFamiliesLabelText,
+                          population?.totalFamilies ?? 0),
+                      _buildPopulationTile(l.totalHouseholdsText,
+                          population?.totalHouseholds ?? 0),
+                      _buildPopulationTile(l.totalPopulationLabelText,
+                          population?.totalPopulation ?? 0),
                       _buildPopulationTile(
                           l.menLabelText, population?.totalMen ?? 0),
                       _buildPopulationTile(

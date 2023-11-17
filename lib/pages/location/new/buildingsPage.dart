@@ -42,6 +42,7 @@ class _BuildingPageState extends State<BuildingPage> {
     selectedType = l.kindergartenText;
     unkText = l.unknownText;
     kinderText = l.kindergartenText;
+    otherText = l.otherType;
     buildingTypes = [
       l.kindergartenText,
       l.schoolText,
@@ -62,6 +63,44 @@ class _BuildingPageState extends State<BuildingPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  String localTransNotNull(String selectedStatus, AppLocalizations l) {
+    Map<String, String> translations = {
+      "Kindergarten": l.kindergartenText,
+      "روض أطفال": l.kindergartenText,
+      "Jardin d'enfants": l.kindergartenText,
+      "School": l.schoolText,
+      "مدرسة": l.schoolText,
+      "École": l.schoolText,
+      "Store": l.storeText,
+      "متجر": l.storeText,
+      "Magasin": l.storeText,
+      "Co-op": l.coOpText,
+      "تعاونية": l.coOpText,
+      "Coopérative": l.coOpText,
+      "Association": l.associationText,
+      "جمعية": l.associationText,
+      "Clinic": l.clinicText,
+      "عيادة": l.clinicText,
+      "Clinique": l.clinicText,
+      "Stable": l.stableOption,
+      "مستقر": l.stableOption,
+      "Unstable": l.unstableOption,
+      "غير مستقر": l.unstableOption,
+      "Instable": l.unstableOption,
+      "Demolished": l.demolishedOption,
+      "مهدم": l.demolishedOption,
+      "Démolie": l.demolishedOption,
+      "Blocked": l.blockedOption,
+      "مسدود": l.blockedOption,
+      "Bloquée": l.blockedOption,
+      "Unknown": l.unknownText,
+      "غير معروف": l.unknownText,
+      "Inconnu": l.unknownText
+    };
+
+    return translations[selectedStatus] ?? selectedStatus;
   }
 
   @override
@@ -96,15 +135,18 @@ class _BuildingPageState extends State<BuildingPage> {
                         padding: EdgeInsets.only(right: 16.0),
                       ),
                       child: ListTile(
-                        title: Text(building.buildingType),
-                        subtitle: Text(building.condition),
+                        title:
+                            Text(localTransNotNull(building.buildingType, l)),
+                        subtitle:
+                            Text(localTransNotNull(building.condition, l)),
                       ),
                     );
                   },
                 ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddBuildingDialog(context);
+        onPressed: () async {
+          await _showAddBuildingDialog(context);
+          setState(() {});
         },
         child: Icon(Icons.add),
       ),
@@ -115,93 +157,94 @@ class _BuildingPageState extends State<BuildingPage> {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(l.addBuilding),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                l.buildingType,
-                style: TextStyle(fontSize: 16.0),
-              ),
-              DropdownButtonFormField(
-                value: selectedType.isNotEmpty ? selectedType : kinderText,
-                items: buildingTypes.map((type) {
-                  return DropdownMenuItem(
-                    value: type,
-                    child: Text(type),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCondition = value as String;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-              Text(
-                l.condition,
-                style: TextStyle(fontSize: 16.0),
-              ),
-              DropdownButtonFormField(
-                value:
-                    selectedCondition.isNotEmpty ? selectedCondition : unkText,
-                items: buildingConditions.map((condition) {
-                  return DropdownMenuItem(
-                    value: condition,
-                    child: Text(condition),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCondition = value as String;
-                  });
-                },
-              ),
-              SizedBox(height: 16.0),
-              if (selectedType == otherText) ...[
-                TextField(
-                  controller: buildingTypeController,
-                  decoration: InputDecoration(labelText: l.typeLabelText),
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text(l.addBuilding),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  l.buildingType,
+                  style: TextStyle(fontSize: 16.0),
                 ),
+                DropdownButtonFormField(
+                  value: selectedType.isNotEmpty ? selectedType : kinderText,
+                  items: buildingTypes.map((type) {
+                    return DropdownMenuItem(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedType = value as String;
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  l.condition,
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                DropdownButtonFormField(
+                  value: selectedCondition.isNotEmpty
+                      ? selectedCondition
+                      : unkText,
+                  items: buildingConditions.map((condition) {
+                    return DropdownMenuItem(
+                      value: condition,
+                      child: Text(condition),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCondition = value as String;
+                    });
+                  },
+                ),
+                SizedBox(height: 16.0),
+                if (selectedType == otherText) ...[
+                  TextField(
+                    controller: buildingTypeController,
+                    decoration: InputDecoration(labelText: l.typeLabelText),
+                  ),
+                ],
               ],
-            ],
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () async {
-                final String buildingType = buildingTypeController.text;
-
-                String newtype;
-                if (selectedType == otherText) {
-                  newtype = buildingTypeController.text;
-                } else {
-                  newtype = selectedType;
-                }
-
-                if (newtype.isNotEmpty && selectedCondition.isNotEmpty) {
-                  final MyBuilding newBuilding = MyBuilding(
-                    buildingType: buildingType,
-                    condition: selectedCondition,
-                  );
-
-                  buildings.add(newBuilding);
-                  await saveUpdatedPlace();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(l.buildingAdded),
-                    ),
-                  );
-
-                  Navigator.of(context).pop();
-                  setState(() {});
-                }
-              },
-              child: Text(l.add),
             ),
-          ],
-        );
+            actions: <Widget>[
+              ElevatedButton(
+                onPressed: () async {
+                  String newtype;
+                  if (selectedType == otherText) {
+                    newtype = buildingTypeController.text;
+                  } else {
+                    newtype = selectedType;
+                  }
+
+                  if (newtype.isNotEmpty && selectedCondition.isNotEmpty) {
+                    final MyBuilding newBuilding = MyBuilding(
+                      buildingType: newtype,
+                      condition: selectedCondition,
+                    );
+
+                    buildings.add(newBuilding);
+                    await saveUpdatedPlace();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(l.buildingAdded),
+                      ),
+                    );
+
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(l.add),
+              ),
+            ],
+          );
+        });
       },
     );
   }

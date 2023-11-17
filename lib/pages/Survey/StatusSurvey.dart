@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:montoring_app/components/dropdown.dart';
+import 'package:montoring_app/pages/Maps/HelperMe.dart';
 import 'package:montoring_app/styles.dart';
 import 'package:provider/provider.dart';
 import 'package:montoring_app/pages/Survey/SurveyData.dart';
@@ -83,7 +84,8 @@ class _StatusSurveyState extends State<StatusSurvey>
                         ),
                         SizedBox(height: 20),
                         CustomDropDown(
-                          value: surveyDataProvider.selectedStatus,
+                          value: HelperMe().localTransNotNull(
+                              surveyDataProvider.selectedStatus, l),
                           itemsList: statusList,
                           onChanged: (value) {
                             surveyDataProvider.updateSelectedStatus(value);

@@ -47,125 +47,135 @@ class WherePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => AuthPage(),
-              ),
-            );
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => AuthPage(),
+          ),
+        );
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => AuthPage(),
+                ),
+              );
+            },
+          ),
+          title: Text(l.featuresTitle),
         ),
-        title: Text(l.featuresTitle),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(25),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buildButton(
-                        Icon(
-                          Icons.map,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        l.addAreasButton,
-                        () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => AddPlacePage(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildButton(
-                        Icon(
-                          Icons.edit_location,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        l.editAreaButtonText,
-                        () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => EditPlacePage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buildButton(
-                        Icon(
-                          Icons.import_export,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        l.exportButton,
-                        () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ExportPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildButton(
-                        Icon(
-                          Icons.dashboard,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        l.home,
-                        () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => AuthPage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: buildButton(
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(25),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        buildButton(
                           Icon(
-                            Icons.analytics_rounded,
+                            Icons.map,
                             size: 30,
                             color: Colors.white,
                           ),
-                          l.exploreButton,
+                          l.addAreasButton,
                           () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => RankPlacesPage(),
+                                builder: (context) => AddPlacePage(),
                               ),
                             );
                           },
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 40),
-                ],
+                        buildButton(
+                          Icon(
+                            Icons.edit_location,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          l.editAreaButtonText,
+                          () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EditPlacePage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        buildButton(
+                          Icon(
+                            Icons.import_export,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          l.exportButton,
+                          () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ExportPage(),
+                              ),
+                            );
+                          },
+                        ),
+                        buildButton(
+                          Icon(
+                            Icons.dashboard,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          l.home,
+                          () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => AuthPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: buildButton(
+                            Icon(
+                              Icons.analytics_rounded,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            l.exploreButton,
+                            () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => RankPlacesPage(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                  ],
+                ),
               ),
             ),
           ),

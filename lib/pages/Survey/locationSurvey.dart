@@ -32,67 +32,66 @@ class _LocationSurveyPageState extends State<LocationSurveyPage>
       ),
       body: Padding(
         padding: EdgeInsets.all(25.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: MyBanner(
-                title: l.pleaseInsertDetails,
-                img: "Assets/images/village.png",
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: MyBanner(
+                  title: l.pleaseInsertDetails,
+                  img: "Assets/images/village.png",
+                ),
               ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: l.villageLabel,
-                errorText: villageError,
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: l.villageLabel,
+                  errorText: villageError,
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    village = value;
+                    if (village.isEmpty) {
+                      villageError = l.villageLabel;
+                    } else {
+                      villageError = null;
+                    }
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateVillage(village);
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  village = value;
-                  if (village.isEmpty) {
-                    villageError = l.villageLabel;
-                  } else {
-                    villageError = null;
-                  }
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateVillage(village);
-                });
-              },
-            ),
-            SizedBox(height: 16.0),
-            TextFormField(
-              decoration: InputDecoration(labelText: l.valleyLabel),
-              onChanged: (value) {
-                setState(() {
-                  valley = value;
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateValley(valley);
-                });
-              },
-            ),
-            SizedBox(height: 16.0),
-            TextFormField(
-              decoration: InputDecoration(labelText: l.communeLabel),
-              onChanged: (value) {
-                setState(() {
-                  commune = value;
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateCommune(commune);
-                });
-              },
-            ),
-            SizedBox(height: 16.0),
-            TextFormField(
-              decoration: InputDecoration(labelText: l.provinceLabel),
-              onChanged: (value) {
-                setState(() {
-                  province = value;
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateProvince(province);
-                });
-              },
-            ),
-          ],
+              TextFormField(
+                decoration: InputDecoration(labelText: l.valleyLabel),
+                onChanged: (value) {
+                  setState(() {
+                    valley = value;
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateValley(valley);
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: l.communeLabel),
+                onChanged: (value) {
+                  setState(() {
+                    commune = value;
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateCommune(commune);
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: l.provinceLabel),
+                onChanged: (value) {
+                  setState(() {
+                    province = value;
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateProvince(province);
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

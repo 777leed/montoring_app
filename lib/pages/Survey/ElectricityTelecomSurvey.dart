@@ -36,88 +36,91 @@ class _ElectricityTelecomSurveyPageState
       ),
       body: Padding(
         padding: EdgeInsets.all(25.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: MyBanner(
-                title: l.pleaseInsertDetails,
-                img: "Assets/images/tower.png",
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  l.isElectricityAvailableQuestion,
-                  style: TextStyle(fontSize: 16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: MyBanner(
+                  title: l.pleaseInsertDetails,
+                  img: "Assets/images/tower.png",
                 ),
-                Checkbox(
-                  value: isElectricityAvailable,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l.isElectricityAvailableQuestion,
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  Checkbox(
+                    value: isElectricityAvailable,
+                    onChanged: (value) {
+                      setState(() {
+                        isElectricityAvailable = value ?? false;
+                        Provider.of<SurveyDataProvider>(context, listen: false)
+                            .updateIsElectricityAvailable(
+                                isElectricityAvailable);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              if (!isElectricityAvailable) ...[
+                TextFormField(
+                  decoration:
+                      InputDecoration(labelText: l.notAvailableReasonLabel),
                   onChanged: (value) {
                     setState(() {
-                      isElectricityAvailable = value ?? false;
+                      electricityNotAvailableReason = value;
                       Provider.of<SurveyDataProvider>(context, listen: false)
-                          .updateIsElectricityAvailable(isElectricityAvailable);
+                          .updateElectricityNotAvailableReason(
+                              electricityNotAvailableReason);
                     });
                   },
                 ),
               ],
-            ),
-            if (!isElectricityAvailable) ...[
-              TextFormField(
-                decoration:
-                    InputDecoration(labelText: l.notAvailableReasonLabel),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.all(0),
+                title: Text(l.hasInternetText),
+                value: hasInternet,
                 onChanged: (value) {
                   setState(() {
-                    electricityNotAvailableReason = value;
+                    hasInternet = value ?? false;
                     Provider.of<SurveyDataProvider>(context, listen: false)
-                        .updateElectricityNotAvailableReason(
-                            electricityNotAvailableReason);
+                        .updateHasInternet(hasInternet);
+                  });
+                },
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.all(0),
+                title: Text(l.hasSatellitesText),
+                value: hasSatellites,
+                onChanged: (value) {
+                  setState(() {
+                    hasSatellites = value ?? false;
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateHasSatellites(hasSatellites);
+                  });
+                },
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.all(0),
+                title: Text(l.hasMobileNetworkTowersText),
+                value: hasMobileNetworkTowers,
+                onChanged: (value) {
+                  setState(() {
+                    hasMobileNetworkTowers = value ?? false;
+                    Provider.of<SurveyDataProvider>(context, listen: false)
+                        .updateHasMobileNetworkTowers(hasMobileNetworkTowers);
                   });
                 },
               ),
             ],
-            CheckboxListTile(
-              contentPadding: EdgeInsets.all(0),
-              title: Text(l.hasInternetText),
-              value: hasInternet,
-              onChanged: (value) {
-                setState(() {
-                  hasInternet = value ?? false;
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateHasInternet(hasInternet);
-                });
-              },
-            ),
-            CheckboxListTile(
-              contentPadding: EdgeInsets.all(0),
-              title: Text(l.hasSatellitesText),
-              value: hasSatellites,
-              onChanged: (value) {
-                setState(() {
-                  hasSatellites = value ?? false;
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateHasSatellites(hasSatellites);
-                });
-              },
-            ),
-            CheckboxListTile(
-              contentPadding: EdgeInsets.all(0),
-              title: Text(l.hasMobileNetworkTowersText),
-              value: hasMobileNetworkTowers,
-              onChanged: (value) {
-                setState(() {
-                  hasMobileNetworkTowers = value ?? false;
-                  Provider.of<SurveyDataProvider>(context, listen: false)
-                      .updateHasMobileNetworkTowers(hasMobileNetworkTowers);
-                });
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -110,7 +110,7 @@ class _RankPlacesPageState extends State<RankPlacesPage> {
                               ),
                             );
                           },
-                          title: Text(place.name),
+                          title: Text(place.name!),
                           subtitle:
                               Text('${l.placeStatusText} ${selectedStatus}'),
                         );

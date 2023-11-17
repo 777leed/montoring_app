@@ -13,7 +13,7 @@ import 'package:montoring_app/models/MyCrafts.dart';
 
 class Place {
   String? id;
-  String name;
+  String? name;
   MyCoordinates? coordinates;
   String? status;
   List<Supplies>? supplies;
@@ -42,7 +42,7 @@ class Place {
 
   Place({
     this.id,
-    required this.name,
+    this.name,
     this.coordinates,
     required this.status,
     required this.supplies,
